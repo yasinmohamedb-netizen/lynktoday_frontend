@@ -101,7 +101,7 @@ export default function DocumentationPage() {
         try {
 
             const storedUser =
-                localStorage.getItem('expimp_user');
+                localStorage.getItem('lynktoday_user');
 
             if (!storedUser) {
                 setUser(null);

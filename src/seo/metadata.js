@@ -2,7 +2,8 @@ import {
     SITE_NAME,
     SITE_URL,
     DEFAULT_TITLE,
-    DEFAULT_DESCRIPTION
+    DEFAULT_DESCRIPTION,
+    DEFAULT_OG_IMAGE
 } from './config';
 
 export function createMetadata({
@@ -14,7 +15,9 @@ export function createMetadata({
 } = {}) {
 
     const finalTitle =
-        title || DEFAULT_TITLE;
+        title
+            ? `${title} | ${SITE_NAME}`
+            : DEFAULT_TITLE;
 
     const finalDescription =
         description || DEFAULT_DESCRIPTION;
@@ -22,14 +25,20 @@ export function createMetadata({
     const canonicalUrl =
         `${SITE_URL}${path}`;
 
+    const ogImage =
+        image || DEFAULT_OG_IMAGE;
+
     return {
 
         title: finalTitle,
 
         description: finalDescription,
 
+        metadataBase:
+            new URL(SITE_URL),
+
         alternates: {
-            canonical: path
+            canonical: canonicalUrl
         },
 
         robots: noIndex
@@ -61,34 +70,26 @@ export function createMetadata({
 
             description: finalDescription,
 
-            ...(image
-                ? {
-                    images: [
-                        {
-                            url: image,
-                            width: 1200,
-                            height: 630,
-                            alt: finalTitle
-                        }
-                    ]
+            locale: 'en_US',
+
+            images: [
+                {
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: finalTitle
                 }
-                : {})
+            ]
         },
 
         twitter: {
-            card: image
-                ? 'summary_large_image'
-                : 'summary',
+            card: 'summary_large_image',
 
             title: finalTitle,
 
             description: finalDescription,
 
-            ...(image
-                ? {
-                    images: [image]
-                }
-                : {})
+            images: [ogImage]
         }
     };
 }

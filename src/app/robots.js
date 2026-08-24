@@ -10,11 +10,14 @@ export default function robots() {
             disallow: [
                 '/login',
                 '/signup',
-                '/notifications',
+                '/connections',
                 '/messages',
+                '/notifications',
+                '/my-posts',
+                '/saved',
                 '/settings',
-                '/saved-posts',
-                '/profile/edit',
+                '/documentation/create',
+                '/search',
                 '/admin',
                 '/api/'
             ]
