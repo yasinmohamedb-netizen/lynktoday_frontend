@@ -1,0 +1,324 @@
+/* ==========================================
+   WRAPPER
+========================================== */
+
+.wrapper {
+    margin-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 20px;
+}
+
+/* ==========================================
+   INPUT AREA
+========================================== */
+
+.inputArea {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.inputArea textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    padding: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: .25s;
+}
+
+.inputArea textarea:focus {
+    outline: none;
+    border-color: #0F4C81;
+    box-shadow: 0 0 0 4px rgba(15,76,129,.12);
+}
+
+.inputArea button {
+    align-self: flex-end;
+    background: #0F4C81;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.inputArea button:hover {
+    background: #2563EB;
+}
+
+/* ==========================================
+   EMPTY
+========================================== */
+
+.empty {
+    text-align: center;
+    color: #6B7280;
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* ==========================================
+   COMMENT
+========================================== */
+
+.comment {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+/* ==========================================
+   AVATAR
+========================================== */
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#0F4C81,#2563EB);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   BODY
+========================================== */
+
+.body {
+    flex: 1;
+    background: #f9fafb;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.header strong {
+    color: #111827;
+    font-size: 15px;
+}
+
+.header span {
+    color: #2563EB;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ==========================================
+   PROFESSION
+========================================== */
+
+.profession {
+    color: #6B7280;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* ==========================================
+   COMMENT TEXT
+========================================== */
+
+.body p {
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    white-space: pre-wrap;
+}
+
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actions button {
+    border: none;
+    background: transparent;
+    color: #6B7280;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: .25s;
+}
+
+.actions button:hover {
+    background: #EFF6FF;
+    color: #0F4C81;
+}
+
+/* ==========================================
+   REPLIES (Future)
+========================================== */
+
+.replyContainer {
+    margin-left: 60px;
+    margin-top: 15px;
+    border-left: 2px solid #E5E7EB;
+    padding-left: 18px;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width:768px) {
+
+    .comment {
+        gap: 10px;
+    }
+
+    .avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .body {
+        padding: 14px;
+    }
+
+    .actions {
+        flex-wrap: wrap;
+    }
+
+    .inputArea button {
+        width: 100%;
+    }
+
+}
+
+@media (max-width:480px) {
+
+    .header {
+        flex-wrap: wrap;
+    }
+
+    .body {
+        padding: 12px;
+    }
+
+    .profession {
+        font-size: 12px;
+    }
+
+    .body p {
+        font-size: 14px;
+    }
+
+    /* ==========================
+   Replies
+========================== */
+
+.replyList{
+
+    margin-top:15px;
+
+    margin-left:50px;
+
+    border-left:2px solid #e5e7eb;
+
+    padding-left:18px;
+
+}
+
+.replyCard{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:18px;
+
+}
+
+.replyAvatar{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+}
+
+.replyBody{
+
+    flex:1;
+
+    background:#f8fafc;
+
+    padding:12px;
+
+    border-radius:10px;
+
+}
+
+.replyHeader{
+
+    display:flex;
+
+    gap:6px;
+
+    align-items:center;
+
+    margin-bottom:4px;
+
+}
+
+.replyMeta{
+
+    font-size:13px;
+
+    color:#6b7280;
+
+    margin-bottom:8px;
+
+}
+
+.replyContent{
+
+    margin:0;
+
+    line-height:1.5;
+
+}
+
+}

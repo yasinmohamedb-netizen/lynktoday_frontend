@@ -1,0 +1,428 @@
+/* ======================================================
+   TRENDING CARD
+====================================================== */
+
+.card {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ======================================================
+   HEADER
+====================================================== */
+
+.header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+}
+
+
+.header h3 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+
+.viewAll {
+    flex-shrink: 0;
+
+    color: #0f4c81;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.viewAll:hover {
+    color: #2563eb;
+
+    text-decoration: underline;
+}
+
+
+/* ======================================================
+   TOPIC LIST
+====================================================== */
+
+.list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+/* ======================================================
+   TOPIC ITEM
+====================================================== */
+
+.item {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 14px;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.item:hover {
+    background: #f8fafc;
+
+    transform: translateX(3px);
+}
+
+
+/* ======================================================
+   TOPIC CONTENT
+====================================================== */
+
+.topicContent {
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+/* ======================================================
+   TOPIC LINK
+====================================================== */
+
+.topic {
+    display: block;
+
+    margin: 0 0 4px;
+
+    overflow: hidden;
+
+    color: #0f4c81;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    text-decoration: none;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.topic:hover {
+    color: #2563eb;
+
+    text-decoration: underline;
+}
+
+
+/* ======================================================
+   DISCUSSION COUNT
+====================================================== */
+
+.topicContent span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 13px;
+    font-weight: 400;
+
+    line-height: 1.4;
+}
+
+
+/* ======================================================
+   RANK
+====================================================== */
+
+.rank {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f4c81,
+            #2563eb
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    box-shadow:
+        0 3px 8px rgba(15, 76, 129, 0.12);
+}
+
+
+/* ======================================================
+   LOADING
+====================================================== */
+
+.loading {
+    padding: 28px 12px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+/* ======================================================
+   EMPTY STATE
+====================================================== */
+
+.empty {
+    padding: 28px 12px;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 992px) {
+
+    .card {
+        margin-top: 20px;
+    }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 768px) {
+
+    .card {
+        padding: 18px;
+    }
+
+
+    .header {
+        margin-bottom: 18px;
+    }
+
+
+    .header h3 {
+        font-size: 16px;
+    }
+
+
+    .viewAll {
+        font-size: 13px;
+    }
+
+
+    .item {
+        padding: 11px;
+
+        gap: 12px;
+    }
+
+
+    .topic {
+        font-size: 14px;
+    }
+
+
+    .topicContent span {
+        font-size: 12px;
+    }
+
+
+    .rank {
+        width: 34px;
+        height: 34px;
+
+        min-width: 34px;
+
+        font-size: 12px;
+    }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 480px) {
+
+    .card {
+        padding: 16px;
+    }
+
+
+    .header h3 {
+        font-size: 15px;
+    }
+
+
+    .viewAll {
+        font-size: 12px;
+    }
+
+
+    .item {
+        padding: 10px 8px;
+    }
+
+
+    .topic {
+        font-size: 13px;
+    }
+
+
+    .topicContent span {
+        font-size: 11px;
+    }
+
+
+    .rank {
+        width: 32px;
+        height: 32px;
+
+        min-width: 32px;
+
+        font-size: 11px;
+    }
+
+}
+
+
+/* ======================================================
+   VERY SMALL MOBILE
+====================================================== */
+
+@media (max-width: 360px) {
+
+    .card {
+        padding: 14px;
+    }
+
+
+    .header {
+        gap: 8px;
+    }
+
+
+    .header h3 {
+        font-size: 14px;
+    }
+
+
+    .viewAll {
+        font-size: 11px;
+    }
+
+
+    .item {
+        gap: 8px;
+    }
+
+
+    .topic {
+        font-size: 12.5px;
+    }
+
+
+    .rank {
+        width: 30px;
+        height: 30px;
+
+        min-width: 30px;
+
+        font-size: 10px;
+    }
+
+}
+
+
+/* ======================================================
+   REDUCE MOTION
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .item,
+    .viewAll,
+    .topic {
+        transition: none;
+    }
+
+}

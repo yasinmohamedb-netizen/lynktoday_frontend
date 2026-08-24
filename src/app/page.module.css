@@ -1,142 +1,244 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
+/* =========================================================
+   HOME PAGE
+========================================================= */
 
-  --text-primary: #000;
-  --text-secondary: #666;
+.container {
+  width: 100%;
+  max-width: 1500px;
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
+  margin: 24px auto;
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+      280px
+      minmax(0, 1fr)
+      340px;
+
+  gap: 24px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+ LEFT SIDEBAR
+========================================================= */
+
+.left {
+  min-width: 0;
+
+  position: sticky;
+  top: 90px;
+
+  align-self: start;
+}
+
+
+/* =========================================================
+ CENTER
+========================================================= */
+
+.center {
+  min-width: 0;
 
   display: flex;
-  flex: 1;
   flex-direction: column;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+ RIGHT SIDEBAR
+========================================================= */
+
+.right {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  /*
+   * IMPORTANT:
+   * Do NOT use position: sticky here.
+   *
+   * The right sidebar should scroll naturally
+   * together with the Home page.
+   */
+  position: static;
+
+  align-self: start;
+}
+
+
+/* =========================================================
+ CHILD WIDTH
+========================================================= */
+
+.left > *,
+.center > *,
+.right > * {
+  width: 100%;
+}
+
+
+/* =========================================================
+ LOGGED OUT
+========================================================= */
+
+.loggedOut {
+  grid-template-columns:
+      minmax(0, 1fr)
+      340px;
+}
+
+
+/* =========================================================
+ LOADING
+========================================================= */
+
+.loading {
+  min-height: 240px;
+
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
-}
 
-.main {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
-}
+  padding: 30px;
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
+  box-sizing: border-box;
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
+  background: #ffffff;
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
+  border: 1px solid #e2e8f0;
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
+  border-radius: 14px;
 
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
+  color: #64748b;
+
   font-size: 14px;
 }
 
-.ctas a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+
+/* =========================================================
+ LARGE DESKTOP
+========================================================= */
+
+@media (max-width: 1400px) {
+
+  .container {
+      grid-template-columns:
+          260px
+          minmax(0, 1fr)
+          310px;
+  }
+
+
+  .loggedOut {
+      grid-template-columns:
+          minmax(0, 1fr)
+          310px;
+  }
+
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+
+/* =========================================================
+ TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .container {
+      grid-template-columns:
+          240px
+          minmax(0, 1fr);
+
+      gap: 20px;
+  }
+
+
+  .right {
+      display: none;
+  }
+
+
+  .loggedOut {
+      grid-template-columns: 1fr;
+  }
+
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+
+/* =========================================================
+ SMALL TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .container {
+      grid-template-columns: 1fr;
+
+      margin-top: 18px;
+  }
+
+
+  .left,
+  .right {
+      display: none;
+  }
+
+
+  .loggedOut {
+      grid-template-columns: 1fr;
+  }
+
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
+
+/* =========================================================
+ MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .container {
+      margin: 14px auto;
+
+      padding: 0 12px;
+
+      gap: 16px;
   }
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
+
+  .center {
+      gap: 16px;
   }
+
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+
+/* =========================================================
+ SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .container {
+      padding: 0 10px;
+
+      gap: 14px;
   }
 
-  .intro {
-    gap: 16px;
+
+  .center {
+      gap: 14px;
   }
 
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
 }

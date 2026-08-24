@@ -1,0 +1,617 @@
+/* =========================================================
+   NOTIFICATION WRAPPER
+========================================================= */
+
+.notificationWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* =========================================================
+   NOTIFICATION BUTTON
+========================================================= */
+
+.notificationButton {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 14px;
+
+    border: none;
+    background: transparent;
+
+    color: #333333;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.notificationButton:hover {
+    color: #0a66c2;
+}
+
+.notificationButton:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   UNREAD BADGE
+========================================================= */
+
+.badge {
+    position: absolute;
+
+    top: -4px;
+    right: -6px;
+
+    min-width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 5px;
+
+    box-sizing: border-box;
+
+    border-radius: 999px;
+
+    background: #e53935;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 380px;
+    max-width: calc(100vw - 24px);
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.12),
+        0 2px 8px rgba(15, 23, 42, 0.05);
+
+    z-index: 9999;
+}
+
+
+/* =========================================================
+   DROPDOWN HEADER
+========================================================= */
+
+.dropdownHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    background: #ffffff;
+}
+
+.dropdownHeader h3 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   NOTIFICATION LIST
+========================================================= */
+
+.notificationList {
+    max-height: 420px;
+
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.notificationList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notificationList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notificationList::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty {
+    padding: 34px 20px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DROPDOWN FOOTER
+========================================================= */
+
+.dropdownFooter {
+    padding: 14px 20px;
+
+    border-top: 1px solid #eeeeee;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+.viewAll {
+    display: inline-block;
+
+    color: #0a66c2;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+.viewAll:hover {
+    color: #084b91;
+
+    text-decoration: underline;
+}
+
+.viewAll:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   NOTIFICATION ITEM
+========================================================= */
+
+.notificationItem {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 15px 20px;
+
+    border-bottom: 1px solid #f1f1f1;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease;
+}
+
+.notificationItem:last-child {
+    border-bottom: none;
+}
+
+.notificationItem:hover {
+    background: #f8fbff;
+}
+
+.notificationItem:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: -2px;
+}
+
+
+/* =========================================================
+   UNREAD NOTIFICATION
+========================================================= */
+
+.unread {
+    background: #eef6ff;
+}
+
+.unread:hover {
+    background: #e5f1ff;
+}
+
+
+/* =========================================================
+   NOTIFICATION CONTENT
+========================================================= */
+
+.notificationContent {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.notificationContent h4 {
+    margin: 0 0 5px;
+
+    color: #111827;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.notificationContent p {
+    margin: 0;
+
+    color: #4b5563;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.notificationContent span {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   DELETE BUTTON
+========================================================= */
+
+.deleteButton {
+    flex-shrink: 0;
+
+    align-self: center;
+
+    padding: 6px 10px;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #4b5563;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.deleteButton:hover:not(:disabled) {
+    background: #fef2f2;
+
+    border-color: #fecaca;
+
+    color: #dc2626;
+}
+
+.deleteButton:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+.deleteButton:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   NOTIFICATIONS PAGE
+========================================================= */
+
+.page {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.pageHeader h2 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+.pageHeader p {
+    margin: 6px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MARK ALL BUTTON
+========================================================= */
+
+.markAll {
+    flex-shrink: 0;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #0a66c2;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.markAll:hover {
+    background: #084b91;
+
+    transform: translateY(-1px);
+}
+
+.markAll:active {
+    transform: translateY(0);
+}
+
+.markAll:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
+
+.loading,
+.error {
+    padding: 40px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.06);
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+.loading {
+    color: #64748b;
+}
+
+.error {
+    color: #d32f2f;
+}
+
+
+/* =========================================================
+   PAGE EMPTY STATE
+========================================================= */
+
+.page .empty {
+    padding: 50px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+    .dropdown {
+        width: 360px;
+    }
+
+    .pageHeader {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding: 18px;
+    }
+
+    .markAll {
+        width: 100%;
+    }
+
+    .notificationItem {
+        padding: 14px 16px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+    .dropdown {
+        position: fixed;
+
+        top: 64px;
+        right: 12px;
+        left: 12px;
+
+        width: auto;
+        max-width: none;
+    }
+
+    .dropdownHeader {
+        padding: 14px 16px;
+    }
+
+    .dropdownHeader h3 {
+        font-size: 16px;
+    }
+
+    .notificationList {
+        max-height: calc(100vh - 170px);
+    }
+
+    .notificationItem {
+        gap: 10px;
+
+        padding: 14px;
+    }
+
+    .notificationContent h4 {
+        font-size: 13px;
+    }
+
+    .notificationContent p {
+        font-size: 12px;
+    }
+
+    .deleteButton {
+        padding: 5px 8px;
+
+        font-size: 11px;
+    }
+
+    .dropdownFooter {
+        padding: 12px 16px;
+    }
+
+    .viewAll {
+        font-size: 13px;
+    }
+
+    .pageHeader h2 {
+        font-size: 21px;
+    }
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .notificationButton,
+    .viewAll,
+    .notificationItem,
+    .deleteButton,
+    .markAll {
+        transition: none;
+    }
+}

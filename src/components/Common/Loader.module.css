@@ -1,0 +1,136 @@
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px;
+}
+
+/* ==========================================
+   FULL SCREEN
+========================================== */
+
+.fullScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    background: rgba(255,255,255,.92);
+
+    backdrop-filter: blur(4px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================
+   SPINNER
+========================================== */
+
+.spinner {
+    border-radius: 50%;
+    border-style: solid;
+    border-color: #E5E7EB;
+    border-top-color: #0F4C81;
+    animation: spin .8s linear infinite;
+}
+
+/* ==========================================
+   SIZES
+========================================== */
+
+.small {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+}
+
+.medium {
+    width: 48px;
+    height: 48px;
+    border-width: 4px;
+}
+
+.large {
+    width: 70px;
+    height: 70px;
+    border-width: 6px;
+}
+
+/* ==========================================
+   TEXT
+========================================== */
+
+.text {
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ==========================================
+   ANIMATION
+========================================== */
+
+@keyframes spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width:768px){
+
+    .large{
+        width:60px;
+        height:60px;
+    }
+
+    .medium{
+        width:42px;
+        height:42px;
+    }
+
+    .text{
+        font-size:14px;
+    }
+
+}
+
+@media (max-width:480px){
+
+    .large{
+        width:52px;
+        height:52px;
+    }
+
+    .medium{
+        width:38px;
+        height:38px;
+    }
+
+    .small{
+        width:24px;
+        height:24px;
+    }
+
+    .text{
+        font-size:13px;
+    }
+
+}

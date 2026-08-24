@@ -1,0 +1,716 @@
+/* =========================================================
+   SETTINGS PAGE
+========================================================= */
+
+.page {
+    width: 100%;
+    min-height: calc(100vh - 72px);
+
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns:
+        240px
+        minmax(0, 1fr)
+        280px;
+
+    gap: 24px;
+
+    padding: 28px 20px 50px;
+
+    background: #f5f7fa;
+    color: #172033;
+}
+
+
+/* =========================================================
+   SIDEBARS
+========================================================= */
+
+.leftSidebar,
+.rightSidebar {
+    min-width: 0;
+
+    width: 100%;
+
+    position: sticky;
+    top: 90px;
+
+    align-self: start;
+}
+
+
+/* =========================================================
+   CENTER
+========================================================= */
+
+.centerContent {
+    min-width: 0;
+    width: 100%;
+}
+
+.contentContainer {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.header > div {
+    min-width: 0;
+}
+
+.header h1 {
+    margin: 0 0 6px;
+
+    color: #172033;
+
+    font-size: 30px;
+    font-weight: 750;
+
+    line-height: 1.25;
+    letter-spacing: -0.4px;
+}
+
+.header p {
+    margin: 0;
+
+    color: #7b8797;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.backButton {
+    flex-shrink: 0;
+
+    min-height: 40px;
+
+    padding: 0 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d8e1e9;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #176aa5;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    text-decoration: none;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.backButton:hover {
+    background: #f8fbfd;
+
+    border-color: #b9cedd;
+
+    transform: translateX(-2px);
+}
+
+
+/* =========================================================
+   SETTINGS SECTION
+========================================================= */
+
+.section {
+    margin-bottom: 18px;
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e6ed;
+    border-radius: 14px;
+
+    box-shadow:
+        0 3px 12px rgba(
+            15,
+            23,
+            42,
+            0.035
+        );
+}
+
+.section:last-of-type {
+    margin-bottom: 0;
+}
+
+.section h2 {
+    margin: 0 0 5px;
+
+    color: #182230;
+
+    font-size: 19px;
+    font-weight: 720;
+
+    line-height: 1.35;
+}
+
+.sectionDescription {
+    margin: 0 0 18px;
+
+    color: #7f8b9d;
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   SETTING ITEM
+========================================================= */
+
+.settingItem {
+    min-height: 70px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 14px 4px;
+
+    border-top: 1px solid #edf0f4;
+
+    color: inherit;
+
+    text-decoration: none;
+
+    transition:
+        background 0.18s ease,
+        padding-left 0.18s ease;
+}
+
+.settingItem:hover {
+    background: #f9fbfd;
+
+    padding-left: 8px;
+}
+
+.icon {
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dce9f3;
+    border-radius: 9px;
+
+    background: #f1f7fb;
+
+    color: #176aa5;
+
+    font-size: 0;
+}
+
+.icon::after {
+    content: '';
+
+    width: 8px;
+    height: 8px;
+
+    border: 2px solid #176aa5;
+    border-radius: 50%;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.content h3 {
+    margin: 0 0 4px;
+
+    color: #1d2939;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.content p {
+    margin: 0;
+
+    color: #7f8b9d;
+
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.arrow {
+    flex-shrink: 0;
+
+    color: #176aa5;
+
+    font-size: 20px;
+    font-weight: 500;
+
+    transition:
+        transform 0.18s ease;
+}
+
+.settingItem:hover .arrow {
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   COMING SOON
+========================================================= */
+
+.comingSoon {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 16px;
+
+    box-sizing: border-box;
+
+    border: 1px dashed #cbd9e5;
+    border-radius: 11px;
+
+    background: #f8fbfd;
+}
+
+.comingSoonIcon {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dce9f3;
+    border-radius: 9px;
+
+    background: #eef6fb;
+
+    color: #176aa5;
+
+    font-size: 0;
+}
+
+.comingSoonIcon::before {
+    content: '';
+
+    width: 13px;
+    height: 9px;
+
+    border: 2px solid #176aa5;
+
+    border-radius: 3px;
+}
+
+.comingSoonContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.comingSoonTitle {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 6px;
+
+    color: #243447;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.comingSoonTitle span {
+    padding: 3px 7px;
+
+    border-radius: 5px;
+
+    background: #fff5d9;
+
+    color: #8a6200;
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.comingSoonContent p {
+    margin: 0;
+
+    color: #7b8797;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   SIMPLE ITEMS
+========================================================= */
+
+.simpleItem {
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 0 4px;
+
+    box-sizing: border-box;
+
+    border-top: 1px solid #edf0f4;
+
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color 0.18s ease,
+        padding-left 0.18s ease;
+}
+
+.simpleItem:hover {
+    padding-left: 8px;
+
+    color: #176aa5;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logoutSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 18px;
+
+    padding: 20px 24px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #f1cccc;
+    border-radius: 14px;
+
+    background: #fffafa;
+}
+
+.logoutSection h3 {
+    margin: 0 0 4px;
+
+    color: #242b36;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.logoutSection p {
+    margin: 0;
+
+    color: #8a94a6;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.logoutButton {
+    flex-shrink: 0;
+
+    min-height: 38px;
+
+    padding: 0 17px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: #dc3f3f;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+.logoutButton:hover {
+    background: #c93232;
+
+    transform: translateY(-1px);
+}
+
+.logoutButton:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   ACCOUNT INFO
+========================================================= */
+
+.accountInfo {
+    padding: 11px 4px;
+
+    color: #8a94a6;
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
+.accountInfo strong {
+    color: #344054;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .page {
+        grid-template-columns:
+            220px
+            minmax(0, 1fr);
+
+        gap: 20px;
+    }
+
+    .rightSidebar {
+        display: none;
+    }
+
+    .contentContainer {
+        max-width: 900px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .page {
+        display: block;
+
+        min-height: calc(100vh - 64px);
+
+        padding: 20px 14px 40px;
+    }
+
+    .leftSidebar,
+    .rightSidebar {
+        display: none;
+    }
+
+    .contentContainer {
+        max-width: none;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 14px;
+
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .backButton {
+        width: 100%;
+    }
+
+    .section {
+        padding: 20px 17px;
+
+        border-radius: 12px;
+    }
+
+    .settingItem {
+        padding:
+            14px 2px;
+    }
+
+    .settingItem:hover {
+        padding-left: 5px;
+    }
+
+    .content p {
+        font-size: 12px;
+    }
+
+    .logoutSection {
+        align-items: stretch;
+
+        flex-direction: column;
+
+        padding: 19px 17px;
+    }
+
+    .logoutButton {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .page {
+        padding: 15px 10px 30px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .header p {
+        font-size: 12px;
+    }
+
+    .section {
+        padding: 18px 14px;
+
+        border-radius: 11px;
+    }
+
+    .section h2 {
+        font-size: 18px;
+    }
+
+    .sectionDescription {
+        font-size: 12px;
+    }
+
+    .settingItem {
+        gap: 10px;
+    }
+
+    .icon {
+        width: 40px;
+        height: 40px;
+
+        min-width: 40px;
+    }
+
+    .content h3 {
+        font-size: 13px;
+    }
+
+    .content p {
+        font-size: 11px;
+    }
+
+    .arrow {
+        font-size: 18px;
+    }
+
+    .comingSoon {
+        padding: 14px;
+    }
+
+    .comingSoonIcon {
+        width: 36px;
+        height: 36px;
+
+        min-width: 36px;
+    }
+
+    .comingSoonContent p {
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .backButton,
+    .settingItem,
+    .simpleItem,
+    .arrow,
+    .logoutButton {
+        transition: none;
+    }
+}

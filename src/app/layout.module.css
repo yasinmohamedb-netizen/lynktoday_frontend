@@ -1,0 +1,118 @@
+.appShellContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* GLOBAL TOP BAR ELEMENT STYLE MATRIX */
+  .globalTopBar {
+    background: #ffffff;
+    border-bottom: 1px solid #eef3f8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 1.5rem;
+  }
+  
+  .topBarContent {
+    max-width: 1128px;
+    height: 52px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logoGroup { display: flex; align-items: center; gap: 0.5rem; }
+  .appIcon {
+    background: #0077b5; color: #ffffff; font-weight: 800; font-size: 0.95rem;
+    width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px;
+  }
+  .logoText { font-size: 1.15rem; font-weight: 700; color: #000000; letter-spacing: -0.02em; }
+  
+  .centerNavLinks { display: flex; gap: 1.5rem; height: 100%; }
+  .headerLink {
+    display: flex; align-items: center; font-size: 0.875rem; font-weight: 600; color: #666666;
+    text-decoration: none; border-bottom: 2px solid transparent; padding: 0 0.25rem;
+    transition: all 0.15s ease;
+  }
+  .headerLink:hover { color: #000000; }
+  .activeLink { color: #000000 !important; border-bottom: 2px solid #000000 !important; }
+  
+  .rightControlGroup { display: flex; align-items: center; gap: 1rem; }
+  
+  .headerUserAvatar {
+    width: 28px; height: 28px; border-radius: 50%; background: #64748b; color: #ffffff;
+    font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center;
+  }
+  
+  .headerLogoutBtn {
+    font-size: 0.825rem; font-weight: 600; color: #ef4444; border: 1px solid #ef4444;
+    padding: 0.3rem 0.75rem; border-radius: 16px; background: transparent;
+    cursor: pointer; transition: all 0.1s ease;
+  }
+  .headerLogoutBtn:hover { background: #fef2f2; }
+  
+  .mainContentFrame {
+    flex: 1;
+    width: 100%;
+  }
+
+  .headerSearchForm {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 1rem;
+  }
+  
+  .headerSearchBox {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #dbe3ea;
+    border-radius: 999px;
+    padding: 0.35rem;
+  }
+  
+  .headerSearchInput {
+    flex: 1;
+    min-width: 150px;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0 0.75rem;
+    font-size: 0.85rem;
+    color: #0f172a;
+  }
+  
+  .headerLocationSelect {
+    border: none;
+    outline: none;
+    background: #ffffff;
+    color: #334155;
+    font-size: 0.82rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+  }
+  
+  .headerSearchBtn {
+    border: none;
+    outline: none;
+    background: #0077b5;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .headerSearchBtn:hover {
+    background: #005e93;
+  }

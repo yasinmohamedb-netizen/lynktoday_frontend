@@ -1,0 +1,73 @@
+.container {
+    display: flex;
+
+    gap: 10px;
+
+    padding: 12px 16px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.container textarea {
+    flex: 1;
+
+    resize: none;
+
+    min-height: 42px;
+    max-height: 120px;
+
+    padding: 11px 13px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 20px;
+}
+
+.container textarea:focus {
+    border-color: #2563eb;
+}
+
+.container textarea:disabled {
+    background: #f3f4f6;
+}
+
+.container button {
+    align-self: flex-end;
+
+    min-width: 72px;
+    height: 42px;
+
+    padding: 0 15px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+.container button:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.container button:disabled {
+    background: #93c5fd;
+
+    cursor: not-allowed;
+}
