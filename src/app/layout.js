@@ -1,84 +1,46 @@
-const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    'https://www.lynktoday.com';
+import '@/app/globals.css';
 
-export const metadata = {
-    metadataBase: new URL(siteUrl),
+import ClientLayout from './ClientLayout';
 
-    title: {
-        default: 'LynkToday | Global Trade & Logistics Network',
-        template: '%s | LynkToday'
-    },
+import { createMetadata } from '@/seo/metadata';
+
+
+// ======================================================
+// GLOBAL SEO METADATA
+// ======================================================
+
+export const metadata = createMetadata({
+    title: 'LynkToday | Global Trade & Logistics Network',
 
     description:
         'LynkToday is a professional network for global trade, logistics, freight forwarding, customs, shipping, supply chain and international business professionals.',
 
-    keywords: [
-        'LynkToday',
-        'global trade',
-        'logistics',
-        'freight forwarding',
-        'shipping',
-        'customs clearance',
-        'import export',
-        'supply chain',
-        'international trade',
-        'cargo',
-        'customs',
-        'trade professionals'
-    ],
+    path: '/'
+});
 
-    applicationName: 'LynkToday',
 
-    authors: [
-        {
-            name: 'LynkToday'
-        }
-    ],
+// ======================================================
+// ROOT LAYOUT
+// ======================================================
 
-    creator: 'LynkToday',
-    publisher: 'LynkToday',
+export default function RootLayout({
+    children
+}) {
 
-    alternates: {
-        canonical: '/'
-    },
+    return (
 
-    robots: {
-        index: true,
-        follow: true,
+        <html lang="en">
 
-        googleBot: {
-            index: true,
-            follow: true,
-            'max-image-preview': 'large',
-            'max-snippet': -1,
-            'max-video-preview': -1
-        }
-    },
+            <body>
 
-    openGraph: {
-        type: 'website',
-        url: siteUrl,
-        siteName: 'LynkToday',
+                <ClientLayout>
+                    {children}
+                </ClientLayout>
 
-        title:
-            'LynkToday | Global Trade & Logistics Network',
+            </body>
 
-        description:
-            'Connect with professionals, discover trade opportunities and stay informed about global trade, logistics, shipping and supply chain.',
+        </html>
 
-        locale: 'en_IN'
-    },
+    );
 
-    twitter: {
-        card: 'summary_large_image',
-
-        title:
-            'LynkToday | Global Trade & Logistics Network',
-
-        description:
-            'A professional network for global trade, logistics, freight forwarding, customs, shipping and supply chain professionals.'
-    },
-
-    category: 'business'
-};
+}

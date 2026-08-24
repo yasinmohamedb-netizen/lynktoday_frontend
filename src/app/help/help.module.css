@@ -6,11 +6,6 @@
     margin: 0 auto;
 }
 
-
-/* ==================================================
-   HEADER
-================================================== */
-
 .header {
     display: flex;
     justify-content: space-between;
@@ -36,22 +31,22 @@
     padding: 10px 18px;
     border: 1px solid #d9e0ea;
     border-radius: 8px;
-    background: white;
-    color: #174f8f;
+    background: #ffffff;
+    color: #3B5B7A;
     font-size: 14px;
     font-weight: 600;
 }
 
-
-/* ==================================================
-   SEARCH
-================================================== */
+.backButton:hover {
+    border-color: #9AAFC1;
+    color: #2F4A63;
+}
 
 .searchCard {
     display: flex;
     align-items: center;
     gap: 20px;
-    background: white;
+    background: #ffffff;
     border: 1px solid #e2e7ee;
     border-radius: 14px;
     padding: 25px;
@@ -62,7 +57,7 @@
     width: 52px;
     height: 52px;
     border-radius: 12px;
-    background: #eef5ff;
+    background: #EAF0F5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,14 +92,9 @@
 }
 
 .searchInput:focus {
-    border-color: #1769aa;
-    box-shadow: 0 0 0 3px rgba(23, 105, 170, 0.08);
+    border-color: #3B5B7A;
+    box-shadow: 0 0 0 3px rgba(59, 91, 122, 0.10);
 }
-
-
-/* ==================================================
-   SECTION
-================================================== */
 
 .section {
     margin-bottom: 35px;
@@ -116,11 +106,6 @@
     font-size: 21px;
 }
 
-
-/* ==================================================
-   TOPICS
-================================================== */
-
 .topicGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -131,7 +116,7 @@
     display: flex;
     gap: 15px;
     align-items: flex-start;
-    background: white;
+    background: #ffffff;
     border: 1px solid #e2e7ee;
     border-radius: 12px;
     padding: 20px;
@@ -140,7 +125,7 @@
 }
 
 .topicCard:hover {
-    border-color: #b8d2ec;
+    border-color: #9AAFC1;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(20, 50, 90, 0.06);
 }
@@ -149,7 +134,7 @@
     width: 42px;
     height: 42px;
     border-radius: 9px;
-    background: #f1f6fc;
+    background: #EEF3F7;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -170,11 +155,6 @@
     line-height: 1.5;
 }
 
-
-/* ==================================================
-   FAQ
-================================================== */
-
 .faqList {
     display: flex;
     flex-direction: column;
@@ -182,7 +162,7 @@
 }
 
 .faq {
-    background: white;
+    background: #ffffff;
     border: 1px solid #e2e7ee;
     border-radius: 10px;
     overflow: hidden;
@@ -206,7 +186,7 @@
 
 .faq summary span {
     font-size: 20px;
-    color: #1769aa;
+    color: #3B5B7A;
     font-weight: 400;
 }
 
@@ -224,7 +204,7 @@
 
 .noResults {
     text-align: center;
-    background: white;
+    background: #ffffff;
     border: 1px solid #e2e7ee;
     border-radius: 12px;
     padding: 40px;
@@ -245,16 +225,11 @@
     font-size: 14px;
 }
 
-
-/* ==================================================
-   SUPPORT
-================================================== */
-
 .supportCard {
     display: flex;
     gap: 20px;
-    background: #eef6ff;
-    border: 1px solid #cfe3f8;
+    background: #EAF0F5;
+    border: 1px solid #D8E2EB;
     border-radius: 14px;
     padding: 25px;
     margin-bottom: 35px;
@@ -264,7 +239,7 @@
     width: 50px;
     height: 50px;
     border-radius: 10px;
-    background: white;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -302,24 +277,24 @@
 }
 
 .primaryButton {
-    background: #1769aa;
-    color: white;
+    background: #3B5B7A;
+    color: #ffffff;
 }
 
 .primaryButton:hover {
-    background: #12558c;
+    background: #2F4A63;
 }
 
 .secondaryButton {
-    background: white;
-    border: 1px solid #c7d8e8;
-    color: #1769aa;
+    background: #ffffff;
+    border: 1px solid #B7C6D3;
+    color: #3B5B7A;
 }
 
-
-/* ==================================================
-   FOOTER
-================================================== */
+.secondaryButton:hover {
+    border-color: #9AAFC1;
+    color: #2F4A63;
+}
 
 .footer {
     display: flex;
@@ -336,16 +311,10 @@
 }
 
 .footer a:hover {
-    color: #1769aa;
+    color: #3B5B7A;
 }
 
-
-/* ==================================================
-   MOBILE
-================================================== */
-
 @media (max-width: 700px) {
-
     .page {
         padding: 20px;
     }
@@ -373,5 +342,4 @@
         align-items: center;
         gap: 12px;
     }
-
 }

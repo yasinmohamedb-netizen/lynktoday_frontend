@@ -1,182 +1,102 @@
-/* ======================================================
-   SIDEBAR
-====================================================== */
-
 .sidebar {
     width: 100%;
-
     display: flex;
     flex-direction: column;
-
     gap: 20px;
 
     position: sticky;
     top: 90px;
 
-    align-self: flex-start;
-
     box-sizing: border-box;
-
-    /*
-     * Keep the sidebar inside the visible viewport.
-     * The right sidebar will scroll independently
-     * when its content becomes taller than the screen.
-     */
-    max-height: calc(100vh - 110px);
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    /* Firefox scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
 }
-
-
-/* ======================================================
-   SIDEBAR SCROLLBAR
-====================================================== */
-
-.sidebar::-webkit-scrollbar {
-    width: 5px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-
-    border-radius: 999px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-}
-
-
-/* ======================================================
-   CARD
-====================================================== */
 
 .card {
     width: 100%;
-
+    padding: 20px;
     box-sizing: border-box;
 
-    padding: 20px;
-
-    background: #ffffff;
-
+    background: #fff;
     border: 1px solid #e5e7eb;
-
     border-radius: 16px;
 
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .04);
 }
-
-
-/* ======================================================
-   CARD HEADER
-====================================================== */
 
 .cardHeader {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     gap: 12px;
 
     margin-bottom: 18px;
 }
 
-
 .cardHeader h3 {
     margin: 0;
 
     color: #111827;
-
     font-size: 18px;
-
     font-weight: 700;
-
-    line-height: 1.4;
 }
 
-
 .viewAll {
-    color: #0f4c81;
-
+    color: #4B5563;
     font-size: 14px;
-
     font-weight: 600;
-
     text-decoration: none;
-
     white-space: nowrap;
 }
 
-
 .viewAll:hover {
-    color: #2563eb;
-
+    color: #374151;
     text-decoration: underline;
 }
 
 
 /* ======================================================
-   TRENDING TOPICS
+   LISTS
 ====================================================== */
 
-.topicList {
+.topicList,
+.newsList {
     display: flex;
-
     flex-direction: column;
 }
 
 
+/* ======================================================
+   TOPIC ITEMS
+====================================================== */
+
 .topicItem {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
-    gap: 12px;
+    gap: 14px;
 
     padding: 14px 8px;
 
     border-bottom: 1px solid #f3f4f6;
-
     border-radius: 10px;
 
     text-decoration: none;
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        background .2s ease,
+        transform .2s ease;
 }
-
 
 .topicItem:first-child {
     padding-top: 4px;
 }
 
-
 .topicItem:last-child {
-    border-bottom: none;
-
     padding-bottom: 4px;
+    border-bottom: 0;
 }
-
 
 .topicItem:hover {
     background: #f8fafc;
-
     transform: translateX(3px);
 }
 
@@ -187,186 +107,85 @@
 
 .topicContent {
     min-width: 0;
-
     flex: 1;
 }
 
-
 .topicContent strong {
     display: block;
-
     margin-bottom: 5px;
 
-    color: #07528e;
-
-    font-size: 15px;
-
-    font-weight: 700;
+    color: #4B5563;
 
     overflow: hidden;
-
     text-overflow: ellipsis;
-
     white-space: nowrap;
+
+    font-size: 15px;
+    font-weight: 700;
 }
 
-
 .topicContent span {
-    display: block;
-
     color: #8a94a6;
-
     font-size: 13px;
 }
 
 
 /* ======================================================
-   TOPIC RANK
+   RANK
 ====================================================== */
 
 .rank {
     width: 40px;
-
     height: 40px;
-
-    min-width: 40px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
 
     flex-shrink: 0;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 50%;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0f4c81,
-            #2563eb
-        );
+    background: #4B5563;
 
-    color: #ffffff;
+    color: #fff;
 
     font-size: 13px;
-
     font-weight: 700;
-
-    transition:
-        transform 0.2s ease;
-}
-
-
-.topicItem:hover .rank {
-    transform: scale(1.05);
 }
 
 
 /* ======================================================
-   NEWS LIST
+   NEWS
 ====================================================== */
 
-.newsList {
-    display: flex;
-
-    flex-direction: column;
-}
-
-
 .newsItem {
-    position: relative;
+    display: block;
 
-    display: flex;
-
-    gap: 14px;
-
-    padding: 14px 8px;
+    padding: 16px 8px;
 
     border-bottom: 1px solid #f3f4f6;
-
     border-radius: 10px;
 
     text-decoration: none;
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        background .2s ease,
+        transform .2s ease;
 }
-
 
 .newsItem:first-child {
     padding-top: 4px;
 }
 
-
 .newsItem:last-child {
-    border-bottom: none;
-
     padding-bottom: 4px;
+    border-bottom: 0;
 }
-
 
 .newsItem:hover {
     background: #f8fafc;
-
     transform: translateX(3px);
-}
-
-
-/* ======================================================
-   NEWS ICON
-====================================================== */
-
-.newsIcon {
-    width: 48px;
-
-    height: 48px;
-
-    min-width: 48px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    overflow: hidden;
-
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0f4c81,
-            #2563eb
-        );
-
-    color: #ffffff;
-
-    font-size: 18px;
-
-    box-shadow:
-        0 3px 10px rgba(
-            15,
-            76,
-            129,
-            0.12
-        );
-}
-
-
-.newsIcon img {
-    width: 100%;
-
-    height: 100%;
-
-    display: block;
-
-    object-fit: cover;
 }
 
 
@@ -377,107 +196,44 @@
 .newsContent {
     min-width: 0;
 
-    flex: 1;
-
     display: flex;
-
     flex-direction: column;
 }
-
 
 .newsContent strong {
     display: -webkit-box;
 
-    margin-bottom: 5px;
+    margin-bottom: 7px;
 
     color: #111827;
 
     font-size: 15px;
-
     font-weight: 700;
-
-    line-height: 1.4;
+    line-height: 1.45;
 
     -webkit-line-clamp: 2;
-
     -webkit-box-orient: vertical;
 
     overflow: hidden;
 }
 
-
 .newsCategory {
     margin-bottom: 4px;
 
-    color: #07528e;
+    color: #4B5563;
 
     font-size: 13px;
-
     font-weight: 600;
 }
 
-
 .newsContent small {
-    color: #9ca3af;
-
+    color: #8a94a6;
     font-size: 12px;
-
-    line-height: 1.4;
 }
 
 
 /* ======================================================
-   NEWS SOURCE BADGES
-====================================================== */
-
-.newsSourceAdmin,
-.newsSourceCommunity {
-    display: inline-flex;
-
-    align-items: center;
-
-    width: fit-content;
-
-    margin-bottom: 5px;
-
-    padding: 3px 8px;
-
-    border-radius: 999px;
-
-    font-size: 11px;
-
-    font-weight: 700;
-}
-
-
-/* ======================================================
-   ADMIN SOURCE
-====================================================== */
-
-.newsSourceAdmin {
-    color: #7c2d12;
-
-    background: #ffedd5;
-
-    border: 1px solid #fed7aa;
-}
-
-
-/* ======================================================
-   COMMUNITY SOURCE
-====================================================== */
-
-.newsSourceCommunity {
-    color: #07528e;
-
-    background: #eff6ff;
-
-    border: 1px solid #dbeafe;
-}
-
-
-/* ======================================================
-   EMPTY NEWS STATE
+   EMPTY
 ====================================================== */
 
 .emptyNews {
@@ -488,7 +244,6 @@
     color: #9ca3af;
 }
 
-
 .emptyNews span {
     display: block;
 
@@ -497,18 +252,15 @@
     font-size: 28px;
 }
 
-
 .emptyNews p {
     margin: 0;
 
     font-size: 13px;
-
-    line-height: 1.5;
 }
 
 
 /* ======================================================
-   RESPONSIVE — 1200px
+   TABLET
 ====================================================== */
 
 @media (max-width: 1200px) {
@@ -517,30 +269,15 @@
         padding: 17px;
     }
 
-
-    .topicContent strong {
-        font-size: 14px;
-    }
-
-
+    .topicContent strong,
     .newsContent strong {
         font-size: 14px;
     }
-
-
-    .newsIcon {
-        width: 44px;
-
-        height: 44px;
-
-        min-width: 44px;
-    }
-
 }
 
 
 /* ======================================================
-   RESPONSIVE — 992px
+   HIDE SIDEBAR
 ====================================================== */
 
 @media (max-width: 992px) {
@@ -548,88 +285,62 @@
     .sidebar {
         display: none;
     }
-
 }
 
 
 /* ======================================================
-   RESPONSIVE — 600px
+   MOBILE
 ====================================================== */
 
 @media (max-width: 600px) {
 
     .card {
         padding: 16px;
-
         border-radius: 14px;
     }
-
 
     .cardHeader h3 {
         font-size: 16px;
     }
 
-
     .viewAll {
         font-size: 13px;
     }
-
 
     .topicItem,
     .newsItem {
         gap: 10px;
     }
 
-
     .rank {
         width: 36px;
-
         height: 36px;
-
-        min-width: 36px;
     }
-
-
-    .newsIcon {
-        width: 42px;
-
-        height: 42px;
-
-        min-width: 42px;
-
-        font-size: 16px;
-    }
-
 
     .topicContent strong,
     .newsContent strong {
         font-size: 14px;
     }
 
-
     .topicContent span,
     .newsCategory {
         font-size: 12px;
     }
 
-
     .newsContent small {
         font-size: 11px;
     }
-
 }
 
 
 /* ======================================================
-   REDUCED MOTION
+   REDUCE MOTION
 ====================================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
     .topicItem,
-    .newsItem,
-    .rank {
+    .newsItem {
         transition: none;
     }
-
 }

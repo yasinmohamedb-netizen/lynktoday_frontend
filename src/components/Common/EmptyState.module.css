@@ -1,206 +1,93 @@
-/* ==========================================
-   EMPTY STATE
-========================================== */
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    background: #ffffff;
-
-    border: 1px solid #e5e7eb;
-
-    border-radius: 16px;
-
-    padding: 60px 30px;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,.04);
-
-    min-height: 320px;
-}
-
-/* ==========================================
-   ICON
-========================================== */
-
-.icon {
-
-    width: 90px;
-    height: 90px;
-
-    border-radius: 50%;
-
-    background: linear-gradient(
-        135deg,
-        #0F4C81,
-        #2563EB
-    );
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    font-size: 42px;
-
-    margin-bottom: 25px;
-
-    box-shadow: 0 8px 20px rgba(37,99,235,.18);
-
-}
-
-/* ==========================================
-   TITLE
-========================================== */
-
-.title {
-
-    font-size: 28px;
-
-    font-weight: 700;
-
-    color: #111827;
-
-    margin-bottom: 12px;
-
-}
-
-/* ==========================================
-   DESCRIPTION
-========================================== */
-
-.description {
-
-    max-width: 500px;
-
-    color: #6B7280;
-
-    font-size: 16px;
-
-    line-height: 1.8;
-
-    margin-bottom: 30px;
-
-}
-
-/* ==========================================
-   BUTTON
-========================================== */
-
-.button {
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 12px 26px;
-
-    border-radius: 10px;
-
-    background: #0F4C81;
-
-    color: #ffffff;
-
-    text-decoration: none;
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-    border: none;
-
-    cursor: pointer;
-
-    transition: all .25s ease;
-
-}
-
-.button:hover {
-
-    background: #2563EB;
-
-    transform: translateY(-2px);
-
-    box-shadow: 0 8px 18px rgba(37,99,235,.20);
-
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width:768px){
-
+.container{
+    min-height:320px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:60px 30px;
+    box-sizing:border-box;
+    text-align:center;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    box-shadow:0 4px 12px rgba(0,0,0,.04);
+  }
+  
+  .icon{
+    width:90px;
+    height:90px;
+    margin-bottom:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:var(--primary-color);
+    color:#fff;
+    font-size:42px;
+    box-shadow:0 8px 20px rgba(59,91,122,.18);
+  }
+  
+  .title{
+    margin:0 0 12px;
+    color:#111827;
+    font-size:28px;
+    font-weight:700;
+  }
+  
+  .description{
+    max-width:500px;
+    margin:0 0 30px;
+    color:#6b7280;
+    font-size:16px;
+    line-height:1.8;
+  }
+  
+  .button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 26px;
+    border:0;
+    border-radius:10px;
+    background:var(--primary-color);
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+    transition:.2s;
+  }
+  
+  .button:hover{
+    background:var(--primary-dark);
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(59,91,122,.2);
+  }
+  
+  @media(max-width:768px){
     .container{
-
-        padding:40px 20px;
-
-        min-height:260px;
-
+      min-height:260px;
+      padding:40px 20px;
     }
-
+  
     .icon{
-
-        width:70px;
-        height:70px;
-
-        font-size:32px;
-
+      width:70px;
+      height:70px;
+      font-size:32px;
     }
-
-    .title{
-
-        font-size:22px;
-
-    }
-
-    .description{
-
-        font-size:14px;
-
-    }
-
-}
-
-@media (max-width:480px){
-
-    .container{
-
-        padding:30px 16px;
-
-    }
-
-    .icon{
-
-        width:60px;
-        height:60px;
-
-        font-size:28px;
-
-    }
-
-    .title{
-
-        font-size:20px;
-
-    }
-
-    .description{
-
-        font-size:13px;
-
-    }
-
-    .button{
-
-        width:100%;
-
-    }
-
-}
+  
+    .title{font-size:22px}
+    .description{font-size:14px}
+  }
+  
+  @media(max-width:480px){
+    .container{padding:30px 16px}
+    .icon{width:60px;height:60px;font-size:28px}
+    .title{font-size:20px}
+    .description{font-size:13px}
+    .button{width:100%}
+  }
+  
+  @media(prefers-reduced-motion:reduce){
+    .button{transition:none}
+  }

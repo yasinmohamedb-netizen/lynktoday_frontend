@@ -1,324 +1,205 @@
-/* ==========================================
-   WRAPPER
-========================================== */
-
-.wrapper {
-    margin-top: 20px;
-    border-top: 1px solid #e5e7eb;
-    padding-top: 20px;
-}
-
-/* ==========================================
-   INPUT AREA
-========================================== */
-
-.inputArea {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.inputArea textarea {
-    width: 100%;
-    min-height: 90px;
-    resize: vertical;
-    padding: 15px;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    font-size: 15px;
-    font-family: inherit;
-    transition: .25s;
-}
-
-.inputArea textarea:focus {
-    outline: none;
-    border-color: #0F4C81;
-    box-shadow: 0 0 0 4px rgba(15,76,129,.12);
-}
-
-.inputArea button {
-    align-self: flex-end;
-    background: #0F4C81;
-    color: white;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: .25s;
-}
-
-.inputArea button:hover {
-    background: #2563EB;
-}
-
-/* ==========================================
-   EMPTY
-========================================== */
-
-.empty {
-    text-align: center;
-    color: #6B7280;
-    padding: 20px;
-    font-size: 14px;
-}
-
-/* ==========================================
-   COMMENT
-========================================== */
-
-.comment {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-/* ==========================================
-   AVATAR
-========================================== */
-
-.avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg,#0F4C81,#2563EB);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 18px;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-/* ==========================================
-   BODY
-========================================== */
-
-.body {
-    flex: 1;
-    background: #f9fafb;
-    border-radius: 14px;
-    padding: 16px;
-}
-
-/* ==========================================
-   HEADER
-========================================== */
-
-.header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-}
-
-.header strong {
-    color: #111827;
-    font-size: 15px;
-}
-
-.header span {
-    color: #2563EB;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* ==========================================
-   PROFESSION
-========================================== */
-
-.profession {
-    color: #6B7280;
-    font-size: 13px;
-    margin-bottom: 10px;
-}
-
-/* ==========================================
-   COMMENT TEXT
-========================================== */
-
-.body p {
-    color: #374151;
-    line-height: 1.7;
-    margin-bottom: 14px;
-    white-space: pre-wrap;
-}
-
-/* ==========================================
-   ACTIONS
-========================================== */
-
-.actions {
-    display: flex;
-    gap: 10px;
-}
-
-.actions button {
-    border: none;
-    background: transparent;
-    color: #6B7280;
-    cursor: pointer;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    transition: .25s;
-}
-
-.actions button:hover {
-    background: #EFF6FF;
-    color: #0F4C81;
-}
-
-/* ==========================================
-   REPLIES (Future)
-========================================== */
-
-.replyContainer {
-    margin-left: 60px;
-    margin-top: 15px;
-    border-left: 2px solid #E5E7EB;
-    padding-left: 18px;
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width:768px) {
-
-    .comment {
-        gap: 10px;
-    }
-
-    .avatar {
-        width: 42px;
-        height: 42px;
-        font-size: 16px;
-    }
-
-    .body {
-        padding: 14px;
-    }
-
-    .actions {
-        flex-wrap: wrap;
-    }
-
-    .inputArea button {
-        width: 100%;
-    }
-
-}
-
-@media (max-width:480px) {
-
-    .header {
-        flex-wrap: wrap;
-    }
-
-    .body {
-        padding: 12px;
-    }
-
-    .profession {
-        font-size: 12px;
-    }
-
-    .body p {
-        font-size: 14px;
-    }
-
-    /* ==========================
-   Replies
-========================== */
-
-.replyList{
-
-    margin-top:15px;
-
-    margin-left:50px;
-
-    border-left:2px solid #e5e7eb;
-
-    padding-left:18px;
-
-}
-
-.replyCard{
-
+.wrapper{
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid #e5e7eb;
+  }
+  
+  .inputArea{
     display:flex;
-
+    flex-direction:column;
     gap:12px;
-
-    margin-bottom:18px;
-
-}
-
-.replyAvatar{
-
-    width:34px;
-
-    height:34px;
-
-    border-radius:50%;
-
-    background:#2563eb;
-
-    color:#fff;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-weight:bold;
-
-}
-
-.replyBody{
-
-    flex:1;
-
-    background:#f8fafc;
-
-    padding:12px;
-
+    margin-bottom:25px;
+  }
+  
+  .inputArea textarea{
+    width:100%;
+    min-height:90px;
+    padding:15px;
+    box-sizing:border-box;
+    resize:vertical;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    font:15px inherit;
+    outline:none;
+    transition:.2s;
+  }
+  
+  .inputArea textarea:focus{
+    border-color:var(--primary-color);
+    box-shadow:0 0 0 3px rgba(59,91,122,.1);
+  }
+  
+  .inputArea button{
+    align-self:flex-end;
+    padding:10px 22px;
+    border:0;
     border-radius:10px;
-
-}
-
-.replyHeader{
-
-    display:flex;
-
-    gap:6px;
-
-    align-items:center;
-
-    margin-bottom:4px;
-
-}
-
-.replyMeta{
-
-    font-size:13px;
-
+    background:var(--primary-color);
+    color:#fff;
+    font:600 14px inherit;
+    cursor:pointer;
+    transition:.2s;
+  }
+  
+  .inputArea button:hover{
+    background:var(--primary-dark);
+  }
+  
+  .empty{
+    padding:20px;
     color:#6b7280;
-
+    text-align:center;
+    font-size:14px;
+  }
+  
+  .comment{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+  }
+  
+  .avatar,
+  .replyAvatar{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:var(--primary-color);
+    color:#fff;
+    font-weight:700;
+  }
+  
+  .avatar{
+    width:48px;
+    height:48px;
+    font-size:18px;
+  }
+  
+  .body{
+    flex:1;
+    min-width:0;
+    padding:16px;
+    background:#f9fafb;
+    border-radius:14px;
+  }
+  
+  .header,
+  .replyHeader{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  
+  .header strong,
+  .replyHeader strong{
+    color:#111827;
+    font-weight:700;
+  }
+  
+  .header strong{font-size:15px}
+  .replyHeader strong{font-size:13px}
+  
+  .header span{
+    color:var(--primary-color);
+    font-size:14px;
+    font-weight:700;
+  }
+  
+  .profession{
+    margin-bottom:10px;
+    color:#6b7280;
+    font-size:13px;
+  }
+  
+  .body p{
+    margin:0 0 14px;
+    color:#374151;
+    line-height:1.7;
+    white-space:pre-wrap;
+  }
+  
+  .actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  
+  .actions button{
+    padding:6px 12px;
+    border:0;
+    border-radius:8px;
+    background:transparent;
+    color:#6b7280;
+    font:13px inherit;
+    cursor:pointer;
+    transition:.2s;
+  }
+  
+  .actions button:hover{
+    background:#edf3f7;
+    color:var(--primary-color);
+  }
+  
+  .replyContainer,
+  .replyList{
+    margin:15px 0 0 50px;
+    padding-left:18px;
+    border-left:2px solid #e5e7eb;
+  }
+  
+  .replyList{
+    margin-bottom:0;
+  }
+  
+  .replyCard{
+    display:flex;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  
+  .replyAvatar{
+    width:34px;
+    height:34px;
+    font-size:12px;
+  }
+  
+  .replyBody{
+    flex:1;
+    min-width:0;
+    padding:12px;
+    background:#f8fafc;
+    border-radius:10px;
+  }
+  
+  .replyMeta{
     margin-bottom:8px;
-
-}
-
-.replyContent{
-
+    color:#6b7280;
+    font-size:12px;
+  }
+  
+  .replyContent{
     margin:0;
-
+    color:#374151;
+    font-size:13px;
     line-height:1.5;
-
-}
-
-}
+  }
+  
+  @media(max-width:768px){
+    .comment{gap:10px}
+    .avatar{width:42px;height:42px;font-size:16px}
+    .body{padding:14px}
+    .inputArea button{width:100%}
+  }
+  
+  @media(max-width:480px){
+    .body{padding:12px}
+    .profession{font-size:12px}
+    .body p{font-size:14px}
+    .replyContainer,
+    .replyList{
+      margin-left:30px;
+      padding-left:12px;
+    }
+  }

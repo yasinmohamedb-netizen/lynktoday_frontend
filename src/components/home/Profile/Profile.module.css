@@ -1,18 +1,18 @@
-/* =========================================================
-   COMMON
-========================================================= */
+/* ==========================================
+   CARD
+========================================== */
 
 .card {
     width: 100%;
     box-sizing: border-box;
 
+    padding: 24px;
+    margin-bottom: 20px;
+
     background: #ffffff;
 
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-
-    padding: 24px;
-    margin-bottom: 20px;
 }
 
 .card h3 {
@@ -22,7 +22,6 @@
 
     font-size: 20px;
     font-weight: 600;
-    line-height: 1.4;
 }
 
 .empty {
@@ -36,11 +35,11 @@
 
 .loading,
 .error {
+    min-height: 120px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-
-    min-height: 120px;
 
     padding: 30px;
 
@@ -56,13 +55,12 @@
 }
 
 
-/* =========================================================
-   PROFILE HEADER
-========================================================= */
+/* ==========================================
+   PROFILE
+========================================== */
 
 .headerCard {
     width: 100%;
-    box-sizing: border-box;
 
     display: flex;
     align-items: center;
@@ -71,6 +69,8 @@
 
     padding: 30px;
     margin-bottom: 20px;
+
+    box-sizing: border-box;
 
     background: #ffffff;
 
@@ -82,21 +82,22 @@
 }
 
 
-/* =========================================================
-   PROFILE AVATAR
-========================================================= */
+/* ==========================================
+   AVATAR
+========================================== */
 
-.avatarSection {
-    flex-shrink: 0;
-}
-
-.avatar {
+.avatar,
+.avatarPlaceholder {
     width: 130px;
     height: 130px;
 
-    display: block;
+    flex-shrink: 0;
 
     border-radius: 50%;
+}
+
+.avatar {
+    display: block;
 
     object-fit: cover;
 
@@ -106,29 +107,24 @@
 }
 
 .avatarPlaceholder {
-    width: 130px;
-    height: 130px;
-
     display: flex;
+
     align-items: center;
     justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
 
     background: #2563eb;
 
     color: #ffffff;
 
     font-size: 52px;
+
     font-weight: 700;
 }
 
 
-/* =========================================================
-   PROFILE INFORMATION
-========================================================= */
+/* ==========================================
+   PROFILE INFO
+========================================== */
 
 .profileInfo {
     min-width: 0;
@@ -138,7 +134,9 @@
 
 .profileInfo h1 {
     display: flex;
+
     align-items: center;
+
     flex-wrap: wrap;
 
     gap: 8px;
@@ -148,20 +146,18 @@
     color: #111827;
 
     font-size: 34px;
-    font-weight: 700;
 
-    line-height: 1.25;
+    font-weight: 700;
 }
 
 .profileInfo h2 {
     margin: 8px 0 0;
 
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 20px;
-    font-weight: 500;
 
-    line-height: 1.4;
+    font-weight: 500;
 }
 
 .profileInfo p {
@@ -175,12 +171,13 @@
 }
 
 
-/* =========================================================
+/* ==========================================
    VERIFIED
-========================================================= */
+========================================== */
 
 .verified {
     display: inline-flex;
+
     align-items: center;
 
     margin-left: 4px;
@@ -188,19 +185,18 @@
     color: #16a34a;
 
     font-size: 13px;
-    font-weight: 600;
 
-    white-space: nowrap;
+    font-weight: 600;
 }
 
 
-/* =========================================================
-   PROFILE STATS
-========================================================= */
+/* ==========================================
+   STATS
+========================================== */
 
 .stats {
     display: flex;
-    align-items: center;
+
     flex-wrap: wrap;
 
     gap: 24px;
@@ -208,86 +204,55 @@
     margin-top: 18px;
 }
 
-.stats span {
+.stats span,
+.statItem {
     color: #374151;
 
     font-size: 14px;
+
     font-weight: 600;
 }
 
-
-/* =========================================================
-   CLICKABLE STAT BUTTON
-========================================================= */
-
 .statButton {
     display: inline-flex;
+
     align-items: center;
 
     gap: 4px;
 
-    margin: 0;
     padding: 0;
 
-    border: none;
+    border: 0;
 
-    background: transparent;
+    background: none;
 
     color: #374151;
 
     font: inherit;
 
     cursor: pointer;
-
-    transition:
-        color 0.2s ease,
-        opacity 0.2s ease;
-}
-
-.statButton strong {
-    font-weight: 700;
 }
 
 .statButton:hover {
-    color: #2563eb;
+    color: #3b5b7a;
 }
 
-.statButton:focus-visible {
-    outline: 2px solid #93c5fd;
-    outline-offset: 3px;
-}
-
-
-/* =========================================================
-   NORMAL STAT
-========================================================= */
-
-.statItem {
-    display: inline-flex;
-    align-items: center;
-
-    gap: 4px;
-
-    color: #374151;
-
-    font-size: 14px;
-    font-weight: 600;
-}
-
+.statButton strong,
 .statItem strong {
     font-weight: 700;
 }
 
 
-/* =========================================================
-   PROFILE ACTIONS
-========================================================= */
+/* ==========================================
+   ACTIONS
+========================================== */
 
 .actions {
     display: flex;
-    align-items: center;
 
     flex-wrap: wrap;
+
+    align-items: center;
 
     gap: 10px;
 
@@ -295,86 +260,54 @@
 }
 
 
-/* =========================================================
-   EDIT PROFILE BUTTON
-========================================================= */
+/* ==========================================
+   BUTTONS
+========================================== */
 
-.editButton {
-    min-height: 42px;
-
-    padding: 10px 20px;
-
-    border: none;
-    border-radius: 8px;
-
-    background: #2563eb;
-
-    color: #ffffff;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.editButton:hover {
-    background: #1d4ed8;
-
-    transform: translateY(-1px);
-}
-
-.editButton:active {
-    transform: translateY(0);
-}
-
-.editButton:focus-visible {
-    outline: 3px solid rgba(37, 99, 235, 0.2);
-    outline-offset: 2px;
-}
-
-
-/* =========================================================
-   FOLLOW BUTTON
-========================================================= */
-
-.followButton {
+.editButton,
+.followButton,
+.saveButton {
     min-height: 40px;
 
     padding: 9px 20px;
 
-    border: none;
-    border-radius: 8px;
+    border: 0;
 
-    background: #0057ff;
+    border-radius: 8px;
 
     color: #ffffff;
 
     font-size: 14px;
+
     font-weight: 600;
 
     cursor: pointer;
 
     transition:
-        background-color 0.2s ease,
+        background 0.2s ease,
         transform 0.2s ease,
         opacity 0.2s ease;
 }
 
-.followButton:hover {
-    background: #0047d1;
+.editButton,
+.saveButton {
+    background: #3b5b7a;
+}
+
+.followButton {
+    background: #3b5b7a;
+}
+
+.editButton:hover,
+.followButton:hover,
+.saveButton:hover {
+    background: #304c66;
 
     transform: translateY(-1px);
 }
 
-.followButton:active {
-    transform: translateY(0);
-}
-
-.followButton:disabled {
+.followButton:disabled,
+.saveButton:disabled {
     opacity: 0.65;
 
     cursor: not-allowed;
@@ -382,22 +315,13 @@
     transform: none;
 }
 
-.followButton:focus-visible {
-    outline: 3px solid rgba(37, 99, 235, 0.2);
-    outline-offset: 2px;
-}
-
-
-/* =========================================================
-   FOLLOWING / CONNECTED BUTTON
-========================================================= */
-
 .followingButton {
     min-height: 40px;
 
     padding: 9px 20px;
 
     border: 1px solid #d1d5db;
+
     border-radius: 8px;
 
     background: #f3f4f6;
@@ -405,26 +329,16 @@
     color: #111827;
 
     font-size: 14px;
+
     font-weight: 600;
 
-    cursor: default;
-
-    transition:
-        background-color 0.2s ease;
-}
-
-.followingButton:hover {
-    background: #e5e7eb;
-}
-
-.followingButton:disabled {
-    opacity: 1;
+    cursor: pointer;
 }
 
 
-/* =========================================================
+/* ==========================================
    ABOUT
-========================================================= */
+========================================== */
 
 .infoRow {
     margin-bottom: 18px;
@@ -442,6 +356,7 @@
     color: #6b7280;
 
     font-size: 13px;
+
     font-weight: 600;
 }
 
@@ -456,7 +371,7 @@
 }
 
 .link {
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 15px;
 
@@ -470,12 +385,13 @@
 }
 
 
-/* =========================================================
-   SKILLS / LANGUAGES
-========================================================= */
+/* ==========================================
+   TAGS
+========================================== */
 
 .tagContainer {
     display: flex;
+
     flex-wrap: wrap;
 
     gap: 10px;
@@ -484,6 +400,7 @@
 .tag,
 .tagSecondary {
     display: inline-flex;
+
     align-items: center;
 
     min-height: 32px;
@@ -493,13 +410,14 @@
     border-radius: 999px;
 
     font-size: 14px;
+
     font-weight: 500;
 }
 
 .tag {
-    background: #dbeafe;
+    background: #eef3f7;
 
-    color: #1d4ed8;
+    color: #3b5b7a;
 }
 
 .tagSecondary {
@@ -513,13 +431,15 @@
 }
 
 
-/* =========================================================
-   POSTS SECTION
-========================================================= */
+/* ==========================================
+   POSTS
+========================================== */
 
 .sectionHeader {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 20px;
@@ -533,6 +453,7 @@
     color: #111827;
 
     font-size: 20px;
+
     font-weight: 700;
 }
 
@@ -542,8 +463,6 @@
     color: #6b7280;
 
     font-size: 14px;
-
-    line-height: 1.5;
 }
 
 .postCount {
@@ -551,34 +470,38 @@
 
     padding: 7px 12px;
 
-    border: 1px solid #dbeafe;
+    border: 1px solid #dbe3ea;
+
     border-radius: 999px;
 
-    background: #eff6ff;
+    background: #f3f6f8;
 
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 13px;
+
     font-weight: 600;
 }
 
 .postsList {
     display: flex;
+
     flex-direction: column;
 
     gap: 18px;
 }
 
 
-/* =========================================================
-   POSTS EMPTY STATE
-========================================================= */
+/* ==========================================
+   EMPTY POSTS
+========================================== */
 
 .emptyIcon {
     width: 52px;
     height: 52px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -586,12 +509,11 @@
 
     border-radius: 14px;
 
-    background: #eff6ff;
+    background: #eef3f7;
 
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 26px;
-    font-weight: 400;
 }
 
 .empty h4 {
@@ -600,7 +522,6 @@
     color: #111827;
 
     font-size: 17px;
-    font-weight: 700;
 }
 
 .empty p {
@@ -614,9 +535,9 @@
 }
 
 
-/* =========================================================
+/* ==========================================
    TIMELINE
-========================================================= */
+========================================== */
 
 .timeline {
     margin-top: 12px;
@@ -634,6 +555,7 @@
     width: 24px;
 
     display: flex;
+
     justify-content: center;
 
     flex-shrink: 0;
@@ -647,7 +569,7 @@
 
     border-radius: 50%;
 
-    background: #2563eb;
+    background: #3b5b7a;
 }
 
 .timelineContent {
@@ -662,16 +584,14 @@
     color: #111827;
 
     font-size: 18px;
-    font-weight: 700;
 }
 
 .timelineContent h5 {
     margin: 6px 0;
 
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 16px;
-    font-weight: 600;
 }
 
 .meta {
@@ -691,11 +611,12 @@
 }
 
 
-/* =========================================================
-   EDIT PROFILE MODAL
-========================================================= */
+/* ==========================================
+   MODALS
+========================================== */
 
-.modalOverlay {
+.modalOverlay,
+.followListOverlay {
     position: fixed;
 
     inset: 0;
@@ -703,25 +624,27 @@
     z-index: 9999;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     padding: 20px;
 
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .modal {
     width: 850px;
+
     max-width: 95%;
 
     max-height: 90vh;
 
     overflow-y: auto;
 
-    box-sizing: border-box;
-
     padding: 28px;
+
+    box-sizing: border-box;
 
     background: #ffffff;
 
@@ -731,9 +654,12 @@
         0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
-.modalHeader {
+.modalHeader,
+.followListHeader {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 20px;
@@ -742,25 +668,28 @@
 }
 
 .modalHeader h2,
-.modalHeader h3 {
+.modalHeader h3,
+.followListHeader h2,
+.followListHeader h3 {
     margin: 0;
 
     color: #111827;
 }
 
-.closeButton {
+.closeButton,
+.followListHeader button {
     width: 34px;
     height: 34px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    flex-shrink: 0;
-
     padding: 0;
 
-    border: none;
+    border: 0;
+
     border-radius: 50%;
 
     background: #f3f4f6;
@@ -769,28 +698,22 @@
 
     font-size: 24px;
 
-    line-height: 1;
-
     cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
 }
 
-.closeButton:hover {
+.closeButton:hover,
+.followListHeader button:hover {
     background: #e5e7eb;
-
-    transform: scale(1.05);
 }
 
 
-/* =========================================================
-   PROFILE FORM
-========================================================= */
+/* ==========================================
+   FORM
+========================================== */
 
 .form {
     display: flex;
+
     flex-direction: column;
 
     gap: 18px;
@@ -799,13 +722,15 @@
 .formGrid {
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 18px;
 }
 
 .formGroup {
     display: flex;
+
     flex-direction: column;
 
     min-width: 0;
@@ -817,6 +742,7 @@
     color: #374151;
 
     font-size: 14px;
+
     font-weight: 600;
 }
 
@@ -830,30 +756,25 @@
     padding: 12px;
 
     border: 1px solid #d1d5db;
+
     border-radius: 8px;
 
     background: #ffffff;
 
     color: #111827;
 
-    font-family: inherit;
-
-    font-size: 15px;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    font: 15px inherit;
 }
 
 .formGroup input:focus,
 .formGroup textarea:focus,
 .formGroup select:focus {
-    outline: none;
+    outline: 0;
 
-    border-color: #2563eb;
+    border-color: #3b5b7a;
 
     box-shadow:
-        0 0 0 3px rgba(37, 99, 235, 0.1);
+        0 0 0 3px rgba(59, 91, 122, 0.12);
 }
 
 .formGroup textarea {
@@ -868,28 +789,21 @@
     color: #6b7280;
 
     font-size: 13px;
-
-    line-height: 1.5;
 }
 
 .selectedFile {
     margin-top: 8px;
 
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 14px;
 
     word-break: break-word;
 }
 
-
-/* =========================================================
-   MODAL FOOTER
-========================================================= */
-
 .modalFooter {
     display: flex;
-    align-items: center;
+
     justify-content: flex-end;
 
     gap: 12px;
@@ -903,6 +817,7 @@
     padding: 10px 20px;
 
     border: 1px solid #d1d5db;
+
     border-radius: 8px;
 
     background: #ffffff;
@@ -910,89 +825,30 @@
     color: #374151;
 
     font-size: 14px;
+
     font-weight: 600;
 
     cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.cancelButton:hover {
-    background: #f9fafb;
-
-    border-color: #9ca3af;
 }
 
 .saveButton {
     min-height: 42px;
-
-    padding: 10px 22px;
-
-    border: none;
-    border-radius: 8px;
-
-    background: #2563eb;
-
-    color: #ffffff;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.saveButton:hover {
-    background: #1d4ed8;
-
-    transform: translateY(-1px);
-}
-
-.saveButton:active {
-    transform: translateY(0);
-}
-
-.saveButton:disabled {
-    opacity: 0.7;
-
-    cursor: not-allowed;
-
-    transform: none;
 }
 
 
-/* =========================================================
-   FOLLOWERS / FOLLOWING MODAL
-========================================================= */
-
-.followListOverlay {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9999;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background: rgba(0, 0, 0, 0.55);
-}
+/* ==========================================
+   FOLLOW LIST
+========================================== */
 
 .followListModal {
     width: 100%;
+
     max-width: 520px;
 
     max-height: 80vh;
 
     display: flex;
+
     flex-direction: column;
 
     overflow: hidden;
@@ -1006,63 +862,11 @@
 }
 
 .followListHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
+    margin: 0;
 
     padding: 18px 20px;
 
-    background: #ffffff;
-
     border-bottom: 1px solid #e5e7eb;
-}
-
-.followListHeader h2,
-.followListHeader h3 {
-    margin: 0;
-
-    color: #111827;
-
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.followListHeader button {
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    padding: 0;
-
-    border: none;
-    border-radius: 50%;
-
-    background: #f3f4f6;
-
-    color: #374151;
-
-    font-size: 24px;
-
-    line-height: 1;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.followListHeader button:hover {
-    background: #e5e7eb;
-
-    transform: scale(1.05);
 }
 
 .followListContent,
@@ -1074,14 +878,10 @@
     padding: 8px 0;
 }
 
-
-/* =========================================================
-   FOLLOW LIST USERS
-========================================================= */
-
 .followUsers,
 .followUserList {
     display: flex;
+
     flex-direction: column;
 }
 
@@ -1089,7 +889,9 @@
 .followListItem,
 .followUserItem {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 15px;
@@ -1097,13 +899,6 @@
     padding: 14px 20px;
 
     border-bottom: 1px solid #f0f0f0;
-
-    transition:
-        background-color 0.15s ease;
-}
-
-.followUser {
-    cursor: pointer;
 }
 
 .followUser:hover,
@@ -1112,17 +907,6 @@
     background: #f8fafc;
 }
 
-.followUser:last-child,
-.followListItem:last-child,
-.followUserItem:last-child {
-    border-bottom: none;
-}
-
-
-/* =========================================================
-   FOLLOW USER INFORMATION
-========================================================= */
-
 .followUserInfo,
 .followListUser {
     min-width: 0;
@@ -1130,19 +914,17 @@
     flex: 1;
 
     display: flex;
+
     align-items: center;
 
     gap: 12px;
-}
-
-.followListUser {
-    cursor: pointer;
 }
 
 .followUserDetails {
     min-width: 0;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 3px;
@@ -1150,6 +932,7 @@
 
 .followUserName {
     display: flex;
+
     align-items: center;
 
     gap: 6px;
@@ -1157,56 +940,36 @@
     color: #111827;
 
     font-size: 15px;
+
     font-weight: 700;
 }
 
 .followUserInfo strong,
 .followListUser strong {
-    display: block;
-
-    min-width: 0;
+    overflow: hidden;
 
     color: #111827;
 
     font-size: 15px;
-    font-weight: 600;
-
-    white-space: nowrap;
-
-    overflow: hidden;
 
     text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 .followUserProfession,
 .followUserDetails span {
-    margin-top: 3px;
-
     color: #4b5563;
 
     font-size: 13px;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
 }
 
 .followUserCompany,
 .followUserLocation,
 .followUserDetails small {
-    margin-top: 2px;
-
     color: #6b7280;
 
     font-size: 12px;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
 }
 
 .followListUser p {
@@ -1214,21 +977,21 @@
 
     margin: 4px 0 0;
 
+    overflow: hidden;
+
     color: #6b7280;
 
     font-size: 13px;
 
-    white-space: nowrap;
-
-    overflow: hidden;
-
     text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 
-/* =========================================================
-   FOLLOW USER AVATAR
-========================================================= */
+/* ==========================================
+   FOLLOW USER AVATARS
+========================================== */
 
 .followUserAvatar,
 .followUserAvatarPlaceholder,
@@ -1256,6 +1019,7 @@
 .followUserAvatarPlaceholder,
 .followListAvatarPlaceholder {
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1264,61 +1028,31 @@
     color: #374151;
 
     font-size: 18px;
+
     font-weight: 700;
 }
-
-
-/* =========================================================
-   FOLLOW VERIFIED
-========================================================= */
 
 .followVerified {
-    display: inline-flex;
-    align-items: center;
-
-    margin-left: 4px;
-
-    color: #2563eb;
+    color: #3b5b7a;
 
     font-size: 13px;
+
     font-weight: 700;
 }
 
 
-/* =========================================================
+/* ==========================================
    FOLLOW LIST STATES
-========================================================= */
+========================================== */
 
-.followListMessage {
-    padding: 40px 20px;
-
-    text-align: center;
-
-    color: #6b7280;
-
-    font-size: 14px;
-}
-
+.followListMessage,
 .followListLoading,
-.followLoading {
-    min-height: 180px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 30px 20px;
-
-    color: #6b7280;
-
-    font-size: 14px;
-}
-
 .followListEmpty,
-.followEmpty {
+.followListError {
     min-height: 180px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1331,24 +1065,12 @@
     font-size: 14px;
 }
 
-.followListError,
-.followError {
-    min-height: 180px;
-
-    display: flex;
+.followListError {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
     gap: 12px;
 
-    padding: 30px 20px;
-
-    text-align: center;
-
     color: #dc2626;
-
-    font-size: 14px;
 }
 
 .followError button,
@@ -1357,7 +1079,8 @@
 
     padding: 8px 16px;
 
-    border: none;
+    border: 0;
+
     border-radius: 7px;
 
     background: #111827;
@@ -1365,22 +1088,19 @@
     color: #ffffff;
 
     font-size: 13px;
+
     font-weight: 600;
 
     cursor: pointer;
 }
 
-.followError button:hover,
-.followListError button:hover {
-    background: #1f2937;
-}
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
+/* ==========================================
+   TABLET
+========================================== */
 
 @media (max-width: 768px) {
+
     .headerCard {
         flex-direction: column;
 
@@ -1422,32 +1142,23 @@
     }
 
     .modal {
-        max-width: 95%;
-
         padding: 22px;
-    }
-
-    .sectionHeader {
-        align-items: flex-start;
     }
 }
 
 
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
+/* ==========================================
+   MOBILE
+========================================== */
 
 @media (max-width: 600px) {
+
     .card {
         padding: 18px;
-
-        border-radius: 12px;
     }
 
     .headerCard {
         padding: 20px 16px;
-
-        border-radius: 12px;
     }
 
     .avatar,
@@ -1487,6 +1198,8 @@
     .sectionHeader {
         flex-direction: column;
 
+        align-items: flex-start;
+
         gap: 10px;
     }
 
@@ -1494,7 +1207,8 @@
         align-self: flex-start;
     }
 
-    .modalOverlay {
+    .modalOverlay,
+    .followListOverlay {
         align-items: flex-end;
 
         padding: 10px;
@@ -1502,19 +1216,12 @@
 
     .modal {
         width: 100%;
-        max-width: 100%;
 
-        max-height: 90vh;
+        max-width: 100%;
 
         border-radius: 18px 18px 0 0;
 
         padding: 20px;
-    }
-
-    .followListOverlay {
-        align-items: flex-end;
-
-        padding: 10px;
     }
 
     .followListModal {
@@ -1549,21 +1256,18 @@
 }
 
 
-/* =========================================================
+/* ==========================================
    REDUCE MOTION
-========================================================= */
+========================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
     .editButton,
     .followButton,
-    .followingButton,
+    .saveButton,
     .statButton,
     .closeButton,
     .followListHeader button,
-    .followUser,
-    .followListItem,
-    .followUserItem,
-    .saveButton,
     .cancelButton {
         transition: none;
     }

@@ -1,140 +1,111 @@
-/* ==========================================
-   BASE BADGE
-========================================== */
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: 600;
-    font-size: 13px;
-
-    border-radius: 999px;
-
-    border: 1px solid transparent;
-
-    transition: all .25s ease;
-
-    user-select: none;
-
-    white-space: nowrap;
-}
-
-/* ==========================================
-   SIZES
-========================================== */
-
-.small {
-    padding: 4px 10px;
-    font-size: 11px;
-}
-
-.medium {
-    padding: 6px 14px;
-    font-size: 13px;
-}
-
-.large {
-    padding: 8px 18px;
-    font-size: 15px;
-}
-
-/* ==========================================
-   COLORS
-========================================== */
-
-.primary {
-    background: #EFF6FF;
-    color: #0F4C81;
-    border-color: #BFDBFE;
-}
-
-.secondary {
-    background: #F3F4F6;
-    color: #374151;
-    border-color: #D1D5DB;
-}
-
-.success {
-    background: #ECFDF5;
-    color: #047857;
-    border-color: #A7F3D0;
-}
-
-.warning {
-    background: #FEF3C7;
-    color: #92400E;
-    border-color: #FCD34D;
-}
-
-.danger {
-    background: #FEE2E2;
-    color: #B91C1C;
-    border-color: #FCA5A5;
-}
-
-.info {
-    background: #E0F2FE;
-    color: #0369A1;
-    border-color: #7DD3FC;
-}
-
-.dark {
-    background: #1F2937;
-    color: #FFFFFF;
-    border-color: #374151;
-}
-
-/* ==========================================
-   SHAPES
-========================================== */
-
-.rounded {
-    border-radius: 999px;
-}
-
-.square {
-    border-radius: 8px;
-}
-
-/* ==========================================
-   HOVER
-========================================== */
-
-.badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,.08);
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width:768px) {
-
-    .medium {
-        padding: 5px 12px;
-        font-size: 12px;
+.badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid transparent;
+    border-radius:999px;
+    font-weight:600;
+    white-space:nowrap;
+    user-select:none;
+    transition:.2s;
+  }
+  
+  .small{
+    padding:4px 10px;
+    font-size:11px;
+  }
+  
+  .medium{
+    padding:6px 14px;
+    font-size:13px;
+  }
+  
+  .large{
+    padding:8px 18px;
+    font-size:15px;
+  }
+  
+  .primary{
+    background:#edf3f7;
+    color:var(--primary-color);
+    border-color:#cbdbe7;
+  }
+  
+  .secondary{
+    background:#f3f4f6;
+    color:#374151;
+    border-color:#d1d5db;
+  }
+  
+  .success{
+    background:#ecfdf5;
+    color:#047857;
+    border-color:#a7f3d0;
+  }
+  
+  .warning{
+    background:#fef3c7;
+    color:#92400e;
+    border-color:#fcd34d;
+  }
+  
+  .danger{
+    background:#fee2e2;
+    color:#b91c1c;
+    border-color:#fca5a5;
+  }
+  
+  .info{
+    background:#edf3f7;
+    color:var(--primary-color);
+    border-color:#cbdbe7;
+  }
+  
+  .dark{
+    background:#1f2937;
+    color:#fff;
+    border-color:#374151;
+  }
+  
+  .rounded{
+    border-radius:999px;
+  }
+  
+  .square{
+    border-radius:8px;
+  }
+  
+  .badge:hover{
+    transform:translateY(-1px);
+    box-shadow:0 3px 8px rgba(0,0,0,.07);
+  }
+  
+  @media(max-width:768px){
+    .medium{
+      padding:5px 12px;
+      font-size:12px;
     }
-
-    .large {
-        padding: 7px 16px;
-        font-size: 14px;
+  
+    .large{
+      padding:7px 16px;
+      font-size:14px;
     }
-
-}
-
-@media (max-width:480px) {
-
-    .small {
-        font-size: 10px;
-        padding: 4px 8px;
+  }
+  
+  @media(max-width:480px){
+    .small{
+      padding:4px 8px;
+      font-size:10px;
     }
-
-    .medium {
-        font-size: 11px;
-        padding: 5px 10px;
+  
+    .medium{
+      padding:5px 10px;
+      font-size:11px;
     }
-
-}
+  }
+  
+  @media(prefers-reduced-motion:reduce){
+    .badge{
+      transition:none;
+    }
+  }

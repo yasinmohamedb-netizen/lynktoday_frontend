@@ -1,145 +1,100 @@
 .item {
     width: 100%;
-
     display: flex;
-
     gap: 12px;
-
     padding: 14px 16px;
-
     border: 0;
     border-bottom: 1px solid #f0f0f0;
-
-    background: #ffffff;
-
+    background: #fff;
     text-align: left;
-
     cursor: pointer;
-
-    transition: background 0.15s ease;
-}
-
-.item:hover {
+    transition: background .15s;
+  }
+  
+  .item:hover {
     background: #f9fafb;
-}
-
-.selected {
+  }
+  
+  .selected {
     background: #eff6ff !important;
-}
-
-.avatar {
+  }
+  
+  .avatar {
     width: 46px;
     height: 46px;
-
     flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    display: grid;
+    place-items: center;
     overflow: hidden;
-
     border-radius: 50%;
-
     background: #e5e7eb;
-
     color: #374151;
-
     font-weight: 700;
-}
-
-.avatar img {
+  }
+  
+  .avatar img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-}
-
-.content {
+  }
+  
+  .content {
     flex: 1;
-
     min-width: 0;
-}
-
-.top {
+  }
+  
+  .top,
+  .bottom {
     display: flex;
-
     align-items: center;
+    gap: 8px;
+  }
+  
+  .top {
     justify-content: space-between;
-
-    gap: 8px;
-}
-
-.top strong {
+  }
+  
+  .top strong {
     flex: 1;
-
     min-width: 0;
-
     overflow: hidden;
-
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
     color: #111827;
-
     font-size: 14px;
-}
-
-.top time {
-    flex-shrink: 0;
-
-    font-size: 11px;
-
-    color: #9ca3af;
-}
-
-.bottom {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    margin-top: 5px;
-}
-
-.bottom p {
-    flex: 1;
-
-    min-width: 0;
-
-    margin: 0;
-
-    overflow: hidden;
-
     text-overflow: ellipsis;
-
     white-space: nowrap;
-
-    font-size: 13px;
-
+  }
+  
+  .top time {
+    flex-shrink: 0;
+    color: #9ca3af;
+    font-size: 11px;
+  }
+  
+  .bottom {
+    margin-top: 5px;
+  }
+  
+  .bottom p {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
     color: #6b7280;
-}
-
-.badge {
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .badge {
     min-width: 20px;
     height: 20px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    display: grid;
+    place-items: center;
     flex-shrink: 0;
-
     padding: 0 5px;
-
     border-radius: 10px;
-
     background: #2563eb;
-
-    color: #ffffff;
-
+    color: #fff;
     font-size: 11px;
-
     font-weight: 700;
-}
+  }

@@ -4,14 +4,16 @@
 
 .card {
     width: 100%;
+
     box-sizing: border-box;
+
+    padding: 20px;
 
     background: #ffffff;
 
     border: 1px solid #e5e7eb;
-    border-radius: 16px;
 
-    padding: 20px;
+    border-radius: 16px;
 
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.04);
@@ -41,18 +43,24 @@
     color: #111827;
 
     font-size: 18px;
+
     font-weight: 700;
 
     line-height: 1.4;
 }
 
 
+/* ======================================================
+   VIEW ALL
+====================================================== */
+
 .viewAll {
     flex-shrink: 0;
 
-    color: #0f4c81;
+    color: #4B5563;
 
     font-size: 14px;
+
     font-weight: 600;
 
     text-decoration: none;
@@ -60,14 +68,23 @@
     white-space: nowrap;
 
     transition:
-        color 0.2s ease;
+        color 0.15s ease;
 }
 
 
 .viewAll:hover {
-    color: #2563eb;
+    color: #374151;
 
     text-decoration: underline;
+}
+
+
+.viewAll:focus-visible {
+    outline: 2px solid #9CA3AF;
+
+    outline-offset: 3px;
+
+    border-radius: 3px;
 }
 
 
@@ -102,8 +119,8 @@
     border-radius: 12px;
 
     transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+        background-color 0.15s ease,
+        transform 0.15s ease;
 }
 
 
@@ -126,7 +143,7 @@
 
 
 /* ======================================================
-   TOPIC LINK
+   TOPIC
 ====================================================== */
 
 .topic {
@@ -136,9 +153,10 @@
 
     overflow: hidden;
 
-    color: #0f4c81;
+    color: #4B5563;
 
     font-size: 15px;
+
     font-weight: 700;
 
     line-height: 1.4;
@@ -150,14 +168,23 @@
     white-space: nowrap;
 
     transition:
-        color 0.2s ease;
+        color 0.15s ease;
 }
 
 
 .topic:hover {
-    color: #2563eb;
+    color: #374151;
 
     text-decoration: underline;
+}
+
+
+.topic:focus-visible {
+    outline: 2px solid #9CA3AF;
+
+    outline-offset: 2px;
+
+    border-radius: 3px;
 }
 
 
@@ -171,7 +198,6 @@
     color: #6b7280;
 
     font-size: 13px;
-    font-weight: 400;
 
     line-height: 1.4;
 }
@@ -183,35 +209,42 @@
 
 .rank {
     width: 38px;
+
     height: 38px;
 
     min-width: 38px;
 
-    display: flex;
+    display: grid;
 
-    align-items: center;
-    justify-content: center;
+    place-items: center;
 
     flex-shrink: 0;
 
     border-radius: 50%;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0f4c81,
-            #2563eb
-        );
+    background: #4B5563;
 
     color: #ffffff;
 
     font-size: 13px;
+
     font-weight: 700;
 
     line-height: 1;
 
     box-shadow:
-        0 3px 8px rgba(15, 76, 129, 0.12);
+        0 3px 8px rgba(75, 85, 99, 0.15);
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.item:hover .rank {
+    background: #374151;
+
+    transform: scale(1.05);
 }
 
 
@@ -233,7 +266,7 @@
 
 
 /* ======================================================
-   EMPTY STATE
+   EMPTY
 ====================================================== */
 
 .empty {
@@ -251,19 +284,6 @@
 
 /* ======================================================
    TABLET
-====================================================== */
-
-@media (max-width: 992px) {
-
-    .card {
-        margin-top: 20px;
-    }
-
-}
-
-
-/* ======================================================
-   MOBILE
 ====================================================== */
 
 @media (max-width: 768px) {
@@ -307,6 +327,7 @@
 
     .rank {
         width: 34px;
+
         height: 34px;
 
         min-width: 34px;
@@ -318,13 +339,15 @@
 
 
 /* ======================================================
-   SMALL MOBILE
+   MOBILE
 ====================================================== */
 
 @media (max-width: 480px) {
 
     .card {
         padding: 16px;
+
+        border-radius: 14px;
     }
 
 
@@ -355,6 +378,7 @@
 
     .rank {
         width: 32px;
+
         height: 32px;
 
         min-width: 32px;
@@ -401,8 +425,14 @@
     }
 
 
+    .topicContent span {
+        font-size: 11px;
+    }
+
+
     .rank {
         width: 30px;
+
         height: 30px;
 
         min-width: 30px;
@@ -421,7 +451,8 @@
 
     .item,
     .viewAll,
-    .topic {
+    .topic,
+    .rank {
         transition: none;
     }
 

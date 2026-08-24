@@ -1,31 +1,19 @@
-/* =========================================================
-   PAGE
-========================================================= */
-
 .container {
     min-height: 100vh;
     padding: 34px 24px 70px;
-
     background:
         radial-gradient(
             circle at top left,
-            rgba(18, 103, 165, 0.055),
+            rgba(59, 91, 122, 0.055),
             transparent 32%
         ),
         #f5f8fb;
-
     color: #172033;
 }
-
-
-/* =========================================================
-   TOP HEADER
-========================================================= */
 
 .header {
     width: 100%;
     max-width: 1080px;
-
     margin: 0 auto 20px;
 }
 
@@ -33,23 +21,15 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-
     min-height: 40px;
-
     padding: 0 14px;
-
     background: #ffffff;
-
     border: 1px solid #dce4ec;
     border-radius: 9px;
-
-    color: #176aa5;
-
+    color: #3B5B7A;
     text-decoration: none;
-
     font-size: 13px;
     font-weight: 650;
-
     transition:
         background 0.18s ease,
         border-color 0.18s ease,
@@ -57,72 +37,47 @@
 }
 
 .backButton:hover {
-    background: #f5faff;
-    border-color: #bcd4e7;
-
+    background: #f5f8fb;
+    border-color: #9AAFC1;
+    color: #2F4A63;
     transform: translateX(-2px);
 }
-
-
-/* =========================================================
-   MAIN CARD
-========================================================= */
 
 .card {
     width: 100%;
     max-width: 1080px;
-
     margin: 0 auto;
-
     overflow: hidden;
-
     background: #ffffff;
-
     border: 1px solid #dfe6ee;
     border-radius: 18px;
-
-    box-shadow:
-        0 12px 35px rgba(16, 35, 55, 0.055);
+    box-shadow: 0 12px 35px rgba(16, 35, 55, 0.055);
 }
-
-
-/* =========================================================
-   HERO
-========================================================= */
 
 .hero {
     position: relative;
-
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-
     gap: 30px;
-
     padding: 36px 38px;
-
     background:
         linear-gradient(
             135deg,
             #fafdff 0%,
-            #f2f8fd 100%
+            #f2f6f9 100%
         );
-
     border-bottom: 1px solid #e4eaf0;
 }
 
 .hero::after {
     content: '';
-
     position: absolute;
-
     left: 0;
     bottom: 0;
-
     width: 110px;
     height: 3px;
-
-    background: #1674b9;
+    background: #3B5B7A;
 }
 
 .hero > div {
@@ -132,79 +87,55 @@
 .label {
     display: inline-flex;
     align-items: center;
-
     margin-bottom: 8px;
-
-    color: #1674b9;
-
+    color: #3B5B7A;
     font-size: 11px;
     font-weight: 800;
-
     letter-spacing: 1.4px;
     text-transform: uppercase;
 }
 
 .hero h1 {
     margin: 0 0 10px;
-
     color: #101828;
-
     font-size: clamp(34px, 5vw, 46px);
     line-height: 1.05;
-
     font-weight: 800;
-
     letter-spacing: -1px;
 }
 
 .description {
     max-width: 760px;
-
     margin: 0;
-
     color: #536276;
-
     font-size: 16px;
     line-height: 1.65;
 }
-
-
-/* =========================================================
-   STATUS
-========================================================= */
 
 .active,
 .inactive {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-
     flex-shrink: 0;
-
     padding: 7px 12px;
-
     border-radius: 999px;
-
     font-size: 12px;
     font-weight: 700;
-
     white-space: nowrap;
 }
 
 .active::before,
 .inactive::before {
     content: '';
-
     width: 7px;
     height: 7px;
-
     border-radius: 50%;
 }
 
 .active {
     background: #eaf8f0;
     color: #16794b;
-
     border: 1px solid #c7ead6;
 }
 
@@ -215,7 +146,6 @@
 .inactive {
     background: #fff2f2;
     color: #c53030;
-
     border: 1px solid #f2cccc;
 }
 
@@ -223,14 +153,8 @@
     background: #d64545;
 }
 
-
-/* =========================================================
-   SECTION
-========================================================= */
-
 .section {
     padding: 30px 38px;
-
     border-bottom: 1px solid #e8edf2;
 }
 
@@ -242,55 +166,34 @@
     display: flex;
     align-items: center;
     gap: 10px;
-
     margin: 0 0 20px;
-
     color: #172033;
-
     font-size: 19px;
     line-height: 1.3;
-
     font-weight: 750;
-
     letter-spacing: -0.2px;
 }
 
 .section h2::before {
     content: '';
-
     width: 4px;
     height: 20px;
-
     border-radius: 4px;
-
-    background: #1674b9;
+    background: #3B5B7A;
 }
-
-
-/* =========================================================
-   INFORMATION GRID
-========================================================= */
 
 .grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
 }
 
 .info {
     min-width: 0;
-
     padding: 16px 17px;
-
     background: #f9fbfd;
-
     border: 1px solid #e5ebf1;
-
     border-radius: 11px;
-
     transition:
         border-color 0.18s ease,
         background 0.18s ease,
@@ -298,145 +201,89 @@
 }
 
 .info:hover {
-    background: #f6faff;
-
-    border-color: #cbddea;
-
+    background: #f6f9fb;
+    border-color: #b7c6d3;
     transform: translateY(-1px);
 }
 
 .infoLabel {
     display: block;
-
     margin-bottom: 7px;
-
     color: #7a8798;
-
     font-size: 11px;
-
     font-weight: 700;
-
     letter-spacing: 0.3px;
-
     text-transform: uppercase;
 }
 
 .infoValue {
     display: block;
-
     overflow-wrap: anywhere;
-
     color: #172033;
-
     font-size: 14px;
-
     line-height: 1.5;
-
     font-weight: 650;
 }
 
-
-/* =========================================================
-   KEYWORDS
-========================================================= */
-
 .tags {
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 8px;
 }
 
 .tag {
     display: inline-flex;
     align-items: center;
-
     min-height: 31px;
-
     padding: 0 11px;
-
-    background: #edf6fd;
-
-    border: 1px solid #d4e7f5;
-
+    background: #edf3f7;
+    border: 1px solid #d8e2eb;
     border-radius: 7px;
-
-    color: #176aa5;
-
+    color: #3B5B7A;
     font-size: 12px;
-
     font-weight: 650;
-
     transition:
         background 0.15s ease,
         border-color 0.15s ease;
 }
 
 .tag:hover {
-    background: #e4f2fc;
-    border-color: #bdd9ed;
+    background: #e6edf2;
+    border-color: #b7c6d3;
 }
-
-
-/* =========================================================
-   NOTES
-========================================================= */
 
 .notes {
     margin: 0;
-
     padding: 17px 18px;
-
     background: #f8fafc;
-
-    border-left: 3px solid #1674b9;
+    border-left: 3px solid #3B5B7A;
     border-radius: 0 9px 9px 0;
-
     color: #596579;
-
     font-size: 14px;
-
     line-height: 1.75;
-
     white-space: pre-wrap;
 }
-
-
-/* =========================================================
-   LOADING
-========================================================= */
 
 .loading {
     width: 100%;
     max-width: 1000px;
-
     min-height: 420px;
-
     margin: 0 auto;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: #697386;
-
     font-size: 14px;
 }
 
 .loading::before {
     content: '';
-
     width: 22px;
     height: 22px;
-
     margin-right: 11px;
-
     border: 2px solid #dce7f0;
-    border-top-color: #1674b9;
-
+    border-top-color: #3B5B7A;
     border-radius: 50%;
-
     animation: spin 0.75s linear infinite;
 }
 
@@ -446,73 +293,45 @@
     }
 }
 
-
-/* =========================================================
-   ERROR
-========================================================= */
-
 .error {
     width: 100%;
     max-width: 600px;
-
     margin: 110px auto;
-
     padding: 34px;
-
     background: #ffffff;
-
     border: 1px solid #e1e7ee;
-
     border-radius: 16px;
-
     text-align: center;
-
-    box-shadow:
-        0 10px 30px rgba(16, 35, 55, 0.05);
+    box-shadow: 0 10px 30px rgba(16, 35, 55, 0.05);
 }
 
 .error h1 {
     margin: 0 0 10px;
-
     color: #172033;
-
     font-size: 25px;
 }
 
 .error p {
     margin: 0 0 25px;
-
     color: #697386;
-
     font-size: 14px;
-
     line-height: 1.6;
 }
 
 .errorActions {
     display: flex;
-
     justify-content: center;
-
     flex-wrap: wrap;
-
     gap: 10px;
 }
 
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media (max-width: 800px) {
-
     .container {
         padding: 24px 16px 50px;
     }
 
     .hero {
         padding: 28px 25px;
-
         gap: 20px;
     }
 
@@ -533,9 +352,7 @@
     }
 }
 
-
 @media (max-width: 600px) {
-
     .container {
         padding: 18px 11px 40px;
     }
@@ -546,9 +363,7 @@
 
     .backButton {
         min-height: 38px;
-
         padding: 0 12px;
-
         font-size: 12px;
     }
 
@@ -558,7 +373,6 @@
 
     .hero {
         flex-direction: column;
-
         padding: 24px 20px;
     }
 
@@ -568,7 +382,6 @@
 
     .hero h1 {
         font-size: 30px;
-
         letter-spacing: -0.6px;
     }
 
@@ -599,7 +412,6 @@
 
     .error {
         margin: 70px auto;
-
         padding: 25px 20px;
     }
 
@@ -614,9 +426,7 @@
     }
 }
 
-
 @media (max-width: 380px) {
-
     .hero h1 {
         font-size: 27px;
     }

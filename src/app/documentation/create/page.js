@@ -6,9 +6,19 @@ import { useRouter } from 'next/navigation';
 
 import styles from './create.module.css';
 
+
+// ======================================================
+// API
+// ======================================================
+
 const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     'http://localhost:5001/api/v1';
+
+
+// ======================================================
+// CATEGORIES
+// ======================================================
 
 const categories = [
     'Customs',
@@ -23,18 +33,10 @@ const categories = [
     'General'
 ];
 
-const tagOptions = [
-    'Customs',
-    'Import',
-    'Export',
-    'DGFT',
-    'GST',
-    'FEMA',
-    'HS Code',
-    'Shipping',
-    'Logistics',
-    'General'
-];
+
+// ======================================================
+// DOCUMENT TYPES
+// ======================================================
 
 const documentTypes = [
     'GUIDE',
@@ -47,371 +49,778 @@ const documentTypes = [
     'REFERENCE'
 ];
 
+
+// ======================================================
+// PAGE
+// ======================================================
+
 export default function CreateDocumentationPage() {
+
     const router = useRouter();
 
+
+    // ==================================================
+    // FORM
+    // ==================================================
+
     const [form, setForm] = useState({
+
         title: '',
+
         description: '',
+
         documentType: 'GUIDE',
+
         category: 'Customs',
+
         content: '',
+
         hsCode: '',
-        tags: []
+
+        tags: ''
+
     });
 
-    const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+
+    // ==================================================
+    // STATE
+    // ==================================================
+
+    const [token, setToken] =
+        useState(null);
+
+
+    const [loading, setLoading] =
+        useState(false);
+
+
+    const [error, setError] =
+        useState('');
+
+
+    const [success, setSuccess] =
+        useState('');
+
+
+    // ==================================================
+    // LOAD TOKEN
+    // ==================================================
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('lynktoday_token');
-        setToken(storedToken);
+
+        const storedToken =
+            localStorage.getItem(
+                'lynktoday_token'
+            );
+
+        setToken(
+            storedToken
+        );
+
     }, []);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
 
-        setForm((previous) => ({
-            ...previous,
-            [name]: value
-        }));
+    // ==================================================
+    // HANDLE INPUT
+    // ==================================================
 
-        if (error) setError('');
-    };
+    const handleChange = (
+        event
+    ) => {
 
-    const toggleTag = (tag) => {
-        setForm((previous) => {
-            const exists = previous.tags.includes(tag);
+        const {
+            name,
+            value
+        } = event.target;
 
-            return {
+
+        setForm(
+            previous => ({
+
                 ...previous,
-                tags: exists
-                    ? previous.tags.filter(
-                          (existingTag) => existingTag !== tag
-                      )
-                    : [...previous.tags, tag]
-            };
-        });
 
-        if (error) setError('');
+                [name]: value
+
+            })
+        );
+
     };
 
-    const removeTag = (tag) => {
-        setForm((previous) => ({
-            ...previous,
-            tags: previous.tags.filter(
-                (existingTag) => existingTag !== tag
-            )
-        }));
-    };
 
-    const handleSubmit = async (event) => {
+    // ==================================================
+    // SUBMIT
+    // ==================================================
+
+    const handleSubmit = async (
+        event
+    ) => {
+
         event.preventDefault();
+
 
         setError('');
         setSuccess('');
 
+
+        // ==============================================
+        // LOGIN
+        // ==============================================
+
         if (!token) {
+
             setError(
                 'Please login before creating documentation.'
             );
+
             return;
+
         }
 
-        if (!form.title.trim()) {
+
+        // ==============================================
+        // VALIDATION
+        // ==============================================
+
+        if (
+            !form.title.trim()
+        ) {
+
             setError(
                 'Please enter a documentation title.'
             );
+
             return;
+
         }
 
-        if (!form.description.trim()) {
+
+        if (
+            !form.description.trim()
+        ) {
+
             setError(
                 'Please add a short description.'
             );
+
             return;
+
         }
 
-        if (!form.content.trim()) {
+
+        if (
+            !form.content.trim()
+        ) {
+
             setError(
                 'Please write the documentation content.'
             );
+
             return;
+
         }
 
-        if (form.tags.length === 0) {
-            setError(
-                'Please select at least one relevant tag.'
-            );
-            return;
-        }
 
         try {
+
             setLoading(true);
 
+
+            // ==========================================
+            // PAYLOAD
+            // ==========================================
+
             const payload = {
-                title: form.title.trim(),
-                description: form.description.trim(),
-                documentType: form.documentType,
-                category: form.category,
-                content: form.content.trim(),
-                hsCode: form.hsCode.trim(),
-                tags: form.tags
+
+                title:
+                    form.title.trim(),
+
+                description:
+                    form.description.trim(),
+
+                documentType:
+                    form.documentType,
+
+                category:
+                    form.category,
+
+                content:
+                    form.content.trim(),
+
+                hsCode:
+                    form.hsCode.trim(),
+
+                tags:
+                    form.tags
+                        .split(',')
+                        .map(
+                            tag =>
+                                tag.trim()
+                        )
+                        .filter(
+                            Boolean
+                        )
+
             };
 
-            const response = await fetch(
-                `${API_BASE_URL}/documentation`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify(payload)
-                }
-            );
 
-            const data = await response.json();
+            // ==========================================
+            // API
+            // ==========================================
 
-            if (!response.ok) {
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/documentation`,
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+
+                            'Content-Type':
+                                'application/json',
+
+                            Authorization:
+                                `Bearer ${token}`
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok
+            ) {
+
                 throw new Error(
                     data.message ||
-                        'Failed to create documentation.'
+                    'Failed to create documentation.'
                 );
+
             }
+
+
+            // ==========================================
+            // SUCCESS
+            // ==========================================
 
             setSuccess(
                 'Documentation published successfully.'
             );
+
 
             const created =
                 data.documentation ||
                 data.document ||
                 data.data;
 
+
+            // ==========================================
+            // REDIRECT
+            // ==========================================
+
             setTimeout(() => {
-                if (created?._id) {
+
+                if (
+                    created?._id
+                ) {
+
                     router.push(
                         `/documentation/${created._id}`
                     );
+
                 } else {
-                    router.push('/documentation');
+
+                    router.push(
+                        '/documentation'
+                    );
+
                 }
+
             }, 700);
+
+
         } catch (error) {
+
             console.error(
                 'Create documentation error:',
                 error
             );
 
+
             setError(
                 error.message ||
-                    'Unable to create documentation.'
+                'Unable to create documentation.'
             );
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
-    if (token === null) {
+
+    // ==================================================
+    // LOADING
+    // ==================================================
+
+    if (
+        token === null
+    ) {
+
         return (
-            <main className={styles.page}>
-                <div className={styles.loading}>
-                    <span
-                        className={styles.loadingSpinner}
+
+            <main
+                className={
+                    styles.page
+                }
+            >
+
+                <div
+                    className={
+                        styles.loading
+                    }
+                >
+
+                    <div
+                        className={
+                            styles.loadingSpinner
+                        }
                     />
-                    <p>Loading...</p>
+
+                    <p>
+                        Loading...
+                    </p>
+
                 </div>
+
             </main>
+
         );
+
     }
 
+
+    // ==================================================
+    // LOGIN REQUIRED
+    // ==================================================
+
     if (!token) {
+
         return (
-            <main className={styles.page}>
-                <div className={styles.container}>
+
+            <main
+                className={
+                    styles.page
+                }
+            >
+
+                <div
+                    className={
+                        styles.container
+                    }
+                >
+
                     <Link
                         href="/documentation"
-                        className={styles.back}
+                        className={
+                            styles.back
+                        }
                     >
-                        <span>←</span>
-                        Documentation
+
+                        ← Documentation
+
                     </Link>
 
-                    <div className={styles.loginCard}>
-                        <div className={styles.loginIcon}>
-                            <span className={styles.loginIconMark}>
-                                L
-                            </span>
+
+                    <div
+                        className={
+                            styles.loginCard
+                        }
+                    >
+
+                        <div
+                            className={
+                                styles.loginIcon
+                            }
+                        >
+                            🔐
                         </div>
 
-                        <h2>Login Required</h2>
+
+                        <h2>
+                            Login Required
+                        </h2>
+
 
                         <p>
-                            Login to your LynkToday account
-                            to share documentation with
-                            the community.
+                            Login to your LynkToday
+                            account to share documentation
+                            with the community.
                         </p>
+
 
                         <Link
                             href="/login"
-                            className={styles.loginButton}
+                            className={
+                                styles.loginButton
+                            }
                         >
                             Login
                         </Link>
+
                     </div>
+
                 </div>
+
             </main>
+
         );
+
     }
 
+
+    // ==================================================
+    // MAIN
+    // ==================================================
+
     return (
-        <main className={styles.page}>
-            <div className={styles.container}>
+
+        <main
+            className={
+                styles.page
+            }
+        >
+
+            <div
+                className={
+                    styles.container
+                }
+            >
+
+                {/* ==================================================
+                    BACK
+                ================================================== */}
+
                 <Link
                     href="/documentation"
-                    className={styles.back}
+                    className={
+                        styles.back
+                    }
                 >
-                    <span>←</span>
+
+                    <span>
+                        ←
+                    </span>
+
                     Documentation
+
                 </Link>
 
-                <header className={styles.pageHeader}>
-                    <div className={styles.headerIcon}>
-                        <span>DOC</span>
+
+                {/* ==================================================
+                    PAGE HEADER
+                ================================================== */}
+
+                <div
+                    className={
+                        styles.pageHeader
+                    }
+                >
+
+                    <div
+                        className={
+                            styles.headerIcon
+                        }
+                    >
+                        📚
                     </div>
+
 
                     <div>
-                        <h1>Create Documentation</h1>
+
+                        <h1>
+                            Create Documentation
+                        </h1>
 
                         <p>
-                            Share practical knowledge,
-                            procedures and trade information
-                            with the LynkToday community.
+                            Share your knowledge,
+                            experience and useful
+                            trade information with
+                            the LynkToday community.
                         </p>
+
                     </div>
-                </header>
 
-                <div className={styles.card}>
-                    <form onSubmit={handleSubmit}>
-                        {error && (
-                            <div className={styles.error}>
-                                <div className={styles.messageMark}>
-                                    !
-                                </div>
+                </div>
 
-                                <div>
-                                    <strong>
-                                        Unable to publish
-                                    </strong>
 
-                                    <p>{error}</p>
-                                </div>
-                            </div>
-                        )}
+                {/* ==================================================
+                    MAIN CARD
+                ================================================== */}
 
-                        {success && (
-                            <div className={styles.success}>
-                                <div className={styles.successMark}>
-                                    ✓
-                                </div>
+                <div
+                    className={
+                        styles.card
+                    }
+                >
 
-                                <span>{success}</span>
-                            </div>
-                        )}
+                    <form
+                        onSubmit={
+                            handleSubmit
+                        }
+                    >
 
-                        <section className={styles.section}>
-                            <div className={styles.sectionHeader}>
-                                <span
+                        {/* ==================================================
+                            ERROR
+                        ================================================== */}
+
+                        {
+                            error && (
+
+                                <div
                                     className={
-                                        styles.sectionNumber
+                                        styles.error
                                     }
                                 >
-                                    01
-                                </span>
+
+                                    <span>
+                                        ⚠
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Something went wrong
+                                        </strong>
+
+                                        <p>
+                                            {error}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            )
+                        }
+
+
+                        {/* ==================================================
+                            SUCCESS
+                        ================================================== */}
+
+                        {
+                            success && (
+
+                                <div
+                                    className={
+                                        styles.success
+                                    }
+                                >
+
+                                    <span>
+                                        ✓
+                                    </span>
+
+                                    {success}
+
+                                </div>
+
+                            )
+                        }
+
+
+                        {/* ==================================================
+                            BASIC INFORMATION
+                        ================================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
 
                                 <div>
-                                    <h2>Basic Information</h2>
 
-                                    <p>
-                                        Give your documentation
-                                        a clear title and useful
-                                        context.
-                                    </p>
+                                    <span
+                                        className={
+                                            styles.sectionNumber
+                                        }
+                                    >
+                                        01
+                                    </span>
+
+                                    <div>
+
+                                        <h2>
+                                            Basic Information
+                                        </h2>
+
+                                        <p>
+                                            Give your documentation
+                                            a clear title and context.
+                                        </p>
+
+                                    </div>
+
                                 </div>
+
                             </div>
 
-                            <div className={styles.field}>
-                                <label htmlFor="title">
+
+                            {/* ==========================================
+                                TITLE
+                            ========================================== */}
+
+                            <div
+                                className={
+                                    styles.field
+                                }
+                            >
+
+                                <label
+                                    htmlFor="title"
+                                >
+
                                     Documentation Title
-                                    <span>*</span>
+
+                                    <span>
+                                        *
+                                    </span>
+
                                 </label>
+
 
                                 <input
                                     id="title"
                                     name="title"
-                                    value={form.title}
-                                    onChange={handleChange}
+                                    value={
+                                        form.title
+                                    }
+                                    onChange={
+                                        handleChange
+                                    }
                                     placeholder="Example: Bill of Entry Documentation Guide"
                                     maxLength={200}
                                 />
 
+
                                 <div
                                     className={
                                         styles.fieldFooter
                                     }
                                 >
+
                                     <span>
-                                        Use a clear and specific
-                                        title.
+                                        Use a clear and specific title.
                                     </span>
 
                                     <span>
-                                        {form.title.length}/200
+                                        {
+                                            form.title.length
+                                        }/200
                                     </span>
+
                                 </div>
+
                             </div>
 
-                            <div className={styles.field}>
-                                <label htmlFor="description">
+
+                            {/* ==========================================
+                                DESCRIPTION
+                            ========================================== */}
+
+                            <div
+                                className={
+                                    styles.field
+                                }
+                            >
+
+                                <label
+                                    htmlFor="description"
+                                >
+
                                     Short Description
-                                    <span>*</span>
+
+                                    <span>
+                                        *
+                                    </span>
+
                                 </label>
+
 
                                 <textarea
                                     id="description"
                                     name="description"
-                                    value={form.description}
-                                    onChange={handleChange}
+                                    value={
+                                        form.description
+                                    }
+                                    onChange={
+                                        handleChange
+                                    }
                                     rows={4}
                                     maxLength={500}
-                                    placeholder="Briefly explain what readers will learn from this documentation."
+                                    placeholder="Briefly explain what readers will learn from this documentation..."
                                 />
+
 
                                 <div
                                     className={
                                         styles.fieldFooter
                                     }
                                 >
+
                                     <span>
                                         Keep it short and useful.
                                     </span>
 
                                     <span>
                                         {
-                                            form.description
-                                                .length
-                                        }
-                                        /500
+                                            form.description.length
+                                        }/500
                                     </span>
+
                                 </div>
+
                             </div>
+
                         </section>
 
-                        <section className={styles.section}>
-                            <div className={styles.sectionHeader}>
+
+                        {/* ==================================================
+                            CLASSIFICATION
+                        ================================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
+
                                 <span
                                     className={
                                         styles.sectionNumber
@@ -420,71 +829,161 @@ export default function CreateDocumentationPage() {
                                     02
                                 </span>
 
+
                                 <div>
-                                    <h2>Classification</h2>
+
+                                    <h2>
+                                        Classification
+                                    </h2>
 
                                     <p>
-                                        Categorise the document
-                                        so professionals can
-                                        find it easily.
+                                        Help professionals find
+                                        your documentation easily.
                                     </p>
+
                                 </div>
+
                             </div>
 
-                            <div className={styles.twoColumn}>
-                                <div className={styles.field}>
-                                    <label htmlFor="documentType">
+
+                            <div
+                                className={
+                                    styles.twoColumn
+                                }
+                            >
+
+                                {/* ======================================
+                                    DOCUMENT TYPE
+                                ====================================== */}
+
+                                <div
+                                    className={
+                                        styles.field
+                                    }
+                                >
+
+                                    <label
+                                        htmlFor="documentType"
+                                    >
                                         Document Type
                                     </label>
+
 
                                     <select
                                         id="documentType"
                                         name="documentType"
-                                        value={form.documentType}
-                                        onChange={handleChange}
+                                        value={
+                                            form.documentType
+                                        }
+                                        onChange={
+                                            handleChange
+                                        }
                                     >
-                                        {documentTypes.map(
-                                            (type) => (
-                                                <option
-                                                    key={type}
-                                                    value={type}
-                                                >
-                                                    {type}
-                                                </option>
+
+                                        {
+                                            documentTypes.map(
+                                                type => (
+
+                                                    <option
+                                                        key={
+                                                            type
+                                                        }
+
+                                                        value={
+                                                            type
+                                                        }
+                                                    >
+
+                                                        {
+                                                            type
+                                                        }
+
+                                                    </option>
+
+                                                )
                                             )
-                                        )}
+                                        }
+
                                     </select>
+
                                 </div>
 
-                                <div className={styles.field}>
-                                    <label htmlFor="category">
+
+                                {/* ======================================
+                                    CATEGORY
+                                ====================================== */}
+
+                                <div
+                                    className={
+                                        styles.field
+                                    }
+                                >
+
+                                    <label
+                                        htmlFor="category"
+                                    >
                                         Category
-                                        <span>*</span>
                                     </label>
+
 
                                     <select
                                         id="category"
                                         name="category"
-                                        value={form.category}
-                                        onChange={handleChange}
+                                        value={
+                                            form.category
+                                        }
+                                        onChange={
+                                            handleChange
+                                        }
                                     >
-                                        {categories.map(
-                                            (category) => (
-                                                <option
-                                                    key={category}
-                                                    value={category}
-                                                >
-                                                    {category}
-                                                </option>
+
+                                        {
+                                            categories.map(
+                                                category => (
+
+                                                    <option
+                                                        key={
+                                                            category
+                                                        }
+
+                                                        value={
+                                                            category
+                                                        }
+                                                    >
+
+                                                        {
+                                                            category
+                                                        }
+
+                                                    </option>
+
+                                                )
                                             )
-                                        )}
+                                        }
+
                                     </select>
+
                                 </div>
+
                             </div>
 
-                            <div className={styles.field}>
-                                <label htmlFor="hsCode">
+
+                            {/* ==========================================
+                                HS CODE
+                            ========================================== */}
+
+                            <div
+                                className={
+                                    styles.field
+                                }
+                            >
+
+                                <label
+                                    htmlFor="hsCode"
+                                >
+
                                     Related HS Code
+
                                     <span
                                         className={
                                             styles.optional
@@ -492,117 +991,88 @@ export default function CreateDocumentationPage() {
                                     >
                                         Optional
                                     </span>
+
                                 </label>
+
 
                                 <input
                                     id="hsCode"
                                     name="hsCode"
-                                    value={form.hsCode}
-                                    onChange={handleChange}
+                                    value={
+                                        form.hsCode
+                                    }
+                                    onChange={
+                                        handleChange
+                                    }
                                     placeholder="Example: 62034200"
                                 />
 
+
                                 <small>
-                                    Add an HS Code when the
-                                    documentation relates to a
-                                    specific product or tariff.
+                                    Add an HS Code if this
+                                    documentation relates to
+                                    a specific product or tariff.
                                 </small>
+
                             </div>
 
-                            <div className={styles.field}>
-                                <label>
-                                    Relevant Tags
-                                    <span>*</span>
+
+                            {/* ==========================================
+                                TAGS
+                            ========================================== */}
+
+                            <div
+                                className={
+                                    styles.field
+                                }
+                            >
+
+                                <label
+                                    htmlFor="tags"
+                                >
+                                    Tags
                                 </label>
 
-                                <div
-                                    className={
-                                        styles.tagSelectedBox
+
+                                <input
+                                    id="tags"
+                                    name="tags"
+                                    value={
+                                        form.tags
                                     }
-                                >
-                                    {form.tags.length > 0 ? (
-                                        form.tags.map((tag) => (
-                                            <button
-                                                key={tag}
-                                                type="button"
-                                                className={
-                                                    styles.selectedTag
-                                                }
-                                                onClick={() =>
-                                                    removeTag(tag)
-                                                }
-                                            >
-                                                <span>#</span>
-                                                {tag}
-                                                <span
-                                                    className={
-                                                        styles.selectedTagRemove
-                                                    }
-                                                >
-                                                    ×
-                                                </span>
-                                            </button>
-                                        ))
-                                    ) : (
-                                        <span
-                                            className={
-                                                styles.noTags
-                                            }
-                                        >
-                                            Select one or more
-                                            relevant topics below.
-                                        </span>
-                                    )}
-                                </div>
-
-                                <div
-                                    className={
-                                        styles.tagOptions
+                                    onChange={
+                                        handleChange
                                     }
-                                >
-                                    {tagOptions.map((tag) => {
-                                        const selected =
-                                            form.tags.includes(tag);
+                                    placeholder="Customs, Import, Bill of Entry"
+                                />
 
-                                        return (
-                                            <button
-                                                key={tag}
-                                                type="button"
-                                                className={`${styles.tagOption} ${
-                                                    selected
-                                                        ? styles.tagOptionSelected
-                                                        : ''
-                                                }`}
-                                                onClick={() =>
-                                                    toggleTag(tag)
-                                                }
-                                            >
-                                                <span
-                                                    className={
-                                                        styles.tagCheck
-                                                    }
-                                                >
-                                                    {selected
-                                                        ? '✓'
-                                                        : ''}
-                                                </span>
-
-                                                {tag}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
 
                                 <small>
-                                    Select every topic that
-                                    genuinely relates to the
-                                    documentation.
+                                    Separate multiple tags
+                                    with commas.
                                 </small>
+
                             </div>
+
                         </section>
 
-                        <section className={styles.section}>
-                            <div className={styles.sectionHeader}>
+
+                        {/* ==================================================
+                            CONTENT
+                        ================================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
+
                                 <span
                                     className={
                                         styles.sectionNumber
@@ -611,27 +1081,35 @@ export default function CreateDocumentationPage() {
                                     03
                                 </span>
 
+
                                 <div>
-                                    <h2>Documentation Content</h2>
+
+                                    <h2>
+                                        Documentation Content
+                                    </h2>
 
                                     <p>
-                                        Write the detailed
-                                        information you want to
-                                        share.
+                                        Write the detailed information
+                                        you want to share.
                                     </p>
+
                                 </div>
+
                             </div>
+
 
                             <div
                                 className={
                                     styles.contentEditor
                                 }
                             >
+
                                 <div
                                     className={
                                         styles.editorToolbar
                                     }
                                 >
+
                                     <span>
                                         DOCUMENT CONTENT
                                     </span>
@@ -639,13 +1117,19 @@ export default function CreateDocumentationPage() {
                                     <span>
                                         Plain text
                                     </span>
+
                                 </div>
+
 
                                 <textarea
                                     id="content"
                                     name="content"
-                                    value={form.content}
-                                    onChange={handleChange}
+                                    value={
+                                        form.content
+                                    }
+                                    onChange={
+                                        handleChange
+                                    }
                                     rows={20}
                                     placeholder={`Start writing your documentation...
 
@@ -662,37 +1146,58 @@ Explain the purpose of this document.
 • Bill of Lading
 • Certificate of Origin
 
-3. Procedure
+3. Customs Procedure
 
 Explain the process step by step.
 
 4. Important Notes
 
-Add practical tips or common mistakes to avoid.`}
+Add any practical tips or common mistakes to avoid.`}
                                 />
+
 
                                 <div
                                     className={
                                         styles.editorFooter
                                     }
                                 >
+
                                     <span>
-                                        Use headings, numbered
-                                        steps and bullet points
-                                        to make the guide easier
-                                        to read.
+                                        💡 Tip: Use headings,
+                                        numbered steps and bullet
+                                        points to make your guide
+                                        easier to read.
                                     </span>
 
                                     <span>
-                                        {form.content.length}{' '}
-                                        characters
+                                        {
+                                            form.content.length
+                                        } characters
                                     </span>
+
                                 </div>
+
                             </div>
+
                         </section>
 
-                        <section className={styles.section}>
-                            <div className={styles.sectionHeader}>
+
+                        {/* ==================================================
+                            ATTACHMENTS
+                        ================================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
+
                                 <span
                                     className={
                                         styles.sectionNumber
@@ -701,101 +1206,136 @@ Add practical tips or common mistakes to avoid.`}
                                     04
                                 </span>
 
+
                                 <div>
-                                    <h2>Attachments</h2>
+
+                                    <h2>
+                                        Attachments
+                                    </h2>
 
                                     <p>
-                                        File and image uploads
-                                        will be available in a
-                                        future version.
+                                        Add supporting documents
+                                        and images to your guide.
                                     </p>
+
                                 </div>
+
                             </div>
+
 
                             <div
                                 className={
                                     styles.comingSoon
                                 }
                             >
+
                                 <div
                                     className={
                                         styles.comingSoonIcon
                                     }
                                 >
-                                    <span />
+                                    📎
                                 </div>
+
 
                                 <div
                                     className={
                                         styles.comingSoonContent
                                     }
                                 >
+
                                     <div
                                         className={
                                             styles.comingSoonTitle
                                         }
                                     >
+
                                         File & Image Upload
 
                                         <span>
                                             Coming Soon
                                         </span>
+
                                     </div>
 
+
                                     <p>
-                                        You cannot upload files
-                                        or images in the current
-                                        version. This feature will
-                                        be improved and added in a
-                                        later version.
+                                        Uploading PDFs, documents,
+                                        screenshots and images is
+                                        not available in this version.
+                                        We plan to add secure file and
+                                        image uploads in a future update.
                                     </p>
+
                                 </div>
+
                             </div>
+
                         </section>
 
-                        <div className={styles.guidelines}>
+
+                        {/* ==================================================
+                            GUIDELINES
+                        ================================================== */}
+
+                        <div
+                            className={
+                                styles.guidelines
+                            }
+                        >
+
                             <div
                                 className={
-                                    styles.guidelineMark
+                                    styles.guidelineIcon
                                 }
                             >
-                                i
+                                💡
                             </div>
 
+
                             <div>
+
                                 <strong>
-                                    Before publishing
+                                    Make your documentation useful
                                 </strong>
 
                                 <ul>
+
                                     <li>
-                                        Use a clear and
-                                        descriptive title.
+                                        Use a clear and descriptive title.
                                     </li>
 
                                     <li>
-                                        Choose the most relevant
-                                        category.
+                                        Explain procedures step by step.
                                     </li>
 
                                     <li>
-                                        Select all relevant tags.
+                                        Include practical tips and
+                                        important notes.
                                     </li>
 
                                     <li>
-                                        Explain procedures in a
-                                        practical order.
-                                    </li>
-
-                                    <li>
-                                        Do not share confidential
+                                        Avoid sharing confidential
                                         or sensitive information.
                                     </li>
+
                                 </ul>
+
                             </div>
+
                         </div>
 
-                        <div className={styles.actions}>
+
+                        {/* ==================================================
+                            ACTIONS
+                        ================================================== */}
+
+                        <div
+                            className={
+                                styles.actions
+                            }
+                        >
+
                             <Link
                                 href="/documentation"
                                 className={
@@ -805,28 +1345,56 @@ Add practical tips or common mistakes to avoid.`}
                                 Cancel
                             </Link>
 
+
                             <button
                                 type="submit"
-                                disabled={loading}
-                                className={styles.submit}
+                                disabled={
+                                    loading
+                                }
+
+                                className={
+                                    styles.submit
+                                }
                             >
-                                {loading ? (
-                                    <>
-                                        <span
-                                            className={
-                                                styles.buttonSpinner
-                                            }
-                                        />
-                                        Publishing...
-                                    </>
-                                ) : (
-                                    'Publish Documentation'
-                                )}
+
+                                {
+                                    loading ? (
+
+                                        <>
+                                            <span
+                                                className={
+                                                    styles.buttonSpinner
+                                                }
+                                            />
+
+                                            Publishing...
+
+                                        </>
+
+                                    ) : (
+
+                                        <>
+                                            Publish Documentation
+                                            <span>
+                                                →
+                                            </span>
+                                        </>
+
+                                    )
+                                }
+
                             </button>
+
                         </div>
+
                     </form>
+
                 </div>
+
             </div>
+
         </main>
+
     );
+
 }

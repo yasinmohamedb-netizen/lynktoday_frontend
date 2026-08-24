@@ -4,83 +4,38 @@ import Link from 'next/link';
 import styles from './EmptyState.module.css';
 
 export default function EmptyState({
-
-    icon = '📭',
-
-    title = 'Nothing here yet',
-
-    description = 'There is no data available at the moment.',
-
-    buttonText,
-
-    buttonLink = '/',
-
-    onClick
-
+  icon = '📭',
+  title = 'Nothing here yet',
+  description = 'There is no data available at the moment.',
+  buttonText,
+  buttonLink = '/',
+  onClick
 }) {
+  return (
+    <div className={styles.container}>
+      <div className={styles.icon}>{icon}</div>
 
-    return (
+      <h2 className={styles.title}>{title}</h2>
 
-        <div className={styles.container}>
+      <p className={styles.description}>{description}</p>
 
-            <div className={styles.icon}>
-
-                {icon}
-
-            </div>
-
-            <h2 className={styles.title}>
-
-                {title}
-
-            </h2>
-
-            <p className={styles.description}>
-
-                {description}
-
-            </p>
-
-            {
-
-                buttonText && (
-
-                    onClick ? (
-
-                        <button
-
-                            className={styles.button}
-
-                            onClick={onClick}
-
-                        >
-
-                            {buttonText}
-
-                        </button>
-
-                    ) : (
-
-                        <Link
-
-                            href={buttonLink}
-
-                            className={styles.button}
-
-                        >
-
-                            {buttonText}
-
-                        </Link>
-
-                    )
-
-                )
-
-            }
-
-        </div>
-
-    );
-
+      {buttonText &&
+        (onClick ? (
+          <button
+            className={styles.button}
+            onClick={onClick}
+            type="button"
+          >
+            {buttonText}
+          </button>
+        ) : (
+          <Link
+            href={buttonLink}
+            className={styles.button}
+          >
+            {buttonText}
+          </Link>
+        ))}
+    </div>
+  );
 }

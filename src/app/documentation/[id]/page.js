@@ -5,146 +5,184 @@ import { useEffect, useState } from 'react';
 
 import styles from './details.module.css';
 
+
+// ======================================================
+// API
+// ======================================================
+
 const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     'http://localhost:5001/api/v1';
+
+
+// ======================================================
+// Page
+// ======================================================
 
 export default function DocumentationDetailsPage({
     params
 }) {
 
-    const [document, setDocument] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-    const [readingProgress, setReadingProgress] = useState(0);
+    const [document, setDocument] =
+        useState(null);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState('');
+
+    const [readingProgress, setReadingProgress] =
+        useState(0);
 
 
-    // Load document
+    // ==================================================
+    // Load Document
+    // ==================================================
 
     useEffect(() => {
 
-        const loadDocument = async () => {
+        const loadDocument =
+            async () => {
 
-            try {
+                try {
 
-                setLoading(true);
-                setError('');
+                    setLoading(true);
+                    setError('');
 
-                const resolvedParams = await params;
-                const id = resolvedParams.id;
+                    const resolvedParams =
+                        await params;
 
-                const response = await fetch(
-                    `${API_BASE_URL}/documentation/${id}`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        cache: 'no-store'
+                    const id =
+                        resolvedParams.id;
+
+
+                    const response =
+                        await fetch(
+                            `${API_BASE_URL}/documentation/${id}`,
+                            {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type':
+                                        'application/json'
+                                },
+                                cache: 'no-store'
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.message ||
+                            'Documentation not found.'
+                        );
+
                     }
-                );
 
-                const data = await response.json();
 
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.message ||
-                        'Documentation not found.'
+                    setDocument(
+                        data.documentation ||
+                        data.document ||
+                        data.data
                     );
+
+
+                } catch (error) {
+
+                    console.error(
+                        'Documentation details error:',
+                        error
+                    );
+
+                    setError(
+                        error.message ||
+                        'Unable to load documentation.'
+                    );
+
+                } finally {
+
+                    setLoading(false);
 
                 }
 
-                setDocument(
-                    data.documentation ||
-                    data.document ||
-                    data.data
-                );
+            };
 
-            } catch (error) {
-
-                console.error(
-                    'Documentation details error:',
-                    error
-                );
-
-                setError(
-                    error.message ||
-                    'Unable to load documentation.'
-                );
-
-            } finally {
-
-                setLoading(false);
-
-            }
-
-        };
 
         loadDocument();
 
     }, [params]);
 
 
-    // Reading progress
+    // ==================================================
+    // Reading Progress
+    // ==================================================
 
-    useEffect(() => {
+   useEffect(() => {
 
-        const handleScroll = () => {
+    const handleScroll = () => {
 
-            const scrollTop =
-                window.scrollY;
+        const scrollTop = window.scrollY;
 
-            const documentHeight =
-                window.document.documentElement.scrollHeight -
-                window.innerHeight;
+        const documentHeight =
+            window.document.documentElement.scrollHeight -
+            window.innerHeight;
 
-            if (documentHeight <= 0) {
+        if (documentHeight <= 0) {
 
-                setReadingProgress(0);
+            setReadingProgress(0);
 
-                return;
+            return;
 
-            }
+        }
 
-            const progress =
-                (scrollTop / documentHeight) * 100;
+        const progress =
+            (scrollTop / documentHeight) * 100;
 
-            setReadingProgress(
-                Math.min(
-                    100,
-                    Math.max(
-                        0,
-                        progress
-                    )
+        setReadingProgress(
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    progress
                 )
-            );
-
-        };
-
-        window.addEventListener(
-            'scroll',
-            handleScroll,
-            {
-                passive: true
-            }
+            )
         );
 
-        handleScroll();
-
-        return () => {
-
-            window.removeEventListener(
-                'scroll',
-                handleScroll
-            );
-
-        };
-
-    }, []);
+    };
 
 
+    window.addEventListener(
+        'scroll',
+        handleScroll,
+        {
+            passive: true
+        }
+    );
+
+
+    handleScroll();
+
+
+    return () => {
+
+        window.removeEventListener(
+            'scroll',
+            handleScroll
+        );
+
+    };
+
+}, []);
+
+
+    // ==================================================
     // Loading
+    // ==================================================
 
     if (loading) {
 
@@ -156,7 +194,7 @@ export default function DocumentationDetailsPage({
 
                     <div className={styles.loadingCard}>
 
-                        <div className={styles.spinner} />
+                        <div className={styles.spinner}></div>
 
                         <h2>
                             Loading documentation
@@ -177,7 +215,9 @@ export default function DocumentationDetailsPage({
     }
 
 
+    // ==================================================
     // Error
+    // ==================================================
 
     if (error || !document) {
 
@@ -222,7 +262,9 @@ export default function DocumentationDetailsPage({
     }
 
 
+    // ==================================================
     // Data
+    // ==================================================
 
     const documentType =
         document.documentType ||
@@ -262,9 +304,13 @@ export default function DocumentationDetailsPage({
 
         <main className={styles.page}>
 
-            {/* READING PROGRESS */}
+            {/* ==================================================
+                READING PROGRESS
+            ================================================== */}
 
-            <div className={styles.progressTrack}>
+            <div
+                className={styles.progressTrack}
+            >
 
                 <div
                     className={styles.progressBar}
@@ -279,71 +325,66 @@ export default function DocumentationDetailsPage({
 
             <div className={styles.container}>
 
-                {/* BREADCRUMB */}
 
-                <nav
-                    className={styles.breadcrumb}
-                    aria-label="Breadcrumb"
-                >
+                {/* ==================================================
+                    BREADCRUMB
+                ================================================== */}
 
-                    <Link href="/documentation">
+                <nav className={styles.breadcrumb}>
+
+                    <Link
+                        href="/documentation"
+                    >
                         Documentation
                     </Link>
 
-                    <span>/</span>
+                    <span>
+                        /
+                    </span>
 
                     <span>
                         {category}
                     </span>
 
-                    <span>/</span>
+                    <span>
+                        /
+                    </span>
 
-                    <span
-                        className={
-                            styles.currentBreadcrumb
-                        }
-                    >
+                    <span className={styles.currentBreadcrumb}>
                         {title}
                     </span>
 
                 </nav>
 
 
-                {/* MAIN GRID */}
+                {/* ==================================================
+                    MAIN GRID
+                ================================================== */}
 
                 <div className={styles.layout}>
 
-                    {/* ARTICLE */}
+
+                    {/* ==================================================
+                        ARTICLE
+                    ================================================== */}
 
                     <article className={styles.article}>
 
-                        {/* HEADER */}
 
-                        <header
-                            className={
-                                styles.articleHeader
-                            }
-                        >
+                        {/* ==========================================
+                            ARTICLE HEADER
+                        ========================================== */}
 
-                            <div
-                                className={
-                                    styles.badgeRow
-                                }
-                            >
+                        <header className={styles.articleHeader}>
 
-                                <span
-                                    className={
-                                        styles.typeBadge
-                                    }
-                                >
+
+                            <div className={styles.badgeRow}>
+
+                                <span className={styles.typeBadge}>
                                     {documentType}
                                 </span>
 
-                                <span
-                                    className={
-                                        styles.categoryBadge
-                                    }
-                                >
+                                <span className={styles.categoryBadge}>
                                     {category}
                                 </span>
 
@@ -355,7 +396,7 @@ export default function DocumentationDetailsPage({
                                                 styles.featuredBadge
                                             }
                                         >
-                                            Featured
+                                            ★ Featured
                                         </span>
 
                                     )
@@ -369,35 +410,21 @@ export default function DocumentationDetailsPage({
                             </h1>
 
 
-                            <p
-                                className={
-                                    styles.description
-                                }
-                            >
+                            <p className={styles.description}>
                                 {description}
                             </p>
 
 
-                            {/* META */}
+                            {/* ======================================
+                                META
+                            ====================================== */}
 
-                            <div
-                                className={
-                                    styles.metaRow
-                                }
-                            >
+                            <div className={styles.metaRow}>
 
-                                <div
-                                    className={
-                                        styles.metaItem
-                                    }
-                                >
+                                <div className={styles.metaItem}>
 
-                                    <span
-                                        className={
-                                            styles.metaIcon
-                                        }
-                                    >
-                                        V
+                                    <span className={styles.metaIcon}>
+                                        👁
                                     </span>
 
                                     <div>
@@ -415,25 +442,13 @@ export default function DocumentationDetailsPage({
                                 </div>
 
 
-                                <div
-                                    className={
-                                        styles.metaDivider
-                                    }
-                                />
+                                <div className={styles.metaDivider}></div>
 
 
-                                <div
-                                    className={
-                                        styles.metaItem
-                                    }
-                                >
+                                <div className={styles.metaItem}>
 
-                                    <span
-                                        className={
-                                            styles.metaIcon
-                                        }
-                                    >
-                                        U
+                                    <span className={styles.metaIcon}>
+                                        ↻
                                     </span>
 
                                     <div>
@@ -451,25 +466,13 @@ export default function DocumentationDetailsPage({
                                 </div>
 
 
-                                <div
-                                    className={
-                                        styles.metaDivider
-                                    }
-                                />
+                                <div className={styles.metaDivider}></div>
 
 
-                                <div
-                                    className={
-                                        styles.metaItem
-                                    }
-                                >
+                                <div className={styles.metaItem}>
 
-                                    <span
-                                        className={
-                                            styles.metaIcon
-                                        }
-                                    >
-                                        C
+                                    <span className={styles.metaIcon}>
+                                        📚
                                     </span>
 
                                     <div>
@@ -491,7 +494,9 @@ export default function DocumentationDetailsPage({
                         </header>
 
 
-                        {/* SUMMARY */}
+                        {/* ==================================================
+                            QUICK SUMMARY
+                        ================================================== */}
 
                         <section
                             className={
@@ -499,12 +504,8 @@ export default function DocumentationDetailsPage({
                             }
                         >
 
-                            <div
-                                className={
-                                    styles.summaryIcon
-                                }
-                            >
-                                i
+                            <div className={styles.summaryIcon}>
+                                💡
                             </div>
 
                             <div>
@@ -517,7 +518,7 @@ export default function DocumentationDetailsPage({
                                     This documentation provides
                                     practical information related to
                                     {` ${category.toLowerCase()}`}
-                                    {' '}and helps trade professionals
+                                    and helps trade professionals
                                     understand the topic more clearly.
                                 </p>
 
@@ -526,7 +527,9 @@ export default function DocumentationDetailsPage({
                         </section>
 
 
-                        {/* HS CODE */}
+                        {/* ==================================================
+                            HS CODE
+                        ================================================== */}
 
                         {
                             document.hsCode && (
@@ -573,7 +576,9 @@ export default function DocumentationDetailsPage({
                         }
 
 
-                        {/* CONTENT */}
+                        {/* ==================================================
+                            ARTICLE CONTENT
+                        ================================================== */}
 
                         <section
                             className={
@@ -615,7 +620,9 @@ export default function DocumentationDetailsPage({
                         </section>
 
 
-                        {/* FILE */}
+                        {/* ==================================================
+                            ATTACHED FILE
+                        ================================================== */}
 
                         {
                             document.fileUrl && (
@@ -631,7 +638,7 @@ export default function DocumentationDetailsPage({
                                             styles.fileIcon
                                         }
                                     >
-                                        PDF
+                                        📄
                                     </div>
 
                                     <div
@@ -670,7 +677,7 @@ export default function DocumentationDetailsPage({
                                             styles.fileButton
                                         }
                                     >
-                                        Open File
+                                        Open File →
                                     </a>
 
                                 </section>
@@ -679,7 +686,9 @@ export default function DocumentationDetailsPage({
                         }
 
 
-                        {/* TAGS */}
+                        {/* ==================================================
+                            TAGS
+                        ================================================== */}
 
                         {
                             Array.isArray(
@@ -725,7 +734,8 @@ export default function DocumentationDetailsPage({
                                                             styles.tag
                                                         }
                                                     >
-                                                        #{tag}
+                                                        #
+                                                        {tag}
                                                     </Link>
 
                                                 )
@@ -740,7 +750,9 @@ export default function DocumentationDetailsPage({
                         }
 
 
-                        {/* BOTTOM CTA */}
+                        {/* ==================================================
+                            BOTTOM CTA
+                        ================================================== */}
 
                         <section
                             className={
@@ -772,23 +784,25 @@ export default function DocumentationDetailsPage({
                                     styles.ctaButton
                                 }
                             >
-                                Browse Documentation
+                                Browse Documentation →
                             </Link>
 
                         </section>
 
+
                     </article>
 
 
-                    {/* RIGHT SIDEBAR */}
+                    {/* ==================================================
+                        RIGHT SIDEBAR
+                    ================================================== */}
 
-                    <aside
-                        className={
-                            styles.sidebar
-                        }
-                    >
+                    <aside className={styles.sidebar}>
 
-                        {/* DOCUMENT INFO */}
+
+                        {/* ==========================================
+                            DOCUMENT INFO
+                        ========================================== */}
 
                         <div
                             className={
@@ -898,7 +912,9 @@ export default function DocumentationDetailsPage({
                         </div>
 
 
-                        {/* QUICK LINKS */}
+                        {/* ==========================================
+                            QUICK LINKS
+                        ========================================== */}
 
                         <div
                             className={
@@ -933,13 +949,11 @@ export default function DocumentationDetailsPage({
                                 <Link
                                     href="/documentation"
                                 >
-
                                     <span>
-                                        D
+                                        📚
                                     </span>
 
                                     <div>
-
                                         <strong>
                                             All Documentation
                                         </strong>
@@ -947,7 +961,6 @@ export default function DocumentationDetailsPage({
                                         <small>
                                             Browse all guides
                                         </small>
-
                                     </div>
 
                                     <b>
@@ -960,13 +973,11 @@ export default function DocumentationDetailsPage({
                                 <Link
                                     href="/topics/import"
                                 >
-
                                     <span>
-                                        I
+                                        📦
                                     </span>
 
                                     <div>
-
                                         <strong>
                                             Import
                                         </strong>
@@ -974,7 +985,6 @@ export default function DocumentationDetailsPage({
                                         <small>
                                             Import discussions
                                         </small>
-
                                     </div>
 
                                     <b>
@@ -987,13 +997,11 @@ export default function DocumentationDetailsPage({
                                 <Link
                                     href="/topics/customs"
                                 >
-
                                     <span>
-                                        C
+                                        🧾
                                     </span>
 
                                     <div>
-
                                         <strong>
                                             Customs
                                         </strong>
@@ -1001,7 +1009,6 @@ export default function DocumentationDetailsPage({
                                         <small>
                                             Customs knowledge
                                         </small>
-
                                     </div>
 
                                     <b>
@@ -1014,13 +1021,11 @@ export default function DocumentationDetailsPage({
                                 <Link
                                     href="/topics/hs-code"
                                 >
-
                                     <span>
                                         #
                                     </span>
 
                                     <div>
-
                                         <strong>
                                             HS Codes
                                         </strong>
@@ -1028,7 +1033,6 @@ export default function DocumentationDetailsPage({
                                         <small>
                                             Classification resources
                                         </small>
-
                                     </div>
 
                                     <b>
@@ -1042,7 +1046,9 @@ export default function DocumentationDetailsPage({
                         </div>
 
 
-                        {/* COMMUNITY */}
+                        {/* ==========================================
+                            COMMUNITY CTA
+                        ========================================== */}
 
                         <div
                             className={
@@ -1055,7 +1061,7 @@ export default function DocumentationDetailsPage({
                                     styles.communityIcon
                                 }
                             >
-                                ?
+                                💬
                             </div>
 
                             <h3>
@@ -1078,6 +1084,7 @@ export default function DocumentationDetailsPage({
                             </Link>
 
                         </div>
+
 
                     </aside>
 

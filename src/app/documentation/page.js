@@ -1,19 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import RightSidebar from '@/components/home/RightSidebar/RightSidebar';
+import { useEffect, useState } from 'react';
 
 import styles from './documentation.module.css';
+
+/* ======================================================
+   API
+====================================================== */
 
 const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     'http://localhost:5001/api/v1';
 
-const LIMIT = 10;
 
-const CATEGORIES = [
+/* ======================================================
+   CATEGORIES
+====================================================== */
+
+const categories = [
     'All',
     'Customs',
     'Import',
@@ -27,116 +32,222 @@ const CATEGORIES = [
     'General'
 ];
 
-const getDocumentId = (document) =>
-    document?._id || document?.id;
 
-const getDocumentsFromResponse = (data) => {
-    if (Array.isArray(data?.documentations)) {
-        return data.documentations;
-    }
-
-    if (Array.isArray(data?.documentation)) {
-        return data.documentation;
-    }
-
-    if (Array.isArray(data?.documents)) {
-        return data.documents;
-    }
-
-    if (Array.isArray(data?.results)) {
-        return data.results;
-    }
-
-    if (Array.isArray(data?.data)) {
-        return data.data;
-    }
-
-    return [];
-};
-
-const getDocumentUrl = (document) =>
-    `/documentation/${getDocumentId(document)}`;
+/* ======================================================
+   PAGE
+====================================================== */
 
 export default function DocumentationPage() {
+
+    /* ==================================================
+       DOCUMENTS
+    ================================================== */
+
     const [documents, setDocuments] = useState([]);
-    const [featuredDocuments, setFeaturedDocuments] = useState([]);
+
+    const [featuredDocuments, setFeaturedDocuments] =
+        useState([]);
+
+
+    /* ==================================================
+       SEARCH
+    ================================================== */
 
     const [search, setSearch] = useState('');
-    const [submittedSearch, setSubmittedSearch] = useState('');
 
-    const [activeCategory, setActiveCategory] = useState('All');
+    const [submittedSearch, setSubmittedSearch] =
+        useState('');
+
+
+    /* ==================================================
+       CATEGORY
+    ================================================== */
+
+    const [activeCategory, setActiveCategory] =
+        useState('All');
+
+
+    /* ==================================================
+       PAGINATION
+    ================================================== */
 
     const [page, setPage] = useState(1);
+
     const [totalPages, setTotalPages] = useState(1);
 
+
+    /* ==================================================
+       UI
+    ================================================== */
+
     const [loading, setLoading] = useState(true);
+
     const [error, setError] = useState('');
+
+
+    /* ==================================================
+       USER
+    ================================================== */
 
     const [user, setUser] = useState(null);
 
-    /* --------------------------------------------------
-       USER
-    -------------------------------------------------- */
+
+    /* ==================================================
+       LOAD USER
+    ================================================== */
 
     useEffect(() => {
+
         try {
-            const storedUser = localStorage.getItem('lynktoday_user');
+
+            const storedUser =
+                localStorage.getItem('expimp_user');
 
             if (!storedUser) {
                 setUser(null);
                 return;
             }
 
-            setUser(JSON.parse(storedUser));
+            try {
+
+                setUser(
+                    JSON.parse(storedUser)
+                );
+
+            } catch (parseError) {
+
+                console.error(
+                    'User parse error:',
+                    parseError
+                );
+
+                setUser(null);
+
+            }
+
         } catch (error) {
-            console.error('Failed to parse stored user:', error);
+
+            console.error(
+                'Failed to load user:',
+                error
+            );
+
             setUser(null);
+
         }
+
     }, []);
 
-    /* --------------------------------------------------
-       FETCH DOCUMENTS
-    -------------------------------------------------- */
 
-    const fetchDocuments = useCallback(async () => {
+    /* ==================================================
+       FETCH DOCUMENTS
+    ================================================== */
+
+    const fetchDocuments = async () => {
+
         try {
+
             setLoading(true);
             setError('');
 
-            const query = submittedSearch.trim();
+
+            const query =
+                submittedSearch.trim();
+
 
             let url;
 
+
+            /* ==========================================
+               SEARCH
+            ========================================== */
+
             if (query.length >= 2) {
-                const params = new URLSearchParams({
-                    q: query,
-                    page: String(page),
-                    limit: String(LIMIT)
-                });
 
-                url = `${API_BASE_URL}/documentation/search?${params}`;
-            } else {
-                const params = new URLSearchParams({
-                    page: String(page),
-                    limit: String(LIMIT)
-                });
+                url =
+                    `${API_BASE_URL}/documentation/search` +
+                    `?q=${encodeURIComponent(query)}` +
+                    `&page=${page}` +
+                    `&limit=10`;
 
-                if (activeCategory !== 'All') {
-                    params.append('category', activeCategory);
-                }
-
-                url = `${API_BASE_URL}/documentation?${params}`;
             }
 
-            const response = await fetch(url, {
-                cache: 'no-store'
-            });
+
+            /* ==========================================
+               NORMAL LIST
+            ========================================== */
+
+            else {
+
+                const params =
+                    new URLSearchParams();
+
+                params.append(
+                    'page',
+                    page
+                );
+
+                params.append(
+                    'limit',
+                    '10'
+                );
+
+
+                if (
+                    activeCategory !== 'All'
+                ) {
+
+                    params.append(
+                        'category',
+                        activeCategory
+                    );
+
+                }
+
+
+                url =
+                    `${API_BASE_URL}/documentation?${params.toString()}`;
+
+            }
+
+
+            /* ==========================================
+               API REQUEST
+            ========================================== */
+
+            const response =
+                await fetch(url, {
+                    cache: 'no-store'
+                });
+
+
+            /* ==========================================
+               PARSE RESPONSE
+            ========================================== */
 
             const contentType =
-                response.headers.get('content-type') || '';
+                response.headers.get(
+                    'content-type'
+                );
 
-            if (!contentType.includes('application/json')) {
-                const text = await response.text();
+
+            let data = null;
+
+
+            if (
+                contentType &&
+                contentType.includes(
+                    'application/json'
+                )
+            ) {
+
+                data =
+                    await response.json();
+
+            } else {
+
+                const text =
+                    await response.text();
 
                 console.error(
                     'Documentation API returned non-JSON:',
@@ -146,457 +257,550 @@ export default function DocumentationPage() {
                 throw new Error(
                     'Documentation API returned an invalid response.'
                 );
+
             }
 
-            const data = await response.json();
+
+            /* ==========================================
+               API ERROR
+            ========================================== */
 
             if (!response.ok) {
+
                 throw new Error(
                     data?.message ||
                     'Failed to load documentation.'
                 );
+
             }
 
-            const list = getDocumentsFromResponse(data);
+
+            /* ==========================================
+               EXTRACT DOCUMENTS
+            ========================================== */
+
+            let list = [];
+
+
+            if (
+                Array.isArray(
+                    data?.documentations
+                )
+            ) {
+
+                list =
+                    data.documentations;
+
+            } else if (
+                Array.isArray(
+                    data?.documentation
+                )
+            ) {
+
+                list =
+                    data.documentation;
+
+            } else if (
+                Array.isArray(
+                    data?.documents
+                )
+            ) {
+
+                list =
+                    data.documents;
+
+            } else if (
+                Array.isArray(
+                    data?.results
+                )
+            ) {
+
+                list =
+                    data.results;
+
+            } else if (
+                Array.isArray(
+                    data?.data
+                )
+            ) {
+
+                list =
+                    data.data;
+
+            }
+
 
             setDocuments(list);
 
+
+            /* ==========================================
+               PAGINATION
+            ========================================== */
+
             if (data?.pagination) {
+
                 setTotalPages(
-                    Number(data.pagination.totalPages) || 1
+                    Number(
+                        data.pagination.totalPages
+                    ) || 1
                 );
+
             } else {
+
                 setTotalPages(
-                    list.length < LIMIT
+                    list.length < 10
                         ? page
                         : page + 1
                 );
+
             }
+
+
+            /* ==========================================
+               FEATURED DOCUMENTS
+            ========================================== */
 
             if (
                 page === 1 &&
                 !query &&
                 activeCategory === 'All'
             ) {
-                const featured = list
-                    .filter(
-                        (document) =>
-                            document?.isFeatured
-                    )
-                    .slice(0, 3);
 
-                setFeaturedDocuments(featured);
+                const featured =
+                    list
+                        .filter(
+                            document =>
+                                document &&
+                                document.isFeatured
+                        )
+                        .slice(0, 3);
+
+
+                setFeaturedDocuments(
+                    featured
+                );
+
             } else {
+
                 setFeaturedDocuments([]);
+
             }
+
+
         } catch (error) {
+
             console.error(
-                'Documentation fetch error:',
+                'Documentation error:',
                 error
             );
 
             setDocuments([]);
-            setFeaturedDocuments([]);
 
             setError(
                 error?.message ||
                 'Unable to load documentation.'
             );
+
         } finally {
+
             setLoading(false);
+
         }
+
+    };
+
+
+    /* ==================================================
+       FETCH WHEN FILTERS CHANGE
+    ================================================== */
+
+    useEffect(() => {
+
+        fetchDocuments();
+
     }, [
-        activeCategory,
         page,
+        activeCategory,
         submittedSearch
     ]);
 
-    useEffect(() => {
-        fetchDocuments();
-    }, [fetchDocuments]);
 
-    /* --------------------------------------------------
-       SEARCH
-    -------------------------------------------------- */
+    /* ==================================================
+       SEARCH SUBMIT
+    ================================================== */
 
-    const handleSearch = (event) => {
+    const handleSearch = event => {
+
         event.preventDefault();
 
-        const query = search.trim();
+
+        const query =
+            search.trim();
+
 
         if (!query) {
+
             setError('');
+
             setSubmittedSearch('');
+
             setPage(1);
+
             return;
+
         }
 
+
         if (query.length < 2) {
+
             setError(
                 'Please enter at least 2 characters to search.'
             );
+
             return;
+
         }
 
+
         setError('');
+
         setPage(1);
-        setSubmittedSearch(query);
+
+        setSubmittedSearch(
+            query
+        );
+
     };
+
+
+    /* ==================================================
+       CATEGORY
+    ================================================== */
+
+    const handleCategory = category => {
+
+        setActiveCategory(category);
+
+        setPage(1);
+
+        setSearch('');
+
+        setSubmittedSearch('');
+
+        setError('');
+
+    };
+
+
+    /* ==================================================
+       CLEAR SEARCH
+    ================================================== */
 
     const clearSearch = () => {
-        setSearch('');
-        setSubmittedSearch('');
-        setPage(1);
-        setError('');
-    };
-
-    /* --------------------------------------------------
-       CATEGORY
-    -------------------------------------------------- */
-
-    const handleCategoryChange = (category) => {
-        setActiveCategory(category);
-        setPage(1);
 
         setSearch('');
-        setSubmittedSearch('');
-        setError('');
-    };
 
-    /* --------------------------------------------------
-       RESET
-    -------------------------------------------------- */
-
-    const handleShowAll = () => {
-        setSearch('');
         setSubmittedSearch('');
-        setActiveCategory('All');
+
         setPage(1);
+
         setError('');
+
     };
 
-    /* --------------------------------------------------
+
+    /* ==================================================
        RETRY
-    -------------------------------------------------- */
+    ================================================== */
 
     const handleRetry = () => {
+
         setError('');
+
         fetchDocuments();
+
     };
 
-    /* --------------------------------------------------
-       DERIVED DATA
-    -------------------------------------------------- */
 
-    const featuredIds = useMemo(
-        () =>
-            new Set(
-                featuredDocuments
-                    .map(getDocumentId)
-                    .filter(Boolean)
-                    .map(String)
-            ),
-        [featuredDocuments]
-    );
+    /* ==================================================
+       FEATURED IDS
+    ================================================== */
 
-    const displayedDocuments = useMemo(() => {
-        const isDefaultView =
+    const featuredIds =
+        new Set(
+            featuredDocuments.map(
+                document =>
+                    String(
+                        document?._id ||
+                        document?.id ||
+                        ''
+                    )
+            )
+        );
+
+
+    /* ==================================================
+       DISPLAYED DOCUMENTS
+    ================================================== */
+
+    const displayedDocuments =
+        (
             page === 1 &&
             !submittedSearch &&
-            activeCategory === 'All';
-
-        if (!isDefaultView) {
-            return documents;
-        }
-
-        return documents.filter((document) => {
-            const id = getDocumentId(document);
-
-            return !featuredIds.has(String(id));
-        });
-    }, [
-        documents,
-        featuredIds,
-        page,
-        submittedSearch,
-        activeCategory
-    ]);
-
-    const categoryCount = useMemo(
-        () =>
-            new Set(
-                documents
-                    .map(
-                        (document) =>
-                            document?.category
+            activeCategory === 'All'
+        )
+            ? documents.filter(
+                document =>
+                    !featuredIds.has(
+                        String(
+                            document?._id ||
+                            document?.id ||
+                            ''
+                        )
                     )
-                    .filter(Boolean)
-            ).size,
-        [documents]
-    );
+            )
+            : documents;
 
-    const knowledgeCount = useMemo(
-        () =>
-            new Set(
-                documents
-                    .map(
-                        (document) =>
-                            document?.documentType
-                    )
-                    .filter(Boolean)
-            ).size,
-        [documents]
-    );
 
-    const isSearchValidationError =
-        error.includes('at least 2 characters');
+    /* ==================================================
+       SIDEBAR DOCUMENTS
+    ================================================== */
 
-    /* --------------------------------------------------
+    const recentDocuments =
+        displayedDocuments
+            .slice(0, 5);
+
+
+    /* ==================================================
        RENDER
-    -------------------------------------------------- */
+    ================================================== */
 
     return (
+
         <main className={styles.page}>
+
             <div className={styles.container}>
 
-                {/* HERO */}
+                {/* ==================================================
+                    HEADER
+                ================================================== */}
 
-                <section className={styles.hero}>
-                    <div className={styles.heroContent}>
-                        <div>
-                            <Link
-                                href="/"
-                                className={styles.logo}
-                            >
-                                Lynk<span>Today</span>
-                            </Link>
+                <header className={styles.header}>
 
-                            <span className={styles.eyebrow}>
-                                Knowledge Hub
-                            </span>
+                    <div className={styles.headerLeft}>
+
+                        <Link
+                            href="/"
+                            className={styles.logo}
+                        >
+                            Exp<span>Imp</span>
+                        </Link>
+
+                        <div className={styles.headerText}>
 
                             <h1>
-                                Trade Documentation
-                                <br />
-                                &amp; Industry Knowledge
+                                Documentation
                             </h1>
 
                             <p>
-                                Practical guides, customs procedures,
-                                HS codes, GST, shipping documentation
-                                and import/export resources for trade
-                                professionals.
+                                Trade, customs, shipping
+                                and logistics knowledge.
                             </p>
+
                         </div>
+
+                    </div>
+
+
+                    <div className={styles.headerActions}>
+
+                        <Link
+                            href="/"
+                            className={styles.homeButton}
+                        >
+                            Home
+                        </Link>
+
 
                         {user && (
-                            <div className={styles.heroActions}>
-                                <Link
-                                    href="/documentation/create"
-                                    className={styles.createButton}
-                                >
-                                    + Create Documentation
-                                </Link>
-                            </div>
+
+                            <Link
+                                href="/documentation/create"
+                                className={styles.createButton}
+                            >
+                                <span>+</span>
+                                Create Documentation
+                            </Link>
+
                         )}
+
                     </div>
 
-                    {/* STATS */}
+                </header>
 
-                    <div className={styles.stats}>
-                        <div className={styles.stat}>
-                            <strong>
-                                {documents.length}
-                            </strong>
 
-                            <span>
-                                Documents
-                            </span>
-                        </div>
+                {/* ==================================================
+                    PAGE GRID
+                ================================================== */}
 
-                        <div className={styles.stat}>
-                            <strong>
-                                {categoryCount}
-                            </strong>
+                <div className={styles.layout}>
 
-                            <span>
-                                Categories
-                            </span>
-                        </div>
+                    {/* ==================================================
+                        MAIN CONTENT
+                    ================================================== */}
 
-                        <div className={styles.stat}>
-                            <strong>
-                                {knowledgeCount}
-                            </strong>
+                    <section className={styles.main}>
 
-                            <span>
-                                Knowledge Types
-                            </span>
-                        </div>
-                    </div>
-                </section>
-
-                {/* MAIN CONTENT */}
-
-                <div className={styles.contentGrid}>
-
-                    {/* LEFT */}
-
-                    <div className={styles.mainColumn}>
-
-                        {/* SEARCH */}
+                        {/* ==========================================
+                            SEARCH
+                        ========================================== */}
 
                         <form
                             onSubmit={handleSearch}
                             className={styles.searchBox}
                         >
-                            <div
-                                className={
-                                    styles.searchInputWrap
-                                }
-                            >
-                                <span
-                                    className={
-                                        styles.searchIcon
-                                    }
-                                    aria-hidden="true"
-                                >
+
+                            <div className={styles.searchInputWrap}>
+
+                                <span className={styles.searchIcon}>
                                     ⌕
                                 </span>
 
                                 <input
-                                    type="search"
+                                    type="text"
                                     value={search}
-                                    onChange={(event) =>
+                                    onChange={event =>
                                         setSearch(
                                             event.target.value
                                         )
                                     }
-                                    placeholder="Search documentation, customs, Bill of Entry, GST, HS Code..."
-                                    aria-label="Search documentation"
+                                    placeholder="Search documentation, customs, Bill of Entry, GST..."
                                 />
 
                                 {search && (
+
                                     <button
                                         type="button"
-                                        className={
-                                            styles.clearButton
-                                        }
+                                        className={styles.clearButton}
                                         onClick={clearSearch}
                                         aria-label="Clear search"
                                     >
                                         ×
                                     </button>
+
                                 )}
+
                             </div>
+
 
                             <button
                                 type="submit"
-                                className={
-                                    styles.searchButton
-                                }
+                                className={styles.searchButton}
                             >
                                 Search
                             </button>
+
                         </form>
 
-                        {/* SEARCH VALIDATION */}
+
+                        {/* ==========================================
+                            SEARCH VALIDATION
+                        ========================================== */}
 
                         {error &&
                             !loading &&
-                            isSearchValidationError && (
-                                <div
-                                    className={
-                                        styles.error
-                                    }
-                                >
+                            error.includes(
+                                'at least 2 characters'
+                            ) && (
+
+                                <div className={styles.validationError}>
                                     {error}
                                 </div>
+
                             )}
 
-                        {/* CATEGORIES */}
 
-                        <section
-                            className={
-                                styles.categorySection
-                            }
-                        >
-                            <div
-                                className={
-                                    styles.categoryHeader
-                                }
-                            >
-                                <span
-                                    className={
-                                        styles.sectionEyebrow
-                                    }
-                                >
-                                    Explore
-                                </span>
+                        {/* ==========================================
+                            CATEGORIES
+                        ========================================== */}
 
-                                <h2>
-                                    Browse by Category
-                                </h2>
+                        <section className={styles.categorySection}>
 
-                                <p>
-                                    Find practical knowledge
-                                    by trade area.
-                                </p>
+                            <div className={styles.sectionIntro}>
+
+                                <div>
+
+                                    <span>
+                                        EXPLORE
+                                    </span>
+
+                                    <h2>
+                                        Browse by Category
+                                    </h2>
+
+                                    <p>
+                                        Find practical knowledge
+                                        by trade area.
+                                    </p>
+
+                                </div>
+
                             </div>
 
-                            <div
-                                className={
-                                    styles.categories
-                                }
-                            >
-                                {CATEGORIES.map(
-                                    (category) => (
+
+                            <div className={styles.categories}>
+
+                                {categories.map(
+                                    category => (
+
                                         <button
                                             key={category}
                                             type="button"
                                             onClick={() =>
-                                                handleCategoryChange(
+                                                handleCategory(
                                                     category
                                                 )
                                             }
                                             className={
                                                 activeCategory ===
                                                 category
-                                                    ? `${styles.categoryButton} ${styles.activeCategory}`
+                                                    ? styles.activeCategory
                                                     : styles.categoryButton
-                                            }
-                                            aria-pressed={
-                                                activeCategory ===
-                                                category
                                             }
                                         >
                                             {category}
                                         </button>
+
                                     )
                                 )}
+
                             </div>
+
                         </section>
 
-                        {/* FEATURED */}
+
+                        {/* ==========================================
+                            FEATURED
+                        ========================================== */}
 
                         {featuredDocuments.length > 0 && (
+
                             <section
                                 className={
                                     styles.featuredSection
                                 }
                             >
+
                                 <div
                                     className={
                                         styles.sectionHeader
                                     }
                                 >
+
                                     <div>
-                                        <span
-                                            className={
-                                                styles.sectionEyebrow
-                                            }
-                                        >
-                                            Editor's Pick
+
+                                        <span>
+                                            EDITOR'S PICK
                                         </span>
 
                                         <h2>
@@ -604,117 +808,127 @@ export default function DocumentationPage() {
                                         </h2>
 
                                         <p>
-                                            Useful resources
-                                            selected for the
-                                            LynkToday community.
+                                            Useful resources selected
+                                            for the LynkToday community.
                                         </p>
+
                                     </div>
+
                                 </div>
+
 
                                 <div
                                     className={
                                         styles.featuredGrid
                                     }
                                 >
-                                    {featuredDocuments.map(
-                                        (document) => {
-                                            const id =
-                                                getDocumentId(
-                                                    document
-                                                );
 
-                                            return (
-                                                <Link
-                                                    key={id}
-                                                    href={getDocumentUrl(
-                                                        document
-                                                    )}
+                                    {featuredDocuments.map(
+                                        document => (
+
+                                            <Link
+                                                key={
+                                                    document._id ||
+                                                    document.id
+                                                }
+                                                href={
+                                                    `/documentation/${
+                                                        document._id ||
+                                                        document.id
+                                                    }`
+                                                }
+                                                className={
+                                                    styles.featuredCard
+                                                }
+                                            >
+
+                                                <div
                                                     className={
-                                                        styles.featuredCard
+                                                        styles.featuredTop
                                                     }
                                                 >
-                                                    <div
-                                                        className={
-                                                            styles.featuredTop
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.featuredBadge
-                                                            }
-                                                        >
-                                                            FEATURED
-                                                        </span>
 
-                                                        <span
-                                                            className={
-                                                                styles.featuredType
-                                                            }
-                                                        >
-                                                            {document.documentType ||
-                                                                'GUIDE'}
-                                                        </span>
-                                                    </div>
+                                                    <span>
+                                                        FEATURED
+                                                    </span>
 
-                                                    <div
-                                                        className={
-                                                            styles.featuredIcon
-                                                        }
-                                                        aria-hidden="true"
-                                                    >
-                                                        📘
-                                                    </div>
+                                                    <small>
+                                                        {document.documentType ||
+                                                            'GUIDE'}
+                                                    </small>
 
-                                                    <h3>
-                                                        {document.title}
-                                                    </h3>
+                                                </div>
 
-                                                    <p>
-                                                        {document.description ||
-                                                            'Practical trade knowledge for professionals.'}
-                                                    </p>
 
-                                                    <div
-                                                        className={
-                                                            styles.featuredMeta
-                                                        }
-                                                    >
-                                                        <span>
-                                                            {document.category ||
-                                                                'General'}
-                                                        </span>
+                                                <div
+                                                    className={
+                                                        styles.featuredIcon
+                                                    }
+                                                >
+                                                    📖
+                                                </div>
 
-                                                        <strong>
-                                                            Read Guide →
-                                                        </strong>
-                                                    </div>
-                                                </Link>
-                                            );
-                                        }
+
+                                                <h3>
+                                                    {document.title}
+                                                </h3>
+
+
+                                                <p>
+                                                    {document.description ||
+                                                        'Practical trade and industry documentation.'}
+                                                </p>
+
+
+                                                <div
+                                                    className={
+                                                        styles.cardMeta
+                                                    }
+                                                >
+
+                                                    <span>
+                                                        {document.category ||
+                                                            'General'}
+                                                    </span>
+
+                                                    <strong>
+                                                        Read Guide →
+                                                    </strong>
+
+                                                </div>
+
+                                            </Link>
+
+                                        )
                                     )}
+
                                 </div>
+
                             </section>
+
                         )}
 
-                        {/* DOCUMENT LIST */}
+
+                        {/* ==========================================
+                            DOCUMENT LIST
+                        ========================================== */}
 
                         <section
                             className={
                                 styles.listSection
                             }
                         >
+
                             <div
                                 className={
                                     styles.sectionHeader
                                 }
                             >
+
                                 <div>
-                                    <span
-                                        className={
-                                            styles.sectionEyebrow
-                                        }
-                                    >
-                                        Knowledge Library
+
+                                    <span>
+                                        KNOWLEDGE LIBRARY
                                     </span>
 
                                     <h2>
@@ -723,76 +937,76 @@ export default function DocumentationPage() {
                                             : 'All Documentation'}
                                     </h2>
 
-                                    <p>
-                                        {activeCategory !==
-                                            'All' &&
-                                        !submittedSearch
-                                            ? `Showing ${activeCategory} documentation.`
-                                            : 'Explore guides, procedures, references and resources for the trade industry.'}
-                                    </p>
+                                    {activeCategory !== 'All' &&
+                                        !submittedSearch && (
+
+                                            <p>
+                                                Category:{' '}
+                                                <strong>
+                                                    {activeCategory}
+                                                </strong>
+                                            </p>
+
+                                        )}
+
                                 </div>
 
-                                {submittedSearch && (
-                                    <button
-                                        type="button"
-                                        className={
-                                            styles.clearFilterButton
-                                        }
-                                        onClick={clearSearch}
-                                    >
-                                        Clear Search
-                                    </button>
-                                )}
                             </div>
 
-                            {/* LOADING */}
+
+                            {/* ======================================
+                                LOADING
+                            ====================================== */}
 
                             {loading && (
+
                                 <div
                                     className={
-                                        styles.message
+                                        styles.loadingCard
                                     }
                                 >
+
                                     <div
                                         className={
                                             styles.spinner
                                         }
-                                        aria-label="Loading"
                                     />
 
-                                    <h3>
-                                        Loading documentation
-                                    </h3>
-
                                     <p>
-                                        Preparing the latest
-                                        trade knowledge.
+                                        Loading documentation...
                                     </p>
+
                                 </div>
+
                             )}
 
-                            {/* ERROR */}
+
+                            {/* ======================================
+                                ERROR
+                            ====================================== */}
 
                             {!loading &&
                                 error &&
-                                !isSearchValidationError && (
+                                !error.includes(
+                                    'at least 2 characters'
+                                ) && (
+
                                     <div
                                         className={
-                                            styles.errorState
+                                            styles.errorCard
                                         }
                                     >
+
                                         <div
                                             className={
                                                 styles.errorIcon
                                             }
-                                            aria-hidden="true"
                                         >
                                             !
                                         </div>
 
                                         <h3>
-                                            Unable to load
-                                            documentation
+                                            Unable to load documentation
                                         </h3>
 
                                         <p>
@@ -801,36 +1015,35 @@ export default function DocumentationPage() {
 
                                         <button
                                             type="button"
+                                            onClick={handleRetry}
                                             className={
                                                 styles.retryButton
-                                            }
-                                            onClick={
-                                                handleRetry
                                             }
                                         >
                                             Try Again
                                         </button>
+
                                     </div>
+
                                 )}
 
-                            {/* EMPTY */}
+
+                            {/* ======================================
+                                EMPTY
+                            ====================================== */}
 
                             {!loading &&
                                 !error &&
-                                displayedDocuments.length ===
-                                    0 && (
+                                displayedDocuments.length === 0 && (
+
                                     <div
                                         className={
                                             styles.empty
                                         }
                                     >
-                                        <div
-                                            className={
-                                                styles.emptyIcon
-                                            }
-                                            aria-hidden="true"
-                                        >
-                                            🔎
+
+                                        <div className={styles.emptyIcon}>
+                                            📚
                                         </div>
 
                                         <h3>
@@ -842,260 +1055,561 @@ export default function DocumentationPage() {
                                             or category.
                                         </p>
 
-                                        <div
-                                            className={
-                                                styles.emptyActions
-                                            }
-                                        >
-                                            <button
-                                                type="button"
+
+                                        {user && (
+
+                                            <Link
+                                                href="/documentation/create"
                                                 className={
-                                                    styles.secondaryButton
-                                                }
-                                                onClick={
-                                                    handleShowAll
+                                                    styles.emptyCreateButton
                                                 }
                                             >
-                                                Show All
-                                            </button>
+                                                + Create Documentation
+                                            </Link>
 
-                                            {user && (
-                                                <Link
-                                                    href="/documentation/create"
-                                                    className={
-                                                        styles.createButton
-                                                    }
-                                                >
-                                                    Create Documentation
-                                                </Link>
-                                            )}
-                                        </div>
+                                        )}
+
                                     </div>
+
                                 )}
 
-                            {/* DOCUMENTS */}
+
+                            {/* ======================================
+                                DOCUMENTS
+                            ====================================== */}
 
                             {!loading &&
                                 !error &&
-                                displayedDocuments.length >
-                                    0 && (
+                                displayedDocuments.length > 0 && (
+
                                     <div
                                         className={
                                             styles.documentList
                                         }
                                     >
-                                        {displayedDocuments.map(
-                                            (document) => {
-                                                const id =
-                                                    getDocumentId(
-                                                        document
-                                                    );
 
-                                                return (
-                                                    <Link
-                                                        key={id}
-                                                        href={getDocumentUrl(
-                                                            document
-                                                        )}
+                                        {displayedDocuments.map(
+                                            document => (
+
+                                                <Link
+                                                    key={
+                                                        document._id ||
+                                                        document.id
+                                                    }
+                                                    href={
+                                                        `/documentation/${
+                                                            document._id ||
+                                                            document.id
+                                                        }`
+                                                    }
+                                                    className={
+                                                        styles.documentCard
+                                                    }
+                                                >
+
+                                                    <div
                                                         className={
-                                                            styles.documentCard
+                                                            styles.documentIcon
                                                         }
                                                     >
-                                                        <div
-                                                            className={
-                                                                styles.documentIcon
-                                                            }
-                                                            aria-hidden="true"
-                                                        >
-                                                            📄
-                                                        </div>
+                                                        📄
+                                                    </div>
+
+
+                                                    <div
+                                                        className={
+                                                            styles.documentBody
+                                                        }
+                                                    >
 
                                                         <div
                                                             className={
-                                                                styles.documentBody
+                                                                styles.documentTop
                                                             }
                                                         >
+
                                                             <div
                                                                 className={
-                                                                    styles.documentTop
+                                                                    styles.badges
                                                                 }
                                                             >
-                                                                <div
-                                                                    className={
-                                                                        styles.badges
-                                                                    }
-                                                                >
-                                                                    <span
-                                                                        className={
-                                                                            styles.type
-                                                                        }
-                                                                    >
-                                                                        {document.documentType ||
-                                                                            'DOCUMENT'}
-                                                                    </span>
-
-                                                                    <span
-                                                                        className={
-                                                                            styles.categoryBadge
-                                                                        }
-                                                                    >
-                                                                        {document.category ||
-                                                                            'General'}
-                                                                    </span>
-
-                                                                    {document.isFeatured && (
-                                                                        <span
-                                                                            className={
-                                                                                styles.featuredBadge
-                                                                            }
-                                                                        >
-                                                                            Featured
-                                                                        </span>
-                                                                    )}
-                                                                </div>
 
                                                                 <span
                                                                     className={
-                                                                        styles.cardArrow
+                                                                        styles.type
                                                                     }
-                                                                    aria-hidden="true"
                                                                 >
-                                                                    →
-                                                                </span>
-                                                            </div>
-
-                                                            <h3>
-                                                                {
-                                                                    document.title
-                                                                }
-                                                            </h3>
-
-                                                            <p>
-                                                                {document.description ||
-                                                                    'Trade, customs, shipping and logistics knowledge.'}
-                                                            </p>
-
-                                                            <div
-                                                                className={
-                                                                    styles.documentMeta
-                                                                }
-                                                            >
-                                                                <span>
-                                                                    {document.category ||
-                                                                        'General'}
+                                                                    {document.documentType ||
+                                                                        'DOCUMENT'}
                                                                 </span>
 
-                                                                <span>
-                                                                    {document.views ||
-                                                                        0}{' '}
-                                                                    views
-                                                                </span>
-                                                            </div>
 
-                                                            {Array.isArray(
-                                                                document.tags
-                                                            ) &&
-                                                                document
-                                                                    .tags
-                                                                    .length >
-                                                                    0 && (
-                                                                    <div
+                                                                {document.isFeatured && (
+
+                                                                    <span
                                                                         className={
-                                                                            styles.tags
+                                                                            styles.featuredBadge
                                                                         }
                                                                     >
-                                                                        {document.tags
-                                                                            .slice(
-                                                                                0,
-                                                                                4
-                                                                            )
-                                                                            .map(
-                                                                                (
-                                                                                    tag
-                                                                                ) => (
-                                                                                    <span
-                                                                                        key={
-                                                                                            tag
-                                                                                        }
-                                                                                    >
-                                                                                        #
-                                                                                        {
-                                                                                            tag
-                                                                                        }
-                                                                                    </span>
-                                                                                )
-                                                                            )}
-                                                                    </div>
+                                                                        FEATURED
+                                                                    </span>
+
                                                                 )}
+
+                                                            </div>
+
+
+                                                            <span
+                                                                className={
+                                                                    styles.arrow
+                                                                }
+                                                            >
+                                                                →
+                                                            </span>
+
                                                         </div>
-                                                    </Link>
-                                                );
-                                            }
+
+
+                                                        <h3>
+                                                            {document.title}
+                                                        </h3>
+
+
+                                                        <p>
+                                                            {document.description ||
+                                                                'No description available.'}
+                                                        </p>
+
+
+                                                        <div
+                                                            className={
+                                                                styles.documentMeta
+                                                            }
+                                                        >
+
+                                                            <span>
+                                                                {document.category ||
+                                                                    'General'}
+                                                            </span>
+
+                                                            <span>
+                                                                {document.views ||
+                                                                    0}{' '}
+                                                                views
+                                                            </span>
+
+                                                        </div>
+
+
+                                                        {Array.isArray(
+                                                            document.tags
+                                                        ) &&
+                                                            document.tags.length >
+                                                            0 && (
+
+                                                                <div
+                                                                    className={
+                                                                        styles.tags
+                                                                    }
+                                                                >
+
+                                                                    {document.tags
+                                                                        .slice(
+                                                                            0,
+                                                                            4
+                                                                        )
+                                                                        .map(
+                                                                            tag => (
+
+                                                                                <span
+                                                                                    key={
+                                                                                        tag
+                                                                                    }
+                                                                                >
+                                                                                    #
+                                                                                    {tag}
+                                                                                </span>
+
+                                                                            )
+                                                                        )}
+
+                                                                </div>
+
+                                                            )}
+
+                                                    </div>
+
+                                                </Link>
+
+                                            )
                                         )}
+
                                     </div>
+
                                 )}
 
-                            {/* PAGINATION */}
+
+                            {/* ======================================
+                                PAGINATION
+                            ====================================== */}
 
                             {!loading &&
                                 !error &&
-                                displayedDocuments.length >
-                                    0 &&
+                                displayedDocuments.length > 0 &&
                                 totalPages > 1 && (
+
                                     <div
                                         className={
                                             styles.pagination
                                         }
                                     >
+
                                         <button
                                             type="button"
-                                            disabled={
-                                                page <= 1
-                                            }
+                                            disabled={page <= 1}
                                             onClick={() =>
                                                 setPage(
-                                                    (current) =>
-                                                        current - 1
+                                                    previousPage =>
+                                                        previousPage - 1
                                                 )
                                             }
                                         >
-                                            Previous
+                                            ← Previous
                                         </button>
+
 
                                         <span>
-                                            Page {page} of{' '}
-                                            {totalPages}
+                                            Page {page} of {totalPages}
                                         </span>
+
 
                                         <button
                                             type="button"
                                             disabled={
-                                                page >=
-                                                totalPages
+                                                page >= totalPages
                                             }
                                             onClick={() =>
                                                 setPage(
-                                                    (current) =>
-                                                        current + 1
+                                                    previousPage =>
+                                                        previousPage + 1
                                                 )
                                             }
                                         >
-                                            Next
+                                            Next →
                                         </button>
+
                                     </div>
+
                                 )}
+
                         </section>
-                    </div>
 
-                    {/* RIGHT SIDEBAR */}
+                    </section>
 
-                    <aside
-                        className={styles.sidebar}
-                    >
-                        <RightSidebar />
+
+                    {/* ==================================================
+                        RIGHT SIDEBAR
+                    ================================================== */}
+
+                    <aside className={styles.sidebar}>
+
+                        {/* ==========================================
+                            CREATE DOCUMENTATION
+                        ========================================== */}
+
+                        {user && (
+
+                            <div
+                                className={
+                                    styles.contributeCard
+                                }
+                            >
+
+                                <div
+                                    className={
+                                        styles.contributeIcon
+                                    }
+                                >
+                                    ✦
+                                </div>
+
+                                <h3>
+                                    Share your knowledge
+                                </h3>
+
+                                <p>
+                                    Help freight forwarding and
+                                    trade professionals by sharing
+                                    practical knowledge.
+                                </p>
+
+                                <Link
+                                    href="/documentation/create"
+                                    className={
+                                        styles.sidebarCreateButton
+                                    }
+                                >
+                                    + Create Documentation
+                                </Link>
+
+                            </div>
+
+                        )}
+
+
+                        {/* ==========================================
+                            QUICK ACCESS
+                        ========================================== */}
+
+                        <div className={styles.sidebarCard}>
+
+                            <div
+                                className={
+                                    styles.sidebarHeader
+                                }
+                            >
+
+                                <div>
+
+                                    <span>
+                                        EXPLORE
+                                    </span>
+
+                                    <h3>
+                                        Quick Access
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                className={
+                                    styles.quickLinks
+                                }
+                            >
+
+                                {[
+                                    ['All', 'All Documentation'],
+                                    ['Customs', 'Customs'],
+                                    ['Import', 'Import'],
+                                    ['Export', 'Export'],
+                                    ['GST', 'GST'],
+                                    ['HS Code', 'HS Code'],
+                                    ['Shipping', 'Shipping']
+                                ].map(
+                                    ([category, label]) => (
+
+                                        <button
+                                            key={category}
+                                            type="button"
+                                            className={
+                                                activeCategory ===
+                                                category
+                                                    ? styles.quickLinkActive
+                                                    : styles.quickLink
+                                            }
+                                            onClick={() =>
+                                                handleCategory(
+                                                    category
+                                                )
+                                            }
+                                        >
+
+                                            <span>
+                                                {label}
+                                            </span>
+
+                                            <span>
+                                                →
+                                            </span>
+
+                                        </button>
+
+                                    )
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        {/* ==========================================
+                            RECENT DOCUMENTS
+                        ========================================== */}
+
+                        <div className={styles.sidebarCard}>
+
+                            <div
+                                className={
+                                    styles.sidebarHeader
+                                }
+                            >
+
+                                <div>
+
+                                    <span>
+                                        RECENT
+                                    </span>
+
+                                    <h3>
+                                        Recent Documents
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+
+                            {recentDocuments.length > 0 ? (
+
+                                <div
+                                    className={
+                                        styles.recentList
+                                    }
+                                >
+
+                                    {recentDocuments.map(
+                                        document => (
+
+                                            <Link
+                                                key={
+                                                    document._id ||
+                                                    document.id
+                                                }
+                                                href={
+                                                    `/documentation/${
+                                                        document._id ||
+                                                        document.id
+                                                    }`
+                                                }
+                                                className={
+                                                    styles.recentItem
+                                                }
+                                            >
+
+                                                <div
+                                                    className={
+                                                        styles.recentIcon
+                                                    }
+                                                >
+                                                    📄
+                                                </div>
+
+                                                <div
+                                                    className={
+                                                        styles.recentBody
+                                                    }
+                                                >
+
+                                                    <strong>
+                                                        {document.title}
+                                                    </strong>
+
+                                                    <span>
+                                                        {document.category ||
+                                                            'General'}
+                                                    </span>
+
+                                                </div>
+
+                                            </Link>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.sidebarEmpty
+                                    }
+                                >
+                                    No recent documents.
+                                </div>
+
+                            )}
+
+                        </div>
+
+
+                        {/* ==========================================
+                            CATEGORIES
+                        ========================================== */}
+
+                        <div className={styles.sidebarCard}>
+
+                            <div
+                                className={
+                                    styles.sidebarHeader
+                                }
+                            >
+
+                                <div>
+
+                                    <span>
+                                        TOPICS
+                                    </span>
+
+                                    <h3>
+                                        Documentation Areas
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                className={
+                                    styles.topicCloud
+                                }
+                            >
+
+                                {categories
+                                    .filter(
+                                        category =>
+                                            category !== 'All'
+                                    )
+                                    .map(
+                                        category => (
+
+                                            <button
+                                                key={category}
+                                                type="button"
+                                                onClick={() =>
+                                                    handleCategory(
+                                                        category
+                                                    )
+                                                }
+                                                className={
+                                                    activeCategory ===
+                                                    category
+                                                        ? styles.topicActive
+                                                        : styles.topic
+                                                }
+                                            >
+                                                {category}
+                                            </button>
+
+                                        )
+                                    )}
+
+                            </div>
+
+                        </div>
+
                     </aside>
+
                 </div>
+
             </div>
+
         </main>
+
     );
+
 }

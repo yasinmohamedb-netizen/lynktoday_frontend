@@ -1,162 +1,101 @@
-/* ==========================================
-   WRAPPER
-========================================== */
-
-.wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ==========================================
-   AVATAR
-========================================== */
-
-.avatar,
-.image {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
-.avatar {
-    background: linear-gradient(135deg, #0F4C81, #2563EB);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-weight: 700;
-    text-transform: uppercase;
-    user-select: none;
-    border: 2px solid #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,.12);
-}
-
-.image {
-    object-fit: cover;
-    border: 2px solid #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,.12);
-}
-
-/* ==========================================
-   VERIFIED BADGE
-========================================== */
-
-.verify {
-    position: absolute;
-    right: -2px;
-    bottom: -2px;
-
-    width: 18px;
-    height: 18px;
-
-    background: #2563EB;
-    color: white;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 2px solid white;
-
-    font-size: 10px;
-    font-weight: bold;
-}
-
-/* ==========================================
-   SIZES
-========================================== */
-
-.small {
-    width: 36px;
-    height: 36px;
-}
-
-.small .avatar {
-    font-size: 14px;
-}
-
-.medium {
-    width: 50px;
-    height: 50px;
-}
-
-.medium .avatar {
-    font-size: 20px;
-}
-
-.large {
-    width: 70px;
-    height: 70px;
-}
-
-.large .avatar {
-    font-size: 28px;
-}
-
-.xlarge {
-    width: 110px;
-    height: 110px;
-}
-
-.xlarge .avatar {
-    font-size: 40px;
-}
-
-/* ==========================================
-   HOVER
-========================================== */
-
-.wrapper:hover .avatar,
-.wrapper:hover .image {
-    transform: scale(1.05);
-    transition: transform .25s ease;
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width:768px) {
-
-    .large {
-        width: 60px;
-        height: 60px;
-    }
-
-    .large .avatar {
-        font-size: 24px;
-    }
-
-    .xlarge {
-        width: 90px;
-        height: 90px;
-    }
-
-    .xlarge .avatar {
-        font-size: 34px;
-    }
-
-}
-
-@media (max-width:480px) {
-
-    .medium {
-        width: 44px;
-        height: 44px;
-    }
-
-    .medium .avatar {
-        font-size: 18px;
-    }
-
-    .verify {
-        width: 16px;
-        height: 16px;
-        font-size: 9px;
-    }
-
-}
+.wrapper{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  
+  .avatar,
+  .image{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    border:2px solid #fff;
+    box-shadow:0 4px 10px rgba(0,0,0,.12);
+  }
+  
+  .avatar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--primary-color);
+    color:#fff;
+    font-weight:700;
+    text-transform:uppercase;
+    user-select:none;
+  }
+  
+  .image{
+    object-fit:cover;
+  }
+  
+  .verify{
+    position:absolute;
+    right:-2px;
+    bottom:-2px;
+    width:18px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    border:2px solid #fff;
+    border-radius:50%;
+    background:var(--primary-color);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+  }
+  
+  .small{
+    width:36px;
+    height:36px;
+  }
+  
+  .medium{
+    width:50px;
+    height:50px;
+  }
+  
+  .large{
+    width:70px;
+    height:70px;
+  }
+  
+  .xlarge{
+    width:110px;
+    height:110px;
+  }
+  
+  .small .avatar{font-size:14px}
+  .medium .avatar{font-size:20px}
+  .large .avatar{font-size:28px}
+  .xlarge .avatar{font-size:40px}
+  
+  .wrapper:hover .avatar,
+  .wrapper:hover .image{
+    transform:scale(1.05);
+  }
+  
+  .avatar,
+  .image{
+    transition:transform .2s ease;
+  }
+  
+  @media(max-width:768px){
+    .large{width:60px;height:60px}
+    .large .avatar{font-size:24px}
+    .xlarge{width:90px;height:90px}
+    .xlarge .avatar{font-size:34px}
+  }
+  
+  @media(max-width:480px){
+    .medium{width:44px;height:44px}
+    .medium .avatar{font-size:18px}
+    .verify{width:16px;height:16px;font-size:9px}
+  }
+  
+  @media(prefers-reduced-motion:reduce){
+    .avatar,
+    .image{transition:none}
+  }

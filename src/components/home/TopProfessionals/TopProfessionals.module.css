@@ -1,152 +1,119 @@
-/* ==========================================
-   CARD
-========================================== */
-
 .card {
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,.04);
-}
-
-/* ==========================================
-   HEADER
-========================================== */
-
-.header {
+  }
+  
+  .header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
-}
-
-.header h3 {
-    font-size: 18px;
+  }
+  
+  .header h3 {
+    margin: 0;
     color: #111827;
+    font-size: 18px;
     font-weight: 700;
-}
-
-.header a {
-    text-decoration: none;
-    color: #0F4C81;
+  }
+  
+  .header a {
+    color: #0f4c81;
+    font-size: 14px;
     font-weight: 600;
-    font-size: 14px;
-}
-
-.header a:hover {
+    text-decoration: none;
+  }
+  
+  .header a:hover {
     text-decoration: underline;
-}
-
-/* ==========================================
-   EMPTY
-========================================== */
-
-.empty {
-    text-align: center;
+  }
+  
+  .empty {
     padding: 30px 10px;
-    color: #6B7280;
+    color: #6b7280;
     font-size: 14px;
-}
-
-/* ==========================================
-   PROFESSIONAL
-========================================== */
-
-.person {
+    text-align: center;
+  }
+  
+  .person {
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 16px 0;
-    border-bottom: 1px solid #F3F4F6;
-}
-
-.person:last-child {
-    border-bottom: none;
-}
-
-/* ==========================================
-   AVATAR
-========================================== */
-
-.avatar {
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .person:last-child {
+    border-bottom: 0;
+  }
+  
+  .avatar {
     width: 54px;
     height: 54px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
     border-radius: 50%;
-    background: linear-gradient(135deg,#0F4C81,#2563EB);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: linear-gradient(135deg,#0f4c81,#2563eb);
+    color: #fff;
     font-size: 20px;
     font-weight: 700;
-    flex-shrink: 0;
-}
-
-/* ==========================================
-   INFO
-========================================== */
-
-.info {
+  }
+  
+  .info {
     flex: 1;
-}
-
-.info h4 {
-    font-size: 15px;
+    min-width: 0;
+  }
+  
+  .info h4,
+  .info p {
+    margin: 0 0 4px;
+  }
+  
+  .info h4 {
     color: #111827;
-    margin-bottom: 4px;
-}
-
-.info p {
-    color: #6B7280;
+    font-size: 15px;
+  }
+  
+  .info p {
+    color: #6b7280;
     font-size: 13px;
-    margin-bottom: 3px;
-}
-
-.info span {
-    color: #9CA3AF;
+  }
+  
+  .info span {
+    color: #9ca3af;
     font-size: 12px;
-}
-
-/* ==========================================
-   FOLLOW BUTTON
-========================================== */
-
-.followBtn {
-    border: none;
-    background: #EFF6FF;
-    color: #0F4C81;
+  }
+  
+  .followBtn {
     padding: 8px 14px;
+    border: 0;
     border-radius: 999px;
-    cursor: pointer;
+    background: #eff6ff;
+    color: #0f4c81;
     font-size: 13px;
     font-weight: 600;
-    transition: .25s;
-}
-
-.followBtn:hover {
-    background: #DBEAFE;
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width:768px) {
-
-    .person {
-        gap: 10px;
-    }
-
+    cursor: pointer;
+  }
+  
+  .followBtn:hover {
+    background: #dbeafe;
+  }
+  
+  @media (max-width: 768px) {
+    .person { gap: 10px; }
+  
     .avatar {
-        width: 46px;
-        height: 46px;
-        font-size: 18px;
+      width: 46px;
+      height: 46px;
+      font-size: 18px;
     }
-
+  
     .followBtn {
-        padding: 7px 12px;
-        font-size: 12px;
+      padding: 7px 12px;
+      font-size: 12px;
     }
-
-}
+  }

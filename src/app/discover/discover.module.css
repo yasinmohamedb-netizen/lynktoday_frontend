@@ -116,8 +116,8 @@
   font-size: 14px;
 
   transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .searchInput::placeholder {
@@ -131,10 +131,10 @@
 .searchInput:focus {
   outline: none;
 
-  border-color: #2563eb;
+  border-color: #3B5B7A;
 
   box-shadow:
-      0 0 0 3px rgba(37, 99, 235, 0.08);
+    0 0 0 3px rgba(59, 91, 122, 0.10);
 }
 
 
@@ -187,8 +187,8 @@
   cursor: pointer;
 
   transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .filterGroup select:hover {
@@ -198,10 +198,10 @@
 .filterGroup select:focus {
   outline: none;
 
-  border-color: #2563eb;
+  border-color: #3B5B7A;
 
   box-shadow:
-      0 0 0 3px rgba(37, 99, 235, 0.08);
+    0 0 0 3px rgba(59, 91, 122, 0.10);
 }
 
 
@@ -216,7 +216,7 @@
 
   background: transparent;
 
-  color: #2563eb;
+  color: #3B5B7A;
 
   font-size: 13px;
   font-weight: 600;
@@ -225,6 +225,8 @@
 }
 
 .clearButton:hover {
+  color: #2F4A63;
+
   text-decoration: underline;
 }
 
@@ -251,7 +253,7 @@
   display: grid;
 
   grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    repeat(2, minmax(0, 1fr));
 
   gap: 16px;
 }
@@ -268,16 +270,16 @@
   overflow: hidden;
 
   transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .userCard:hover {
   border-color: #cbd5e1;
 
   box-shadow:
-      0 8px 24px rgba(15, 23, 42, 0.07);
+    0 8px 24px rgba(15, 23, 42, 0.07);
 
   transform: translateY(-2px);
 }
@@ -314,7 +316,7 @@
   border: 3px solid #ffffff;
 
   box-shadow:
-      0 2px 8px rgba(15, 23, 42, 0.12);
+    0 2px 8px rgba(15, 23, 42, 0.12);
 }
 
 .avatarPlaceholder {
@@ -324,11 +326,11 @@
   justify-content: center;
 
   background:
-      linear-gradient(
-          135deg,
-          #0f4c81,
-          #2563eb
-      );
+    linear-gradient(
+      135deg,
+      #3B5B7A,
+      #2F4A63
+    );
 
   color: #ffffff;
 
@@ -352,7 +354,7 @@
 
   background: #eff6ff;
 
-  color: #1d4ed8;
+  color: #3B5B7A;
 
   font-size: 11px;
   font-weight: 700;
@@ -520,9 +522,9 @@
   font-weight: 600;
 
   transition:
-      background 0.2s ease,
-      border-color 0.2s ease,
-      color 0.2s ease;
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .viewProfileButton:hover {
@@ -530,7 +532,7 @@
 
   border-color: #bfc9d6;
 
-  color: #111827;
+  color: #3B5B7A;
 }
 
 
@@ -577,7 +579,7 @@
 
   border: 3px solid #e2e8f0;
 
-  border-top-color: #2563eb;
+  border-top-color: #3B5B7A;
 
   border-radius: 50%;
 
@@ -587,7 +589,7 @@
 @keyframes spin {
 
   to {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 
 }
@@ -647,7 +649,7 @@
 
   background: #ffffff;
 
-  color: #2563eb;
+  color: #3B5B7A;
 
   font-size: 13px;
   font-weight: 600;
@@ -657,6 +659,10 @@
 
 .clearEmptyButton:hover {
   background: #f8fafc;
+
+  border-color: #bfc9d6;
+
+  color: #2F4A63;
 }
 
 
@@ -695,7 +701,7 @@
 
   border-radius: 7px;
 
-  background: #2563eb;
+  background: #3B5B7A;
 
   color: #ffffff;
 
@@ -706,7 +712,7 @@
 }
 
 .retryButton:hover {
-  background: #1d4ed8;
+  background: #2F4A63;
 }
 
 
@@ -715,14 +721,14 @@
 @media (max-width: 1250px) {
 
   .container {
-      grid-template-columns:
-          240px minmax(0, 1fr);
+    grid-template-columns:
+      240px minmax(0, 1fr);
 
-      max-width: 1100px;
+    max-width: 1100px;
   }
 
   .right {
-      display: none;
+    display: none;
   }
 
 }
@@ -731,17 +737,17 @@
 @media (max-width: 900px) {
 
   .container {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
 
-      padding: 15px;
+    padding: 15px;
   }
 
   .left {
-      display: none;
+    display: none;
   }
 
   .userGrid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 
 }
@@ -750,27 +756,27 @@
 @media (max-width: 600px) {
 
   .container {
-      padding: 12px;
+    padding: 12px;
   }
 
   .pageHeader {
-      padding: 18px;
+    padding: 18px;
   }
 
   .pageHeader h1 {
-      font-size: 21px;
+    font-size: 21px;
   }
 
   .searchCard {
-      padding: 14px;
+    padding: 14px;
   }
 
   .filters {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 
   .cardFooter {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 
 }

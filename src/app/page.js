@@ -15,38 +15,22 @@ export default function HomePage() {
 
     useEffect(() => {
         try {
-            const storedUser =
-                localStorage.getItem('lynktoday_user');
+            const storedUser = localStorage.getItem('lynktoday_user');
+            const token = localStorage.getItem('lynktoday_token');
 
-            const storedToken =
-                localStorage.getItem('lynktoday_token');
-
-            if (!storedUser || !storedToken) {
+            if (!storedUser || !token) {
                 setUser(null);
                 return;
             }
 
             try {
-                const parsedUser = JSON.parse(storedUser);
-
-                setUser(parsedUser);
-            } catch (error) {
-                console.error(
-                    'Failed to parse stored user:',
-                    error
-                );
-
+                setUser(JSON.parse(storedUser));
+            } catch {
                 localStorage.removeItem('lynktoday_user');
                 localStorage.removeItem('lynktoday_token');
-
                 setUser(null);
             }
-        } catch (error) {
-            console.error(
-                'Failed to check authentication:',
-                error
-            );
-
+        } catch {
             setUser(null);
         } finally {
             setAuthChecked(true);
@@ -57,20 +41,14 @@ export default function HomePage() {
         return (
             <main className={styles.container}>
                 <section className={styles.center}>
-                    <div className={styles.loading}>
-                        Loading...
-                    </div>
+                    <div className={styles.loading}>Loading...</div>
                 </section>
             </main>
         );
     }
 
     return (
-        <main
-            className={`${styles.container} ${
-                !user ? styles.loggedOut : ''
-            }`}
-        >
+        <main className={`${styles.container} ${!user ? styles.loggedOut : ''}`}>
             {user && (
                 <aside className={styles.left}>
                     <LeftSidebar />
@@ -79,7 +57,6 @@ export default function HomePage() {
 
             <section className={styles.center}>
                 {user && <CreatePost />}
-
                 <Feed />
             </section>
 
