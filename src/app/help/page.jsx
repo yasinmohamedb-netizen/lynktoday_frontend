@@ -15,26 +15,31 @@ export default function HelpPage() {
             answer:
                 'Go to My Profile from the left sidebar. You can update your name, profession, company, profile image and other available profile information.'
         },
+
         {
             question: 'How do I create a post?',
             answer:
                 'Use the Create Post section on the home page. You can create discussions, questions and other supported post types.'
         },
+
         {
             question: 'How can I save a post?',
             answer:
                 'Open the post and use the Save option. Your saved posts can be accessed from Saved Posts in the left sidebar.'
         },
+
         {
             question: 'How do I find customs or HS Code information?',
             answer:
                 'Use the Documentation, HS Codes and search features available on LynkToday to find relevant trade and customs information.'
         },
+
         {
             question: 'How do I change my password?',
             answer:
                 'Go to Settings → Privacy & Security → Change Password.'
         },
+
         {
             question: 'How do I delete my account?',
             answer:
@@ -94,8 +99,6 @@ export default function HelpPage() {
             {/* ==================================================
                 SEARCH
             ================================================== */}
-
-            
 
 
             {/* ==================================================
@@ -288,6 +291,7 @@ export default function HelpPage() {
                                 >
 
                                     <summary>
+
                                         {faq.question}
 
                                         <span>
@@ -296,6 +300,7 @@ export default function HelpPage() {
 
                                     </summary>
 
+
                                     <p>
                                         {faq.answer}
                                     </p>
@@ -303,6 +308,7 @@ export default function HelpPage() {
                                 </details>
 
                             )
+
                         )
 
                     ) : (
@@ -363,6 +369,7 @@ export default function HelpPage() {
                             ✉ Email Support
                         </a>
 
+
                         <a
                             href="mailto:support@lynktoday.com?subject=LynkToday%20Support%20Request"
                             className={styles.secondaryButton}
@@ -387,9 +394,35 @@ export default function HelpPage() {
                     Privacy Policy
                 </Link>
 
+
                 <Link href="/terms">
                     Terms & Conditions
                 </Link>
+
+
+                {/* ==================================================
+                    SOCIAL LINKS
+                ================================================== */}
+
+                <a
+                    href="https://www.instagram.com/lynktoday"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Follow LynkToday on Instagram"
+                >
+                    Instagram
+                </a>
+
+
+                <a
+                    href="https://www.facebook.com/share/19NLFCVVLM/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Follow LynkToday on Facebook"
+                >
+                    Facebook
+                </a>
+
 
                 <Link href="/">
                     Back to LynkToday

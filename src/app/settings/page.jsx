@@ -8,6 +8,7 @@ import RightSidebar from '@/components/home/RightSidebar/RightSidebar';
 
 import styles from './settings.module.css';
 
+
 export default function SettingsPage() {
 
     const [user, setUser] = useState(null);
@@ -25,6 +26,7 @@ export default function SettingsPage() {
                 localStorage.getItem(
                     'lynktoday_user'
                 );
+
 
             if (storedUser) {
 
@@ -58,9 +60,11 @@ export default function SettingsPage() {
             'lynktoday_user'
         );
 
+
         localStorage.removeItem(
             'lynktoday_token'
         );
+
 
         window.location.href =
             '/login';
@@ -80,7 +84,11 @@ export default function SettingsPage() {
                 LEFT SIDEBAR
             ================================================== */}
 
-            <aside className={styles.leftSidebar}>
+            <aside
+                className={
+                    styles.leftSidebar
+                }
+            >
 
                 <LeftSidebar />
 
@@ -91,21 +99,34 @@ export default function SettingsPage() {
                 CENTER CONTENT
             ================================================== */}
 
-            <section className={styles.centerContent}>
+            <section
+                className={
+                    styles.centerContent
+                }
+            >
 
-                <div className={styles.contentContainer}>
+                <div
+                    className={
+                        styles.contentContainer
+                    }
+                >
 
                     {/* ==================================================
                         HEADER
                     ================================================== */}
 
-                    <div className={styles.header}>
+                    <div
+                        className={
+                            styles.header
+                        }
+                    >
 
                         <div>
 
                             <h1>
                                 Settings
                             </h1>
+
 
                             <p>
                                 Manage your LynkToday account,
@@ -121,9 +142,7 @@ export default function SettingsPage() {
                                 styles.backButton
                             }
                         >
-
                             ← Back to Home
-
                         </Link>
 
                     </div>
@@ -142,6 +161,7 @@ export default function SettingsPage() {
                         <h2>
                             Account
                         </h2>
+
 
                         <p
                             className={
@@ -178,6 +198,7 @@ export default function SettingsPage() {
                                 <h3>
                                     Manage Account
                                 </h3>
+
 
                                 <p>
                                     Update your name,
@@ -216,6 +237,7 @@ export default function SettingsPage() {
                             Privacy & Security
                         </h2>
 
+
                         <p
                             className={
                                 styles.sectionDescription
@@ -251,6 +273,7 @@ export default function SettingsPage() {
                                 <h3>
                                     Privacy & Security
                                 </h3>
+
 
                                 <p>
                                     Change your password,
@@ -288,6 +311,7 @@ export default function SettingsPage() {
                             Help & Support
                         </h2>
 
+
                         <p
                             className={
                                 styles.sectionDescription
@@ -323,6 +347,7 @@ export default function SettingsPage() {
                                 <h3>
                                     Help Center & Support
                                 </h3>
+
 
                                 <p>
                                     Find answers to common
@@ -360,6 +385,7 @@ export default function SettingsPage() {
                         <h2>
                             Media & Uploads
                         </h2>
+
 
                         <p
                             className={
@@ -399,6 +425,7 @@ export default function SettingsPage() {
                                 >
 
                                     File & Image Uploads
+
 
                                     <span>
                                         Coming Soon
@@ -440,8 +467,12 @@ export default function SettingsPage() {
                         </h2>
 
 
+                        {/* ==================================================
+                            PRIVACY POLICY
+                        ================================================== */}
+
                         <Link
-                            href="/privacy-policy"
+                            href="/settings/privacy-policy"
                             className={
                                 styles.simpleItem
                             }
@@ -451,6 +482,7 @@ export default function SettingsPage() {
                                 🔐 Privacy Policy
                             </span>
 
+
                             <span>
                                 →
                             </span>
@@ -458,8 +490,12 @@ export default function SettingsPage() {
                         </Link>
 
 
+                        {/* ==================================================
+                            TERMS & CONDITIONS
+                        ================================================== */}
+
                         <Link
-                            href="/terms"
+                            href="/settings/terms"
                             className={
                                 styles.simpleItem
                             }
@@ -468,6 +504,7 @@ export default function SettingsPage() {
                             <span>
                                 📄 Terms & Conditions
                             </span>
+
 
                             <span>
                                 →
@@ -493,6 +530,7 @@ export default function SettingsPage() {
                             <h3>
                                 Sign out
                             </h3>
+
 
                             <p>
                                 Sign out of your LynkToday
@@ -531,6 +569,7 @@ export default function SettingsPage() {
 
                             Signed in as{' '}
 
+
                             <strong>
                                 {user.fullName}
                             </strong>
@@ -538,6 +577,18 @@ export default function SettingsPage() {
                         </div>
 
                     )}
+
+
+                    {/* ==================================================
+                        POWERED BY
+                    ================================================== */}
+
+                    <div className={styles.poweredBy}>
+
+                        Powered by DAG Technologies
+
+                    </div>
+
 
                 </div>
 
@@ -548,7 +599,11 @@ export default function SettingsPage() {
                 RIGHT SIDEBAR
             ================================================== */}
 
-            <aside className={styles.rightSidebar}>
+            <aside
+                className={
+                    styles.rightSidebar
+                }
+            >
 
                 <RightSidebar />
 

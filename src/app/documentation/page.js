@@ -623,16 +623,24 @@ export default function DocumentationPage() {
 
 
                         {user && (
+    <>
+        <Link
+            href="/hs-codes/create"
+            className={styles.createButton}
+        >
+            <span>+</span>
+            Create HS Code
+        </Link>
 
-                            <Link
-                                href="/documentation/create"
-                                className={styles.createButton}
-                            >
-                                <span>+</span>
-                                Create Documentation
-                            </Link>
-
-                        )}
+        <Link
+            href="/documentation/create"
+            className={styles.createButton}
+        >
+            <span>+</span>
+            Create Documentation
+        </Link>
+    </>
+)}
 
                     </div>
 

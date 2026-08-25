@@ -200,6 +200,7 @@ export default function FeedCard({
 
         setSaved(
             Boolean(
+                post?.isBookmarked ??
                 post?.isSaved ??
                 post?.saved
             )
@@ -422,120 +423,208 @@ export default function FeedCard({
        SAVE POST
     ===================================================== */
 
-    const handleSave = async () => {
+    // =====================================================
+// SAVE / UNSAVE POST
+// =====================================================
 
-        if (loadingSave) {
-            return;
+const handleSave = async () => {
+
+    if (loadingSave) {
+        return;
+    }
+
+    // Current state
+    const previousSavedState = saved;
+
+    // Immediately toggle UI
+    const newSavedState = !saved;
+
+    // Update button immediately
+    setSaved(newSavedState);
+
+    // Update parent immediately
+    if (onUpdate) {
+
+        onUpdate({
+            ...post,
+            isBookmarked: newSavedState,
+            isSaved: newSavedState
+        });
+
+    }
+
+    try {
+
+        setLoadingSave(true);
+
+        const { data } = await api.post(
+            `/posts/${post._id}/bookmark`
+        );
+
+        if (!data?.success) {
+
+            throw new Error(
+                data?.message ||
+                'Unable to save post.'
+            );
+
         }
 
-        try {
+        // =================================================
+        // USE BACKEND RESULT IF AVAILABLE
+        // =================================================
 
-            setLoadingSave(true);
+        const serverSavedState =
+            typeof data.saved === 'boolean'
+                ? data.saved
+                : newSavedState;
 
-            const { data } =
-                await api.post(
-                    `/posts/${post._id}/save`
-                );
 
-            if (data.success) {
+        // Keep UI synchronized with backend
+        setSaved(serverSavedState);
 
-                setSaved(
-                    Boolean(
-                        data.saved
-                    )
-                );
 
-            }
+        // Keep parent synchronized
+        if (onUpdate) {
 
-        } catch (error) {
+            onUpdate({
+                ...post,
+                isBookmarked: serverSavedState,
+                isSaved: serverSavedState
+            });
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            'Failed to save post:',
+            error
+        );
+
+
+        // =================================================
+        // ROLLBACK IF API FAILED
+        // =================================================
+
+        setSaved(previousSavedState);
+
+
+        if (onUpdate) {
+
+            onUpdate({
+                ...post,
+                isBookmarked:
+                    previousSavedState,
+                isSaved:
+                    previousSavedState
+            });
+
+        }
+
+
+        alert(
+            error.response?.data?.message ||
+            error.message ||
+            'Unable to save post.'
+        );
+
+    } finally {
+
+        setLoadingSave(false);
+
+    }
+
+};
+// =====================================================
+// SHARE POST
+// =====================================================
+
+const handleShare = async () => {
+
+    if (loadingShare) {
+        return;
+    }
+
+    try {
+
+        setLoadingShare(true);
+
+        const shareUrl =
+            `${window.location.origin}/posts/${post._id}`;
+
+
+        // =================================================
+        // NATIVE SHARE
+        // =================================================
+
+        if (navigator.share) {
+
+            await navigator.share({
+
+                title:
+                    post.title ||
+                    'LynkToday Post',
+
+                text:
+                    post.content ||
+                    '',
+
+                url: shareUrl
+
+            });
+
+        } else {
+
+            // =================================================
+            // FALLBACK: COPY LINK
+            // =================================================
+
+            await navigator.clipboard.writeText(
+                shareUrl
+            );
+
+            alert(
+                'Post link copied.'
+            );
+
+        }
+
+
+        // =================================================
+        // UPDATE PARENT
+        // =================================================
+
+        if (onShared) {
+
+            onShared(post);
+
+        }
+
+    } catch (error) {
+
+        // User closing the native share dialog
+        // is not an actual error.
+
+        if (
+            error?.name !==
+            'AbortError'
+        ) {
 
             console.error(
-                'Failed to save post:',
+                'Failed to share post:',
                 error
             );
 
-        } finally {
-
-            setLoadingSave(false);
-
         }
 
-    };
+    } finally {
 
+        setLoadingShare(false);
 
-    /* =====================================================
-       SHARE POST
-    ===================================================== */
+    }
 
-    const handleShare = async () => {
-
-        if (loadingShare) {
-            return;
-        }
-
-        try {
-
-            setLoadingShare(true);
-
-            const shareUrl =
-                `${window.location.origin}/posts/${post._id}`;
-
-            if (navigator.share) {
-
-                await navigator.share({
-
-                    title:
-                        post.title ||
-                        'LynkToday Post',
-
-                    text:
-                        post.content ||
-                        '',
-
-                    url: shareUrl
-
-                });
-
-            } else {
-
-                await navigator.clipboard.writeText(
-                    shareUrl
-                );
-
-                alert(
-                    'Post link copied.'
-                );
-
-            }
-
-            if (onShared) {
-
-                onShared(post);
-
-            }
-
-        } catch (error) {
-
-            if (
-                error?.name !==
-                'AbortError'
-            ) {
-
-                console.error(
-                    'Failed to share post:',
-                    error
-                );
-
-            }
-
-        } finally {
-
-            setLoadingShare(false);
-
-        }
-
-    };
-
+};
 
     /* =====================================================
        START EDIT
@@ -771,11 +860,7 @@ export default function FeedCard({
         post?.type ||
         'DISCUSSION';
 
-    const profileImage =
-        post?.author?.profileImage ||
-        post?.author?.profileImageUrl ||
-        post?.author?.avatar ||
-        '';
+
 
 
     /* =====================================================
@@ -794,25 +879,9 @@ export default function FeedCard({
 
                 <div className={styles.userSection}>
 
-                    {profileImage ? (
-
-                        <img
-                            src={profileImage}
-                            alt={authorName}
-                            className={
-                                styles.avatarImage
-                            }
-                        />
-
-                    ) : (
-
-                        <div className={styles.avatar}>
-
-                            {authorInitial}
-
-                        </div>
-
-                    )}
+                    <div className={styles.avatar}>
+                        {authorInitial}
+                    </div>
 
                     <div className={styles.userInfo}>
 
@@ -1084,25 +1153,8 @@ export default function FeedCard({
                        MEDIA
                     ================================================= */}
 
-                    {Array.isArray(
-                        post?.mediaUrls
-                    ) &&
-                        post.mediaUrls.length > 0 && (
-
-                            <img
-                                src={
-                                    post.mediaUrls[0]
-                                }
-                                alt={
-                                    post.title ||
-                                    'Post attachment'
-                                }
-                                className={
-                                    styles.image
-                                }
-                            />
-
-                        )}
+                    {/* Post media is intentionally disabled.
+                        Image uploads will be added in a later version. */}
 
 
                     {/* =================================================
@@ -1321,28 +1373,20 @@ export default function FeedCard({
                        SAVE
                     ================================================= */}
 
-                    <button
-                        type="button"
-                        className={
-                            `${styles.actionButton} ${
-                                saved
-                                    ? styles.actionActive
-                                    : ''
-                            }`
-                        }
-                        onClick={
-                            handleSave
-                        }
-                        disabled={
-                            loadingSave
-                        }
-                    >
-
-                        {saved
-                            ? 'Saved'
-                            : 'Save'}
-
-                    </button>
+<button
+    type="button"
+    className={
+        `${styles.actionButton} ${
+            saved
+                ? styles.actionActive
+                : ''
+        }`
+    }
+    onClick={handleSave}
+    disabled={loadingSave}
+>
+    {saved ? 'Saved' : 'Save'}
+</button>
 
 
                     {/* =================================================
@@ -1574,11 +1618,7 @@ export default function FeedCard({
                                                 .charAt(0)
                                                 .toUpperCase();
 
-                                        const image =
-                                            likedUser?.profileImage ||
-                                            likedUser?.profileImageUrl ||
-                                            likedUser?.avatar ||
-                                            '';
+
 
                                         const userId =
                                             likedUser?._id ||
@@ -1601,29 +1641,13 @@ export default function FeedCard({
                                                 }
                                             >
 
-                                                {image ? (
-
-                                                    <img
-                                                        src={image}
-                                                        alt={name}
-                                                        className={
-                                                            styles.likedUserImage
-                                                        }
-                                                    />
-
-                                                ) : (
-
-                                                    <div
-                                                        className={
-                                                            styles.likedUserPlaceholder
-                                                        }
-                                                    >
-
-                                                        {initial}
-
-                                                    </div>
-
-                                                )}
+                                                <div
+                                                    className={
+                                                        styles.likedUserPlaceholder
+                                                    }
+                                                >
+                                                    {initial}
+                                                </div>
 
                                                 <div
                                                     className={

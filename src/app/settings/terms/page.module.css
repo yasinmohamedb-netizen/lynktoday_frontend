@@ -1,0 +1,151 @@
+.page {
+    min-height: 100vh;
+    background: #f5f7fa;
+    padding: 40px 20px 80px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 10px 16px;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #355d80;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.backButton:hover {
+    background: #f8fafc;
+}
+
+.header {
+    background: #ffffff;
+    border: 1px solid #e0e7ef;
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 20px;
+}
+
+.label {
+    color: #355d80;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.header h1 {
+    margin: 10px 0;
+    color: #172033;
+    font-size: 38px;
+    line-height: 1.2;
+}
+
+.header p {
+    margin: 0;
+    color: #687890;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.updated {
+    margin-top: 18px;
+    color: #8a98aa;
+    font-size: 14px;
+}
+
+.content {
+    background: #ffffff;
+    border: 1px solid #e0e7ef;
+    border-radius: 16px;
+    padding: 40px;
+}
+
+.content section {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.content section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.content h2 {
+    margin: 0 0 14px;
+    color: #172033;
+    font-size: 22px;
+    line-height: 1.4;
+}
+
+.content p,
+.content li {
+    color: #596a82;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.content p {
+    margin: 0 0 12px;
+}
+
+.content ul {
+    margin: 10px 0 0;
+    padding-left: 22px;
+}
+
+.content li {
+    margin-bottom: 6px;
+}
+
+.footerLinks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.footerLinks a {
+    color: #355d80;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footerLinks a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+
+    .page {
+        padding: 20px 12px 50px;
+    }
+
+    .header,
+    .content {
+        padding: 24px;
+    }
+
+    .header h1 {
+        font-size: 30px;
+    }
+
+    .content h2 {
+        font-size: 20px;
+    }
+
+    .footerLinks {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+}

@@ -15,7 +15,6 @@ import ProfilePosts from '@/components/home/Profile/ProfilePosts';
 import styles from './page.module.css';
 
 export default function ProfilePage() {
-
     const [user, setUser] = useState(null);
 
     const [loading, setLoading] = useState(true);
@@ -289,6 +288,7 @@ export default function ProfilePage() {
                 }
             >
 
+
                 {/* ==========================================
                     LEFT SIDEBAR
                 ========================================== */}
@@ -313,6 +313,7 @@ export default function ProfilePage() {
                         styles.center
                     }
                 >
+
 
                     {/* ======================================
                         PROFILE HEADER
@@ -388,6 +389,7 @@ export default function ProfilePage() {
                                 }
                             >
 
+
                                 {/* Business Type */}
 
                                 <div
@@ -401,10 +403,10 @@ export default function ProfilePage() {
                                     </span>
 
                                     <strong>
-
-                                        {user.profession ||
-                                            'Not specified'}
-
+                                        {
+                                            user.profession ||
+                                            'Not specified'
+                                        }
                                     </strong>
 
                                 </div>
@@ -423,10 +425,10 @@ export default function ProfilePage() {
                                     </span>
 
                                     <strong>
-
-                                        {user.website ||
-                                            'Not specified'}
-
+                                        {
+                                            user.website ||
+                                            'Not specified'
+                                        }
                                     </strong>
 
                                 </div>
@@ -445,10 +447,10 @@ export default function ProfilePage() {
                                     </span>
 
                                     <strong>
-
-                                        {user.phone ||
-                                            'Not specified'}
-
+                                        {
+                                            user.phone ||
+                                            'Not specified'
+                                        }
                                     </strong>
 
                                 </div>
@@ -467,10 +469,10 @@ export default function ProfilePage() {
                                     </span>
 
                                     <strong>
-
-                                        {user.location ||
-                                            'Not specified'}
-
+                                        {
+                                            user.location ||
+                                            'Not specified'
+                                        }
                                     </strong>
 
                                 </div>
@@ -492,6 +494,103 @@ export default function ProfilePage() {
                         }
                     />
 
+
+                    {/* ======================================
+                        LYNKTODAY SOCIAL LINKS
+                    ====================================== */}
+
+                    <section
+                        className={
+                            styles.card
+                        }
+                    >
+
+                        <div
+                            className={
+                                styles.cardHeader
+                            }
+                        >
+
+                            <div>
+
+                                <h3>
+                                    Follow LynkToday
+                                </h3>
+
+                                <p>
+                                    Stay connected with LynkToday
+                                    for updates, industry insights
+                                    and community news.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            className={
+                                styles.infoGrid
+                            }
+                        >
+
+
+                            {/* Instagram */}
+
+                            <div
+                                className={
+                                    styles.infoItem
+                                }
+                            >
+
+                                <span>
+                                    Instagram
+                                </span>
+
+                                <a
+                                    href="https://www.instagram.com/lynktoday"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={
+                                        styles.website
+                                    }
+                                >
+                                    @lynktoday
+                                </a>
+
+                            </div>
+
+
+                            {/* Facebook */}
+
+                            <div
+                                className={
+                                    styles.infoItem
+                                }
+                            >
+
+                                <span>
+                                    Facebook
+                                </span>
+
+                                <a
+                                    href="https://www.facebook.com/share/19NLFCVVLM/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={
+                                        styles.website
+                                    }
+                                >
+                                    LynkToday
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
                 </section>
 
 
@@ -508,6 +607,7 @@ export default function ProfilePage() {
                     <RightSidebar />
 
                 </aside>
+
 
             </main>
 

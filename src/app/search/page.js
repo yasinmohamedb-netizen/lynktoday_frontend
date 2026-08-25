@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import styles from './page.module.css';
 
-
 // ======================================================
 // API BASE URL
 // ======================================================
@@ -27,9 +26,11 @@ export default function SearchPage() {
     const [users, setUsers] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [questions, setQuestions] = useState([]);
+    const [posts, setPosts] = useState([]);
     const [hsCodes, setHsCodes] = useState([]);
 
     const [error, setError] = useState('');
+
 
     // ==================================================
     // Read Query From URL
@@ -74,6 +75,7 @@ export default function SearchPage() {
             setUsers([]);
             setCompanies([]);
             setQuestions([]);
+            setPosts([]);
             setHsCodes([]);
 
 
@@ -86,10 +88,8 @@ export default function SearchPage() {
                     searchQuery
                 )}&limit=20`;
 
-
             const searchResponse =
                 await fetch(searchUrl);
-
 
             if (!searchResponse.ok) {
 
@@ -99,10 +99,8 @@ export default function SearchPage() {
 
             }
 
-
             const searchData =
                 await searchResponse.json();
-
 
             if (!searchData.success) {
 
@@ -119,7 +117,11 @@ export default function SearchPage() {
             // ==================================================
 
             setUsers(
-                searchData.results?.users || []
+                Array.isArray(
+                    searchData.results?.users
+                )
+                    ? searchData.results.users
+                    : []
             );
 
 
@@ -128,7 +130,11 @@ export default function SearchPage() {
             // ==================================================
 
             setCompanies(
-                searchData.results?.companies || []
+                Array.isArray(
+                    searchData.results?.companies
+                )
+                    ? searchData.results.companies
+                    : []
             );
 
 
@@ -137,8 +143,83 @@ export default function SearchPage() {
             // ==================================================
 
             setQuestions(
-                searchData.questions || []
+                Array.isArray(
+                    searchData.questions
+                )
+                    ? searchData.questions
+                    : []
             );
+
+
+            // ==================================================
+            // POSTS
+            //
+            // We use the dedicated posts endpoint because
+            // your backend supports:
+            //
+            // GET /api/v1/posts?search=import&limit=20
+            // ==================================================
+
+            try {
+
+                const postsUrl =
+                    `${API_BASE_URL}/posts?search=${encodeURIComponent(
+                        searchQuery
+                    )}&limit=20`;
+
+                const postsResponse =
+                    await fetch(postsUrl);
+
+                if (postsResponse.ok) {
+
+                    const postsData =
+                        await postsResponse.json();
+
+                    if (postsData.success) {
+
+                        const postResults =
+                            Array.isArray(
+                                postsData.posts
+                            )
+                                ? postsData.posts
+                                : [];
+
+                        /*
+                         * Questions are already displayed
+                         * separately, so don't show QUESTION
+                         * posts again inside Posts.
+                         */
+
+                        const normalPosts =
+                            postResults.filter(
+                                (post) =>
+                                    post?.postType !==
+                                    'QUESTION'
+                            );
+
+                        setPosts(
+                            normalPosts
+                        );
+
+                    }
+
+                }
+
+            } catch (postsError) {
+
+                console.error(
+                    'Posts search failed:',
+                    postsError
+                );
+
+                /*
+                 * Don't fail the entire search if
+                 * posts API has an issue.
+                 */
+
+                setPosts([]);
+
+            }
 
 
             // ==================================================
@@ -146,12 +227,11 @@ export default function SearchPage() {
             // ==================================================
 
             /*
-             * If the global search API already returns HS Codes,
-             * use them.
+             * If the global search API already returns
+             * HS Codes, use them.
              */
 
             if (
-                searchData.hsCodes &&
                 Array.isArray(
                     searchData.hsCodes
                 )
@@ -172,7 +252,9 @@ export default function SearchPage() {
             // ==================================================
 
             if (
-                !searchData.hsCodes ||
+                !Array.isArray(
+                    searchData.hsCodes
+                ) ||
                 searchData.hsCodes.length === 0
             ) {
 
@@ -183,10 +265,8 @@ export default function SearchPage() {
                             searchQuery
                         )}&limit=20`;
 
-
                     const hsResponse =
                         await fetch(hsUrl);
-
 
                     if (
                         hsResponse.ok
@@ -194,7 +274,6 @@ export default function SearchPage() {
 
                         const hsData =
                             await hsResponse.json();
-
 
                         if (
                             hsData.success
@@ -205,7 +284,6 @@ export default function SearchPage() {
                                 hsData.results ||
                                 hsData.data ||
                                 [];
-
 
                             setHsCodes(
                                 Array.isArray(
@@ -350,6 +428,7 @@ export default function SearchPage() {
                     }
                 >
 
+
                     {/* ==================================
                         HS CODES
                     ================================== */}
@@ -402,8 +481,7 @@ export default function SearchPage() {
 
                                         <Link
                                             key={
-                                                item._id ||
-                                                item.hsCode
+                                                `hs-${item._id || item.hsCode}`
                                             }
                                             href={`/hs-codes/${item._id || item.hsCode}`}
                                             className={
@@ -509,6 +587,160 @@ export default function SearchPage() {
 
 
                     {/* ==================================
+                        POSTS
+                    ================================== */}
+
+                    <section
+                        className={
+                            styles.section
+                        }
+                    >
+
+                        <div
+                            className={
+                                styles.sectionHeader
+                            }
+                        >
+
+                            <h2>
+                                Posts
+                            </h2>
+
+                            <span>
+                                {posts.length}
+                            </span>
+
+                        </div>
+
+
+                        {posts.length === 0 ? (
+
+                            <div
+                                className={
+                                    styles.empty
+                                }
+                            >
+
+                                No posts found.
+
+                            </div>
+
+                        ) : (
+
+                            <div
+                                className={
+                                    styles.cardList
+                                }
+                            >
+
+                                {posts.map(
+                                    (post) => (
+
+                                        <Link
+                                            key={
+                                                `post-${post._id || post.id}`
+                                            }
+                                            href={`/posts/${post._id || post.id}`}
+                                            className={
+                                                styles.questionCard
+                                            }
+                                        >
+
+                                            <div>
+
+                                                <h3>
+
+                                                    {
+                                                        post.title ||
+                                                        'Untitled Post'
+                                                    }
+
+                                                </h3>
+
+
+                                                {post.content && (
+
+                                                    <p>
+
+                                                        {
+                                                            post.content
+                                                        }
+
+                                                    </p>
+
+                                                )}
+
+
+                                                <div
+                                                    className={
+                                                        styles.meta
+                                                    }
+                                                >
+
+                                                    {post.author?.fullName && (
+
+                                                        <span>
+
+                                                            {
+                                                                post.author.fullName
+                                                            }
+
+                                                        </span>
+
+                                                    )}
+
+
+                                                    {post.author?.profession && (
+
+                                                        <span>
+
+                                                            {
+                                                                post.author.profession
+                                                            }
+
+                                                        </span>
+
+                                                    )}
+
+
+                                                    {post.category && (
+
+                                                        <span>
+
+                                                            {
+                                                                post.category
+                                                            }
+
+                                                        </span>
+
+                                                    )}
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <span
+                                                className={
+                                                    styles.arrow
+                                                }
+                                            >
+                                                →
+                                            </span>
+
+                                        </Link>
+
+                                    )
+                                )}
+
+                            </div>
+
+                        )}
+
+                    </section>
+
+
+                    {/* ==================================
                         QUESTIONS
                     ================================== */}
 
@@ -560,7 +792,7 @@ export default function SearchPage() {
 
                                         <Link
                                             key={
-                                                question._id
+                                                `question-${question._id}`
                                             }
                                             href={
                                                 `/questions/${question._id}`
@@ -655,7 +887,7 @@ export default function SearchPage() {
 
                                         <Link
                                             key={
-                                                user._id
+                                                `user-${user._id}`
                                             }
                                             href={
                                                 `/profile/${user._id}`
@@ -792,7 +1024,7 @@ export default function SearchPage() {
 
                                         <Link
                                             key={
-                                                company._id
+                                                `company-${company._id}`
                                             }
                                             href={
                                                 `/companies/${encodeURIComponent(
@@ -861,6 +1093,7 @@ export default function SearchPage() {
                     ================================== */}
 
                     {hsCodes.length === 0 &&
+                        posts.length === 0 &&
                         questions.length === 0 &&
                         users.length === 0 &&
                         companies.length === 0 && (
@@ -878,7 +1111,7 @@ export default function SearchPage() {
                                 <p>
 
                                     Try searching for an
-                                    HS Code, product,
+                                    HS Code, post, question,
                                     company, person or
                                     trade-related topic.
 

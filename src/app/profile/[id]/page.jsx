@@ -111,6 +111,7 @@ export default function PublicProfilePage() {
 
     const renderLayout = (content) => (
         <main className={styles.container}>
+
             <aside className={styles.left}>
                 <LeftSidebar />
             </aside>
@@ -122,12 +123,14 @@ export default function PublicProfilePage() {
             <aside className={styles.right}>
                 <RightSidebar />
             </aside>
+
         </main>
     );
 
     if (loading) {
         return renderLayout(
             <div className={styles.stateCard}>
+
                 <div className={styles.loadingIndicator}>
                     <span />
                 </div>
@@ -140,6 +143,7 @@ export default function PublicProfilePage() {
                     Please wait while we load
                     this profile.
                 </p>
+
             </div>
         );
     }
@@ -147,6 +151,7 @@ export default function PublicProfilePage() {
     if (error) {
         return renderLayout(
             <div className={styles.stateCard}>
+
                 <div
                     className={`${styles.stateIcon} ${styles.errorIcon}`}
                 >
@@ -170,6 +175,7 @@ export default function PublicProfilePage() {
                 >
                     Try Again
                 </button>
+
             </div>
         );
     }
@@ -177,6 +183,7 @@ export default function PublicProfilePage() {
     if (!user) {
         return renderLayout(
             <div className={styles.stateCard}>
+
                 <div
                     className={`${styles.stateIcon} ${styles.notFoundIcon}`}
                 >
@@ -191,6 +198,7 @@ export default function PublicProfilePage() {
                     This profile may have been
                     removed or is no longer available.
                 </p>
+
             </div>
         );
     }
@@ -230,7 +238,9 @@ export default function PublicProfilePage() {
                     <section className={styles.card}>
 
                         <div className={styles.cardHeader}>
+
                             <div>
+
                                 <h2>
                                     Company Information
                                 </h2>
@@ -238,13 +248,16 @@ export default function PublicProfilePage() {
                                 <p>
                                     Business and contact details
                                 </p>
+
                             </div>
+
                         </div>
 
 
                         <div className={styles.infoGrid}>
 
                             <div className={styles.infoItem}>
+
                                 <span>
                                     Business Type
                                 </span>
@@ -253,15 +266,18 @@ export default function PublicProfilePage() {
                                     {user.profession ||
                                         'Not specified'}
                                 </strong>
+
                             </div>
 
 
                             <div className={styles.infoItem}>
+
                                 <span>
                                     Website
                                 </span>
 
                                 {user.website ? (
+
                                     <a
                                         href={
                                             user.website.startsWith(
@@ -281,15 +297,20 @@ export default function PublicProfilePage() {
                                     >
                                         {user.website}
                                     </a>
+
                                 ) : (
+
                                     <strong>
                                         Not specified
                                     </strong>
+
                                 )}
+
                             </div>
 
 
                             <div className={styles.infoItem}>
+
                                 <span>
                                     Phone
                                 </span>
@@ -298,10 +319,12 @@ export default function PublicProfilePage() {
                                     {user.phone ||
                                         'Not specified'}
                                 </strong>
+
                             </div>
 
 
                             <div className={styles.infoItem}>
+
                                 <span>
                                     Location
                                 </span>
@@ -310,9 +333,11 @@ export default function PublicProfilePage() {
                                     {user.location ||
                                         'Not specified'}
                                 </strong>
+
                             </div>
 
                         </div>
+
                     </section>
                 )}
 
@@ -320,6 +345,59 @@ export default function PublicProfilePage() {
                 <ProfilePosts
                     userId={user._id}
                 />
+
+
+                {/* ==================================================
+                    LYNKTODAY SOCIAL LINKS
+                ================================================== */}
+
+                <section className={styles.card}>
+
+                    <div className={styles.cardHeader}>
+
+                        <div>
+
+                            <h2>
+                                Follow LynkToday
+                            </h2>
+
+                            <p>
+                                Stay connected with LynkToday
+                                for updates, industry insights
+                                and community news.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className={styles.infoGrid}>
+
+                        <a
+                            href="https://www.instagram.com/lynktoday"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.website}
+                            aria-label="Follow LynkToday on Instagram"
+                        >
+                            Instagram
+                        </a>
+
+
+                        <a
+                            href="https://www.facebook.com/share/19NLFCVVLM/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.website}
+                            aria-label="Follow LynkToday on Facebook"
+                        >
+                            Facebook
+                        </a>
+
+                    </div>
+
+                </section>
 
             </section>
 
