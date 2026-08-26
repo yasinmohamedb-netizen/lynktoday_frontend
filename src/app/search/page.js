@@ -1,15 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import styles from './page.module.css';
-
-
-// ======================================================
-// API
-// ======================================================
 
 const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ||
@@ -17,10 +12,10 @@ const API_BASE_URL =
 
 
 // ======================================================
-// SEARCH PAGE
+// SEARCH CONTENT
 // ======================================================
 
-export default function SearchPage() {
+function SearchContent() {
 
     const searchParams =
         useSearchParams();
@@ -32,41 +27,33 @@ export default function SearchPage() {
     const [query, setQuery] =
         useState('');
 
-
     const [loading, setLoading] =
         useState(false);
-
 
     const [error, setError] =
         useState('');
 
-
     const [users, setUsers] =
         useState([]);
-
 
     const [companies, setCompanies] =
         useState([]);
 
-
     const [questions, setQuestions] =
         useState([]);
-
 
     const [posts, setPosts] =
         useState([]);
 
-
     const [hsCodes, setHsCodes] =
         useState([]);
-
 
     const [documentation, setDocumentation] =
         useState([]);
 
 
     // ==================================================
-    // LOAD SEARCH QUERY
+    // LOAD QUERY
     // ==================================================
 
     useEffect(() => {
@@ -75,9 +62,7 @@ export default function SearchPage() {
             urlQuery.trim();
 
 
-        setQuery(
-            cleanQuery
-        );
+        setQuery(cleanQuery);
 
 
         if (cleanQuery) {
@@ -112,7 +97,7 @@ export default function SearchPage() {
 
 
     // ==================================================
-    // PERFORM SEARCH
+    // SEARCH
     // ==================================================
 
     const performSearch =
@@ -123,10 +108,6 @@ export default function SearchPage() {
                     searchQuery || ''
                 ).trim();
 
-
-            // ==========================================
-            // EMPTY QUERY
-            // ==========================================
 
             if (!cleanQuery) {
 
@@ -148,10 +129,6 @@ export default function SearchPage() {
                 setError('');
 
 
-                // ======================================
-                // CLEAR OLD RESULTS
-                // ======================================
-
                 setUsers([]);
 
                 setCompanies([]);
@@ -165,10 +142,6 @@ export default function SearchPage() {
                 setDocumentation([]);
 
 
-                // ======================================
-                // API URL
-                // ======================================
-
                 const searchUrl =
                     `${API_BASE_URL}/search?q=${encodeURIComponent(
                         cleanQuery
@@ -180,10 +153,6 @@ export default function SearchPage() {
                     searchUrl
                 );
 
-
-                // ======================================
-                // API REQUEST
-                // ======================================
 
                 const response =
                     await fetch(
@@ -200,10 +169,6 @@ export default function SearchPage() {
                         }
                     );
 
-
-                // ======================================
-                // RESPONSE JSON
-                // ======================================
 
                 let result;
 
@@ -227,10 +192,6 @@ export default function SearchPage() {
                 }
 
 
-                // ======================================
-                // HTTP ERROR
-                // ======================================
-
                 if (!response.ok) {
 
                     throw new Error(
@@ -240,10 +201,6 @@ export default function SearchPage() {
 
                 }
 
-
-                // ======================================
-                // API ERROR
-                // ======================================
 
                 if (!result?.success) {
 
@@ -1320,6 +1277,58 @@ export default function SearchPage() {
                 )}
 
         </main>
+
+    );
+
+}
+
+
+// ======================================================
+// LOADING FALLBACK
+// ======================================================
+
+function SearchLoading() {
+
+    return (
+
+        <main
+            className={
+                styles.container
+            }
+        >
+
+            <div
+                className={
+                    styles.loading
+                }
+            >
+                Loading search...
+            </div>
+
+        </main>
+
+    );
+
+}
+
+
+// ======================================================
+// PAGE
+// ======================================================
+
+export default function SearchPage() {
+
+    return (
+
+        <Suspense
+            fallback={
+                <SearchLoading />
+            }
+        >
+
+            <SearchContent />
+
+        </Suspense>
 
     );
 
