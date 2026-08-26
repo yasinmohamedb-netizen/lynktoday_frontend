@@ -114,6 +114,10 @@ export default function TopicPage() {
         ? data.documents
         : [];
 
+    const hsCodes = Array.isArray(data?.hsCodes)
+        ? data.hsCodes
+        : [];
+
     const topicName =
         topic?.name ||
         slug ||
@@ -123,7 +127,9 @@ export default function TopicPage() {
         <main className={styles.page}>
             <div className={styles.container}>
 
-                {/* Topic Header */}
+                {/* ==================================================
+                    TOPIC HEADER
+                ================================================== */}
 
                 <section className={styles.hero}>
                     <div className={styles.heroMain}>
@@ -133,6 +139,7 @@ export default function TopicPage() {
                         </div>
 
                         <div className={styles.heroContent}>
+
                             <span className={styles.eyebrow}>
                                 Trending Topic
                             </span>
@@ -142,17 +149,23 @@ export default function TopicPage() {
                             </h1>
 
                             <p>
-                                Explore community discussions
-                                and trade documentation related
-                                to this topic.
+                                Explore community discussions,
+                                HS Codes and trade documentation
+                                related to this topic.
                             </p>
+
                         </div>
                     </div>
 
                     <div className={styles.heroStats}>
 
+                        {/* Discussions */}
+
                         <div className={styles.statCard}>
-                            <strong>{posts.length}</strong>
+                            <strong>
+                                {posts.length}
+                            </strong>
+
                             <span>
                                 {posts.length === 1
                                     ? 'Discussion'
@@ -160,8 +173,13 @@ export default function TopicPage() {
                             </span>
                         </div>
 
+                        {/* Documents */}
+
                         <div className={styles.statCard}>
-                            <strong>{documents.length}</strong>
+                            <strong>
+                                {documents.length}
+                            </strong>
+
                             <span>
                                 {documents.length === 1
                                     ? 'Document'
@@ -169,25 +187,47 @@ export default function TopicPage() {
                             </span>
                         </div>
 
+                        {/* HS Codes */}
+
+                        <div className={styles.statCard}>
+                            <strong>
+                                {hsCodes.length}
+                            </strong>
+
+                            <span>
+                                {hsCodes.length === 1
+                                    ? 'HS Code'
+                                    : 'HS Codes'}
+                            </span>
+                        </div>
+
                     </div>
                 </section>
 
 
-                {/* Main Content */}
+                {/* ==================================================
+                    MAIN CONTENT
+                ================================================== */}
 
                 <div className={styles.contentGrid}>
 
                     <div className={styles.mainColumn}>
 
-                        {/* Discussions */}
+                        {/* ==================================================
+                            DISCUSSIONS
+                        ================================================== */}
 
                         <section
                             id="discussions"
                             className={styles.section}
                         >
+
                             <div className={styles.sectionHeader}>
+
                                 <div>
-                                    <h2>Discussions</h2>
+                                    <h2>
+                                        Discussions
+                                    </h2>
 
                                     <p>
                                         Conversations from the
@@ -195,15 +235,21 @@ export default function TopicPage() {
                                     </p>
                                 </div>
 
-                                <span className={styles.sectionCount}>
+                                <span
+                                    className={styles.sectionCount}
+                                >
                                     {posts.length}
                                 </span>
+
                             </div>
 
+
                             {posts.length > 0 ? (
+
                                 <div className={styles.postList}>
 
                                     {posts.map((post) => {
+
                                         const authorName =
                                             post.author?.fullName ||
                                             'Unknown User';
@@ -229,21 +275,39 @@ export default function TopicPage() {
                                             post.views ?? 0;
 
                                         return (
+
                                             <Link
                                                 key={post._id}
                                                 href={`/posts/${post._id}`}
                                                 className={styles.postCard}
                                             >
 
-                                                <div className={styles.postHeader}>
+                                                <div
+                                                    className={
+                                                        styles.postHeader
+                                                    }
+                                                >
 
-                                                    <div className={styles.author}>
+                                                    <div
+                                                        className={
+                                                            styles.author
+                                                        }
+                                                    >
 
-                                                        <div className={styles.avatar}>
+                                                        <div
+                                                            className={
+                                                                styles.avatar
+                                                            }
+                                                        >
                                                             {authorInitial}
                                                         </div>
 
-                                                        <div className={styles.authorInfo}>
+                                                        <div
+                                                            className={
+                                                                styles.authorInfo
+                                                            }
+                                                        >
+
                                                             <strong>
                                                                 {authorName}
                                                             </strong>
@@ -253,18 +317,27 @@ export default function TopicPage() {
                                                                     post.author?.companyName ||
                                                                     'Community Member'}
                                                             </span>
+
                                                         </div>
 
                                                     </div>
 
-                                                    <span className={styles.postType}>
+                                                    <span
+                                                        className={
+                                                            styles.postType
+                                                        }
+                                                    >
                                                         {postType}
                                                     </span>
 
                                                 </div>
 
 
-                                                <div className={styles.postBody}>
+                                                <div
+                                                    className={
+                                                        styles.postBody
+                                                    }
+                                                >
 
                                                     <h3>
                                                         {post.title ||
@@ -280,7 +353,11 @@ export default function TopicPage() {
                                                 </div>
 
 
-                                                <div className={styles.postMeta}>
+                                                <div
+                                                    className={
+                                                        styles.postMeta
+                                                    }
+                                                >
 
                                                     <span>
                                                         Likes {likes}
@@ -294,7 +371,11 @@ export default function TopicPage() {
                                                         Views {views}
                                                     </span>
 
-                                                    <span className={styles.viewLink}>
+                                                    <span
+                                                        className={
+                                                            styles.viewLink
+                                                        }
+                                                    >
                                                         View discussion
                                                     </span>
 
@@ -305,10 +386,20 @@ export default function TopicPage() {
                                     })}
 
                                 </div>
-                            ) : (
-                                <div className={styles.emptyCard}>
 
-                                    <div className={styles.emptyIcon}>
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.emptyCard
+                                    }
+                                >
+
+                                    <div
+                                        className={
+                                            styles.emptyIcon
+                                        }
+                                    >
                                         Discussions
                                     </div>
 
@@ -328,25 +419,259 @@ export default function TopicPage() {
                         </section>
 
 
-                        {/* Documentation */}
+                        {/* ==================================================
+                            HS CODES
+                        ================================================== */}
+
+                        <section
+                            id="hs-codes"
+                            className={styles.section}
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
+
+                                <div>
+
+                                    <h2>
+                                        HS Codes
+                                    </h2>
+
+                                    <p>
+                                        Customs tariff classifications
+                                        related to this topic.
+                                    </p>
+
+                                </div>
+
+                                <span
+                                    className={
+                                        styles.sectionCount
+                                    }
+                                >
+                                    {hsCodes.length}
+                                </span>
+
+                            </div>
+
+
+                            {hsCodes.length > 0 ? (
+
+                                <div
+                                    className={
+                                        styles.documentList
+                                    }
+                                >
+
+                                    {hsCodes.map((hs) => {
+
+                                        const hsId =
+                                            hs._id ||
+                                            hs.id;
+
+                                        return (
+
+                                            <Link
+                                                key={hsId}
+                                                href={`/hs-codes/${hsId}`}
+                                                className={
+                                                    styles.documentCard
+                                                }
+                                            >
+
+                                                <div
+                                                    className={
+                                                        styles.documentIcon
+                                                    }
+                                                >
+                                                    HS
+                                                </div>
+
+
+                                                <div
+                                                    className={
+                                                        styles.documentContent
+                                                    }
+                                                >
+
+                                                    <div
+                                                        className={
+                                                            styles.documentHeader
+                                                        }
+                                                    >
+
+                                                        <span
+                                                            className={
+                                                                styles.documentType
+                                                            }
+                                                        >
+                                                            HS CODE
+                                                        </span>
+
+                                                        <span
+                                                            className={
+                                                                styles.documentArrow
+                                                            }
+                                                        >
+                                                            →
+                                                        </span>
+
+                                                    </div>
+
+
+                                                    <h3>
+                                                        {hs.hsCode ||
+                                                            'Unknown HS Code'}
+                                                    </h3>
+
+
+                                                    <p>
+                                                        {hs.description ||
+                                                            'No description available.'}
+                                                    </p>
+
+
+                                                    <span
+                                                        className={
+                                                            styles.documentCategory
+                                                        }
+                                                    >
+                                                        {hs.chapter
+                                                            ? `Chapter ${hs.chapterNumber || ''} — ${hs.chapter}`
+                                                            : `Heading ${hs.heading || '—'}`}
+                                                    </span>
+
+
+                                                    {Array.isArray(
+                                                        hs.keywords
+                                                    ) &&
+                                                        hs.keywords.length >
+                                                            0 && (
+
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        'flex',
+                                                                    flexWrap:
+                                                                        'wrap',
+                                                                    gap:
+                                                                        '6px',
+                                                                    marginTop:
+                                                                        '10px'
+                                                                }}
+                                                            >
+
+                                                                {hs.keywords.map(
+                                                                    (
+                                                                        keyword
+                                                                    ) => (
+
+                                                                        <span
+                                                                            key={
+                                                                                keyword
+                                                                            }
+                                                                            style={{
+                                                                                padding:
+                                                                                    '4px 8px',
+                                                                                borderRadius:
+                                                                                    '5px',
+                                                                                background:
+                                                                                    '#f1f5f9',
+                                                                                color:
+                                                                                    '#64748b',
+                                                                                fontSize:
+                                                                                    '11px',
+                                                                                lineHeight:
+                                                                                    '1.2'
+                                                                            }}
+                                                                        >
+                                                                            #
+                                                                            {
+                                                                                keyword
+                                                                            }
+                                                                        </span>
+
+                                                                    )
+                                                                )}
+
+                                                            </div>
+                                                        )}
+
+                                                </div>
+
+                                            </Link>
+                                        );
+                                    })}
+
+                                </div>
+
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.emptyCard
+                                    }
+                                >
+
+                                    <div
+                                        className={
+                                            styles.emptyIcon
+                                        }
+                                    >
+                                        HS Codes
+                                    </div>
+
+                                    <h3>
+                                        No HS Codes yet
+                                    </h3>
+
+                                    <p>
+                                        No HS Codes are currently
+                                        associated with this topic.
+                                    </p>
+
+                                </div>
+                            )}
+
+                        </section>
+
+
+                        {/* ==================================================
+                            DOCUMENTATION
+                        ================================================== */}
 
                         <section
                             id="documentation"
                             className={styles.section}
                         >
 
-                            <div className={styles.sectionHeader}>
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
 
                                 <div>
-                                    <h2>Documentation</h2>
+
+                                    <h2>
+                                        Documentation
+                                    </h2>
 
                                     <p>
                                         Trade, customs and logistics
                                         resources related to this topic.
                                     </p>
+
                                 </div>
 
-                                <span className={styles.sectionCount}>
+                                <span
+                                    className={
+                                        styles.sectionCount
+                                    }
+                                >
                                     {documents.length}
                                 </span>
 
@@ -354,43 +679,75 @@ export default function TopicPage() {
 
 
                             {documents.length > 0 ? (
-                                <div className={styles.documentList}>
+
+                                <div
+                                    className={
+                                        styles.documentList
+                                    }
+                                >
 
                                     {documents.map((document) => {
+
                                         const documentId =
                                             document._id ||
                                             document.id;
 
                                         return (
+
                                             <Link
                                                 key={documentId}
                                                 href={`/documentation/${documentId}`}
-                                                className={styles.documentCard}
+                                                className={
+                                                    styles.documentCard
+                                                }
                                             >
 
-                                                <div className={styles.documentIcon}>
+                                                <div
+                                                    className={
+                                                        styles.documentIcon
+                                                    }
+                                                >
                                                     DOC
                                                 </div>
 
-                                                <div className={styles.documentContent}>
 
-                                                    <div className={styles.documentHeader}>
+                                                <div
+                                                    className={
+                                                        styles.documentContent
+                                                    }
+                                                >
 
-                                                        <span className={styles.documentType}>
+                                                    <div
+                                                        className={
+                                                            styles.documentHeader
+                                                        }
+                                                    >
+
+                                                        <span
+                                                            className={
+                                                                styles.documentType
+                                                            }
+                                                        >
                                                             {document.documentType ||
                                                                 'DOCUMENT'}
                                                         </span>
 
-                                                        <span className={styles.documentArrow}>
+                                                        <span
+                                                            className={
+                                                                styles.documentArrow
+                                                            }
+                                                        >
                                                             →
                                                         </span>
 
                                                     </div>
 
+
                                                     <h3>
                                                         {document.title ||
                                                             'Untitled Document'}
                                                     </h3>
+
 
                                                     {document.description && (
                                                         <p>
@@ -398,7 +755,12 @@ export default function TopicPage() {
                                                         </p>
                                                     )}
 
-                                                    <span className={styles.documentCategory}>
+
+                                                    <span
+                                                        className={
+                                                            styles.documentCategory
+                                                        }
+                                                    >
                                                         {document.category ||
                                                             'General'}
                                                     </span>
@@ -410,10 +772,20 @@ export default function TopicPage() {
                                     })}
 
                                 </div>
-                            ) : (
-                                <div className={styles.emptyCard}>
 
-                                    <div className={styles.emptyIcon}>
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.emptyCard
+                                    }
+                                >
+
+                                    <div
+                                        className={
+                                            styles.emptyIcon
+                                        }
+                                    >
                                         Documentation
                                     </div>
 
@@ -434,7 +806,9 @@ export default function TopicPage() {
                     </div>
 
 
-                    {/* Right Sidebar */}
+                    {/* ==================================================
+                        RIGHT SIDEBAR
+                    ================================================== */}
 
                     <aside className={styles.sidebar}>
                         <RightSidebar />

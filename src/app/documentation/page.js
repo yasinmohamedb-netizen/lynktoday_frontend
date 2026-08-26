@@ -5,18 +5,9 @@ import { useEffect, useState } from 'react';
 
 import styles from './documentation.module.css';
 
-/* ======================================================
-   API
-====================================================== */
-
 const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     'http://localhost:5001/api/v1';
-
-
-/* ======================================================
-   CATEGORIES
-====================================================== */
 
 const categories = [
     'All',
@@ -26,505 +17,303 @@ const categories = [
     'DGFT',
     'GST',
     'FEMA',
-    'HS Code',
     'Shipping',
     'Logistics',
     'General'
 ];
 
-
-/* ======================================================
-   PAGE
-====================================================== */
-
 export default function DocumentationPage() {
-
-    /* ==================================================
-       DOCUMENTS
-    ================================================== */
-
     const [documents, setDocuments] = useState([]);
-
     const [featuredDocuments, setFeaturedDocuments] =
         useState([]);
 
-
-    /* ==================================================
-       SEARCH
-    ================================================== */
-
     const [search, setSearch] = useState('');
-
     const [submittedSearch, setSubmittedSearch] =
         useState('');
-
-
-    /* ==================================================
-       CATEGORY
-    ================================================== */
 
     const [activeCategory, setActiveCategory] =
         useState('All');
 
-
-    /* ==================================================
-       PAGINATION
-    ================================================== */
-
     const [page, setPage] = useState(1);
-
     const [totalPages, setTotalPages] = useState(1);
 
-
-    /* ==================================================
-       UI
-    ================================================== */
-
     const [loading, setLoading] = useState(true);
-
     const [error, setError] = useState('');
-
-
-    /* ==================================================
-       USER
-    ================================================== */
 
     const [user, setUser] = useState(null);
 
-
-    /* ==================================================
+    /* ======================================================
        LOAD USER
-    ================================================== */
+    ====================================================== */
 
     useEffect(() => {
-
         try {
-
             const storedUser =
-                localStorage.getItem('lynktoday_user');
+                localStorage.getItem(
+                    'lynktoday_user'
+                );
 
             if (!storedUser) {
                 setUser(null);
                 return;
             }
 
-            try {
-
-                setUser(
-                    JSON.parse(storedUser)
-                );
-
-            } catch (parseError) {
-
-                console.error(
-                    'User parse error:',
-                    parseError
-                );
-
-                setUser(null);
-
-            }
-
+            setUser(JSON.parse(storedUser));
         } catch (error) {
-
             console.error(
                 'Failed to load user:',
                 error
             );
 
             setUser(null);
-
         }
-
     }, []);
 
-
-    /* ==================================================
-       FETCH DOCUMENTS
-    ================================================== */
+    /* ======================================================
+       FETCH DOCUMENTATION
+    ====================================================== */
 
     const fetchDocuments = async () => {
-
         try {
-
             setLoading(true);
             setError('');
-
 
             const query =
                 submittedSearch.trim();
 
-
             let url;
 
-
-            /* ==========================================
-               SEARCH
-            ========================================== */
-
             if (query.length >= 2) {
-
                 url =
                     `${API_BASE_URL}/documentation/search` +
                     `?q=${encodeURIComponent(query)}` +
                     `&page=${page}` +
                     `&limit=10`;
-
-            }
-
-
-            /* ==========================================
-               NORMAL LIST
-            ========================================== */
-
-            else {
-
+            } else {
                 const params =
                     new URLSearchParams();
 
-                params.append(
-                    'page',
-                    page
-                );
-
-                params.append(
-                    'limit',
-                    '10'
-                );
-
+                params.set('page', page);
+                params.set('limit', '10');
 
                 if (
                     activeCategory !== 'All'
                 ) {
-
-                    params.append(
+                    params.set(
                         'category',
                         activeCategory
                     );
-
                 }
-
 
                 url =
                     `${API_BASE_URL}/documentation?${params.toString()}`;
-
             }
-
-
-            /* ==========================================
-               API REQUEST
-            ========================================== */
 
             const response =
                 await fetch(url, {
                     cache: 'no-store'
                 });
 
-
-            /* ==========================================
-               PARSE RESPONSE
-            ========================================== */
-
             const contentType =
                 response.headers.get(
                     'content-type'
                 );
 
-
-            let data = null;
-
-
             if (
-                contentType &&
-                contentType.includes(
+                !contentType?.includes(
                     'application/json'
                 )
             ) {
-
-                data =
-                    await response.json();
-
-            } else {
-
                 const text =
                     await response.text();
 
                 console.error(
-                    'Documentation API returned non-JSON:',
+                    'Documentation API response:',
                     text
                 );
 
                 throw new Error(
                     'Documentation API returned an invalid response.'
                 );
-
             }
 
-
-            /* ==========================================
-               API ERROR
-            ========================================== */
+            const data =
+                await response.json();
 
             if (!response.ok) {
-
                 throw new Error(
                     data?.message ||
                     'Failed to load documentation.'
                 );
-
             }
 
-
-            /* ==========================================
-               EXTRACT DOCUMENTS
-            ========================================== */
+            /* ------------------------------------------
+               SUPPORT BACKEND RESPONSE STRUCTURES
+            ------------------------------------------ */
 
             let list = [];
-
 
             if (
                 Array.isArray(
                     data?.documentations
                 )
             ) {
-
-                list =
-                    data.documentations;
-
+                list = data.documentations;
             } else if (
                 Array.isArray(
                     data?.documentation
                 )
             ) {
-
-                list =
-                    data.documentation;
-
+                list = data.documentation;
             } else if (
                 Array.isArray(
                     data?.documents
                 )
             ) {
-
-                list =
-                    data.documents;
-
+                list = data.documents;
             } else if (
                 Array.isArray(
                     data?.results
                 )
             ) {
-
-                list =
-                    data.results;
-
+                list = data.results;
             } else if (
-                Array.isArray(
-                    data?.data
-                )
+                Array.isArray(data?.data)
             ) {
-
-                list =
-                    data.data;
-
+                list = data.data;
             }
-
 
             setDocuments(list);
 
-
-            /* ==========================================
+            /* ------------------------------------------
                PAGINATION
-            ========================================== */
+            ------------------------------------------ */
 
             if (data?.pagination) {
-
                 setTotalPages(
                     Number(
                         data.pagination.totalPages
                     ) || 1
                 );
-
             } else {
-
                 setTotalPages(
                     list.length < 10
                         ? page
                         : page + 1
                 );
-
             }
 
-
-            /* ==========================================
-               FEATURED DOCUMENTS
-            ========================================== */
+            /* ------------------------------------------
+               FEATURED
+            ------------------------------------------ */
 
             if (
                 page === 1 &&
                 !query &&
                 activeCategory === 'All'
             ) {
-
-                const featured =
+                setFeaturedDocuments(
                     list
                         .filter(
                             document =>
-                                document &&
-                                document.isFeatured
+                                document?.isFeatured
                         )
-                        .slice(0, 3);
-
-
-                setFeaturedDocuments(
-                    featured
+                        .slice(0, 3)
                 );
-
             } else {
-
                 setFeaturedDocuments([]);
-
             }
 
-
         } catch (error) {
-
             console.error(
                 'Documentation error:',
                 error
             );
 
             setDocuments([]);
+            setFeaturedDocuments([]);
 
             setError(
                 error?.message ||
                 'Unable to load documentation.'
             );
-
         } finally {
-
             setLoading(false);
-
         }
-
     };
 
-
-    /* ==================================================
-       FETCH WHEN FILTERS CHANGE
-    ================================================== */
-
     useEffect(() => {
-
         fetchDocuments();
-
     }, [
         page,
         activeCategory,
         submittedSearch
     ]);
 
-
-    /* ==================================================
-       SEARCH SUBMIT
-    ================================================== */
+    /* ======================================================
+       SEARCH
+    ====================================================== */
 
     const handleSearch = event => {
-
         event.preventDefault();
-
 
         const query =
             search.trim();
 
-
         if (!query) {
-
             setError('');
-
             setSubmittedSearch('');
-
             setPage(1);
-
             return;
-
         }
 
-
         if (query.length < 2) {
-
             setError(
                 'Please enter at least 2 characters to search.'
             );
-
             return;
-
         }
 
-
         setError('');
-
         setPage(1);
-
-        setSubmittedSearch(
-            query
-        );
-
+        setSubmittedSearch(query);
     };
 
-
-    /* ==================================================
+    /* ======================================================
        CATEGORY
-    ================================================== */
+    ====================================================== */
 
     const handleCategory = category => {
-
         setActiveCategory(category);
-
-        setPage(1);
-
         setSearch('');
-
         setSubmittedSearch('');
-
+        setPage(1);
         setError('');
-
     };
 
-
-    /* ==================================================
+    /* ======================================================
        CLEAR SEARCH
-    ================================================== */
+    ====================================================== */
 
     const clearSearch = () => {
-
         setSearch('');
-
         setSubmittedSearch('');
-
         setPage(1);
-
         setError('');
-
     };
 
-
-    /* ==================================================
+    /* ======================================================
        RETRY
-    ================================================== */
+    ====================================================== */
 
     const handleRetry = () => {
-
         setError('');
-
         fetchDocuments();
-
     };
 
-
-    /* ==================================================
+    /* ======================================================
        FEATURED IDS
-    ================================================== */
+    ====================================================== */
 
     const featuredIds =
         new Set(
@@ -538,17 +327,14 @@ export default function DocumentationPage() {
             )
         );
 
-
-    /* ==================================================
+    /* ======================================================
        DISPLAYED DOCUMENTS
-    ================================================== */
+    ====================================================== */
 
     const displayedDocuments =
-        (
-            page === 1 &&
-            !submittedSearch &&
-            activeCategory === 'All'
-        )
+        page === 1 &&
+        !submittedSearch &&
+        activeCategory === 'All'
             ? documents.filter(
                 document =>
                     !featuredIds.has(
@@ -561,28 +347,20 @@ export default function DocumentationPage() {
             )
             : documents;
 
-
-    /* ==================================================
-       SIDEBAR DOCUMENTS
-    ================================================== */
-
     const recentDocuments =
-        displayedDocuments
-            .slice(0, 5);
+        displayedDocuments.slice(0, 5);
 
-
-    /* ==================================================
+    /* ======================================================
        RENDER
-    ================================================== */
+    ====================================================== */
 
     return (
-
         <main className={styles.page}>
 
             <div className={styles.container}>
 
                 {/* ==================================================
-                    HEADER
+                   HEADER
                 ================================================== */}
 
                 <header className={styles.header}>
@@ -593,7 +371,7 @@ export default function DocumentationPage() {
                             href="/"
                             className={styles.logo}
                         >
-                            Exp<span>Imp</span>
+                            Lynk<span>Today</span>
                         </Link>
 
                         <div className={styles.headerText}>
@@ -616,31 +394,45 @@ export default function DocumentationPage() {
 
                         <Link
                             href="/"
-                            className={styles.homeButton}
+                            className={styles.headerButton}
                         >
                             Home
                         </Link>
 
 
-                        {user && (
-    <>
-        <Link
-            href="/hs-codes/create"
-            className={styles.createButton}
-        >
-            <span>+</span>
-            Create HS Code
-        </Link>
+                        <Link
+                            href="/hs-codes"
+                            className={styles.hsCodeButton}
+                        >
+                            HS Code
+                        </Link>
 
-        <Link
-            href="/documentation/create"
-            className={styles.createButton}
-        >
-            <span>+</span>
-            Create Documentation
-        </Link>
-    </>
-)}
+
+                        {user && (
+                            <>
+
+                                <Link
+                                    href="/documentation/create"
+                                    className={
+                                        styles.createButton
+                                    }
+                                >
+                                    <span>+</span>
+                                    Create Documentation
+                                </Link>
+
+                                <Link
+                                    href="/hs-codes/create"
+                                    className={
+                                        styles.createButton
+                                    }
+                                >
+                                    <span>+</span>
+                                    Create HS Code
+                                </Link>
+
+                            </>
+                        )}
 
                     </div>
 
@@ -648,29 +440,33 @@ export default function DocumentationPage() {
 
 
                 {/* ==================================================
-                    PAGE GRID
+                   MAIN LAYOUT
                 ================================================== */}
 
                 <div className={styles.layout}>
 
-                    {/* ==================================================
-                        MAIN CONTENT
-                    ================================================== */}
-
                     <section className={styles.main}>
 
-                        {/* ==========================================
-                            SEARCH
-                        ========================================== */}
+                        {/* ==================================================
+                           SEARCH
+                        ================================================== */}
 
                         <form
                             onSubmit={handleSearch}
                             className={styles.searchBox}
                         >
 
-                            <div className={styles.searchInputWrap}>
+                            <div
+                                className={
+                                    styles.searchInputWrap
+                                }
+                            >
 
-                                <span className={styles.searchIcon}>
+                                <span
+                                    className={
+                                        styles.searchIcon
+                                    }
+                                >
                                     ⌕
                                 </span>
 
@@ -686,16 +482,17 @@ export default function DocumentationPage() {
                                 />
 
                                 {search && (
-
                                     <button
                                         type="button"
-                                        className={styles.clearButton}
-                                        onClick={clearSearch}
-                                        aria-label="Clear search"
+                                        className={
+                                            styles.clearButton
+                                        }
+                                        onClick={
+                                            clearSearch
+                                        }
                                     >
                                         ×
                                     </button>
-
                                 )}
 
                             </div>
@@ -703,7 +500,9 @@ export default function DocumentationPage() {
 
                             <button
                                 type="submit"
-                                className={styles.searchButton}
+                                className={
+                                    styles.searchButton
+                                }
                             >
                                 Search
                             </button>
@@ -711,9 +510,7 @@ export default function DocumentationPage() {
                         </form>
 
 
-                        {/* ==========================================
-                            SEARCH VALIDATION
-                        ========================================== */}
+                        {/* SEARCH ERROR */}
 
                         {error &&
                             !loading &&
@@ -721,42 +518,54 @@ export default function DocumentationPage() {
                                 'at least 2 characters'
                             ) && (
 
-                                <div className={styles.validationError}>
+                                <div
+                                    className={
+                                        styles.validationError
+                                    }
+                                >
                                     {error}
                                 </div>
 
                             )}
 
 
-                        {/* ==========================================
-                            CATEGORIES
-                        ========================================== */}
+                        {/* ==================================================
+                           CATEGORIES
+                        ================================================== */}
 
-                        <section className={styles.categorySection}>
+                        <section
+                            className={
+                                styles.categorySection
+                            }
+                        >
 
-                            <div className={styles.sectionIntro}>
+                            <div
+                                className={
+                                    styles.sectionIntro
+                                }
+                            >
 
-                                <div>
+                                <span>
+                                    EXPLORE
+                                </span>
 
-                                    <span>
-                                        EXPLORE
-                                    </span>
+                                <h2>
+                                    Browse by Category
+                                </h2>
 
-                                    <h2>
-                                        Browse by Category
-                                    </h2>
-
-                                    <p>
-                                        Find practical knowledge
-                                        by trade area.
-                                    </p>
-
-                                </div>
+                                <p>
+                                    Find practical knowledge
+                                    by trade area.
+                                </p>
 
                             </div>
 
 
-                            <div className={styles.categories}>
+                            <div
+                                className={
+                                    styles.categories
+                                }
+                            >
 
                                 {categories.map(
                                     category => (
@@ -772,7 +581,7 @@ export default function DocumentationPage() {
                                             className={
                                                 activeCategory ===
                                                 category
-                                                    ? styles.activeCategory
+                                                    ? styles.categoryActive
                                                     : styles.categoryButton
                                             }
                                         >
@@ -787,17 +596,13 @@ export default function DocumentationPage() {
                         </section>
 
 
-                        {/* ==========================================
-                            FEATURED
-                        ========================================== */}
+                        {/* ==================================================
+                           FEATURED
+                        ================================================== */}
 
                         {featuredDocuments.length > 0 && (
 
-                            <section
-                                className={
-                                    styles.featuredSection
-                                }
-                            >
+                            <section>
 
                                 <div
                                     className={
@@ -917,15 +722,11 @@ export default function DocumentationPage() {
                         )}
 
 
-                        {/* ==========================================
-                            DOCUMENT LIST
-                        ========================================== */}
+                        {/* ==================================================
+                           DOCUMENTATION
+                        ================================================== */}
 
-                        <section
-                            className={
-                                styles.listSection
-                            }
-                        >
+                        <section>
 
                             <div
                                 className={
@@ -945,7 +746,8 @@ export default function DocumentationPage() {
                                             : 'All Documentation'}
                                     </h2>
 
-                                    {activeCategory !== 'All' &&
+                                    {activeCategory !==
+                                        'All' &&
                                         !submittedSearch && (
 
                                             <p>
@@ -962,15 +764,13 @@ export default function DocumentationPage() {
                             </div>
 
 
-                            {/* ======================================
-                                LOADING
-                            ====================================== */}
+                            {/* LOADING */}
 
                             {loading && (
 
                                 <div
                                     className={
-                                        styles.loadingCard
+                                        styles.stateCard
                                     }
                                 >
 
@@ -989,9 +789,7 @@ export default function DocumentationPage() {
                             )}
 
 
-                            {/* ======================================
-                                ERROR
-                            ====================================== */}
+                            {/* ERROR */}
 
                             {!loading &&
                                 error &&
@@ -1001,7 +799,7 @@ export default function DocumentationPage() {
 
                                     <div
                                         className={
-                                            styles.errorCard
+                                            styles.stateCard
                                         }
                                     >
 
@@ -1023,7 +821,9 @@ export default function DocumentationPage() {
 
                                         <button
                                             type="button"
-                                            onClick={handleRetry}
+                                            onClick={
+                                                handleRetry
+                                            }
                                             className={
                                                 styles.retryButton
                                             }
@@ -1036,9 +836,7 @@ export default function DocumentationPage() {
                                 )}
 
 
-                            {/* ======================================
-                                EMPTY
-                            ====================================== */}
+                            {/* EMPTY */}
 
                             {!loading &&
                                 !error &&
@@ -1046,11 +844,15 @@ export default function DocumentationPage() {
 
                                     <div
                                         className={
-                                            styles.empty
+                                            styles.stateCard
                                         }
                                     >
 
-                                        <div className={styles.emptyIcon}>
+                                        <div
+                                            className={
+                                                styles.emptyIcon
+                                            }
+                                        >
                                             📚
                                         </div>
 
@@ -1063,17 +865,33 @@ export default function DocumentationPage() {
                                             or category.
                                         </p>
 
-
                                         {user && (
 
-                                            <Link
-                                                href="/documentation/create"
+                                            <div
                                                 className={
-                                                    styles.emptyCreateButton
+                                                    styles.emptyActions
                                                 }
                                             >
-                                                + Create Documentation
-                                            </Link>
+
+                                                <Link
+                                                    href="/documentation/create"
+                                                    className={
+                                                        styles.actionButton
+                                                    }
+                                                >
+                                                    + Create Documentation
+                                                </Link>
+
+                                                <Link
+                                                    href="/hs-codes/create"
+                                                    className={
+                                                        styles.actionButton
+                                                    }
+                                                >
+                                                    + Create HS Code
+                                                </Link>
+
+                                            </div>
 
                                         )}
 
@@ -1082,9 +900,7 @@ export default function DocumentationPage() {
                                 )}
 
 
-                            {/* ======================================
-                                DOCUMENTS
-                            ====================================== */}
+                            {/* DOCUMENT LIST */}
 
                             {!loading &&
                                 !error &&
@@ -1144,13 +960,12 @@ export default function DocumentationPage() {
 
                                                                 <span
                                                                     className={
-                                                                        styles.type
+                                                                        styles.badge
                                                                     }
                                                                 >
                                                                     {document.documentType ||
                                                                         'DOCUMENT'}
                                                                 </span>
-
 
                                                                 {document.isFeatured && (
 
@@ -1257,9 +1072,7 @@ export default function DocumentationPage() {
                                 )}
 
 
-                            {/* ======================================
-                                PAGINATION
-                            ====================================== */}
+                            {/* PAGINATION */}
 
                             {!loading &&
                                 !error &&
@@ -1274,32 +1087,34 @@ export default function DocumentationPage() {
 
                                         <button
                                             type="button"
-                                            disabled={page <= 1}
+                                            disabled={
+                                                page <= 1
+                                            }
                                             onClick={() =>
                                                 setPage(
-                                                    previousPage =>
-                                                        previousPage - 1
+                                                    current =>
+                                                        current - 1
                                                 )
                                             }
                                         >
                                             ← Previous
                                         </button>
 
-
                                         <span>
-                                            Page {page} of {totalPages}
+                                            Page {page} of{' '}
+                                            {totalPages}
                                         </span>
-
 
                                         <button
                                             type="button"
                                             disabled={
-                                                page >= totalPages
+                                                page >=
+                                                totalPages
                                             }
                                             onClick={() =>
                                                 setPage(
-                                                    previousPage =>
-                                                        previousPage + 1
+                                                    current =>
+                                                        current + 1
                                                 )
                                             }
                                         >
@@ -1316,14 +1131,12 @@ export default function DocumentationPage() {
 
 
                     {/* ==================================================
-                        RIGHT SIDEBAR
+                       SIDEBAR
                     ================================================== */}
 
                     <aside className={styles.sidebar}>
 
-                        {/* ==========================================
-                            CREATE DOCUMENTATION
-                        ========================================== */}
+                        {/* CONTRIBUTE */}
 
                         {user && (
 
@@ -1346,18 +1159,28 @@ export default function DocumentationPage() {
                                 </h3>
 
                                 <p>
-                                    Help freight forwarding and
-                                    trade professionals by sharing
-                                    practical knowledge.
+                                    Help freight forwarding
+                                    and trade professionals
+                                    by sharing practical
+                                    knowledge.
                                 </p>
 
                                 <Link
                                     href="/documentation/create"
                                     className={
-                                        styles.sidebarCreateButton
+                                        styles.sidebarButton
                                     }
                                 >
                                     + Create Documentation
+                                </Link>
+
+                                <Link
+                                    href="/hs-codes/create"
+                                    className={
+                                        styles.sidebarButton
+                                    }
+                                >
+                                    + Create HS Code
                                 </Link>
 
                             </div>
@@ -1365,11 +1188,13 @@ export default function DocumentationPage() {
                         )}
 
 
-                        {/* ==========================================
-                            QUICK ACCESS
-                        ========================================== */}
+                        {/* QUICK ACCESS */}
 
-                        <div className={styles.sidebarCard}>
+                        <div
+                            className={
+                                styles.sidebarCard
+                            }
+                        >
 
                             <div
                                 className={
@@ -1377,17 +1202,13 @@ export default function DocumentationPage() {
                                 }
                             >
 
-                                <div>
+                                <span>
+                                    EXPLORE
+                                </span>
 
-                                    <span>
-                                        EXPLORE
-                                    </span>
-
-                                    <h3>
-                                        Quick Access
-                                    </h3>
-
-                                </div>
+                                <h3>
+                                    Quick Access
+                                </h3>
 
                             </div>
 
@@ -1399,15 +1220,14 @@ export default function DocumentationPage() {
                             >
 
                                 {[
-                                    ['All', 'All Documentation'],
-                                    ['Customs', 'Customs'],
-                                    ['Import', 'Import'],
-                                    ['Export', 'Export'],
-                                    ['GST', 'GST'],
-                                    ['HS Code', 'HS Code'],
-                                    ['Shipping', 'Shipping']
+                                    'All',
+                                    'Customs',
+                                    'Import',
+                                    'Export',
+                                    'GST',
+                                    'Shipping'
                                 ].map(
-                                    ([category, label]) => (
+                                    category => (
 
                                         <button
                                             key={category}
@@ -1415,7 +1235,7 @@ export default function DocumentationPage() {
                                             className={
                                                 activeCategory ===
                                                 category
-                                                    ? styles.quickLinkActive
+                                                    ? styles.quickActive
                                                     : styles.quickLink
                                             }
                                             onClick={() =>
@@ -1426,7 +1246,10 @@ export default function DocumentationPage() {
                                         >
 
                                             <span>
-                                                {label}
+                                                {category ===
+                                                    'All'
+                                                    ? 'All Documentation'
+                                                    : category}
                                             </span>
 
                                             <span>
@@ -1438,16 +1261,36 @@ export default function DocumentationPage() {
                                     )
                                 )}
 
+
+                                <Link
+                                    href="/hs-codes"
+                                    className={
+                                        styles.quickLink
+                                    }
+                                >
+
+                                    <span>
+                                        HS Code
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </Link>
+
                             </div>
 
                         </div>
 
 
-                        {/* ==========================================
-                            RECENT DOCUMENTS
-                        ========================================== */}
+                        {/* RECENT */}
 
-                        <div className={styles.sidebarCard}>
+                        <div
+                            className={
+                                styles.sidebarCard
+                            }
+                        >
 
                             <div
                                 className={
@@ -1455,17 +1298,13 @@ export default function DocumentationPage() {
                                 }
                             >
 
-                                <div>
+                                <span>
+                                    RECENT
+                                </span>
 
-                                    <span>
-                                        RECENT
-                                    </span>
-
-                                    <h3>
-                                        Recent Documents
-                                    </h3>
-
-                                </div>
+                                <h3>
+                                    Recent Documents
+                                </h3>
 
                             </div>
 
@@ -1544,11 +1383,13 @@ export default function DocumentationPage() {
                         </div>
 
 
-                        {/* ==========================================
-                            CATEGORIES
-                        ========================================== */}
+                        {/* TOPICS */}
 
-                        <div className={styles.sidebarCard}>
+                        <div
+                            className={
+                                styles.sidebarCard
+                            }
+                        >
 
                             <div
                                 className={
@@ -1556,17 +1397,13 @@ export default function DocumentationPage() {
                                 }
                             >
 
-                                <div>
+                                <span>
+                                    TOPICS
+                                </span>
 
-                                    <span>
-                                        TOPICS
-                                    </span>
-
-                                    <h3>
-                                        Documentation Areas
-                                    </h3>
-
-                                </div>
+                                <h3>
+                                    Documentation Areas
+                                </h3>
 
                             </div>
 
@@ -1580,7 +1417,8 @@ export default function DocumentationPage() {
                                 {categories
                                     .filter(
                                         category =>
-                                            category !== 'All'
+                                            category !==
+                                            'All'
                                     )
                                     .map(
                                         category => (
@@ -1617,7 +1455,5 @@ export default function DocumentationPage() {
             </div>
 
         </main>
-
     );
-
 }

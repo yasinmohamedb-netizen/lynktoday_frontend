@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import styles from './page.module.css';
 
+
 // ======================================================
-// API BASE URL
+// API
 // ======================================================
 
 const API_BASE_URL =
@@ -15,322 +17,372 @@ const API_BASE_URL =
 
 
 // ======================================================
-// Search Page
+// SEARCH PAGE
 // ======================================================
 
 export default function SearchPage() {
 
-    const [query, setQuery] = useState('');
-    const [loading, setLoading] = useState(false);
+    const searchParams =
+        useSearchParams();
 
-    const [users, setUsers] = useState([]);
-    const [companies, setCompanies] = useState([]);
-    const [questions, setQuestions] = useState([]);
-    const [posts, setPosts] = useState([]);
-    const [hsCodes, setHsCodes] = useState([]);
+    const urlQuery =
+        searchParams.get('q') || '';
 
-    const [error, setError] = useState('');
+
+    const [query, setQuery] =
+        useState('');
+
+
+    const [loading, setLoading] =
+        useState(false);
+
+
+    const [error, setError] =
+        useState('');
+
+
+    const [users, setUsers] =
+        useState([]);
+
+
+    const [companies, setCompanies] =
+        useState([]);
+
+
+    const [questions, setQuestions] =
+        useState([]);
+
+
+    const [posts, setPosts] =
+        useState([]);
+
+
+    const [hsCodes, setHsCodes] =
+        useState([]);
+
+
+    const [documentation, setDocumentation] =
+        useState([]);
 
 
     // ==================================================
-    // Read Query From URL
+    // LOAD SEARCH QUERY
     // ==================================================
 
     useEffect(() => {
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
+        const cleanQuery =
+            urlQuery.trim();
 
-        const searchQuery =
-            params.get('q') || '';
 
-        setQuery(searchQuery);
+        setQuery(
+            cleanQuery
+        );
 
-        if (searchQuery.trim()) {
+
+        if (cleanQuery) {
 
             performSearch(
-                searchQuery.trim()
+                cleanQuery
             );
+
+        } else {
+
+            setLoading(false);
+
+            setError(
+                'Please enter something to search.'
+            );
+
+            setUsers([]);
+
+            setCompanies([]);
+
+            setQuestions([]);
+
+            setPosts([]);
+
+            setHsCodes([]);
+
+            setDocumentation([]);
 
         }
 
-    }, []);
+    }, [urlQuery]);
 
 
     // ==================================================
-    // Search
+    // PERFORM SEARCH
     // ==================================================
 
-    const performSearch = async (
-        searchQuery
-    ) => {
+    const performSearch =
+        async (searchQuery) => {
 
-        try {
-
-            setLoading(true);
-            setError('');
-
-            setUsers([]);
-            setCompanies([]);
-            setQuestions([]);
-            setPosts([]);
-            setHsCodes([]);
+            const cleanQuery =
+                String(
+                    searchQuery || ''
+                ).trim();
 
 
-            // ==================================================
-            // GLOBAL SEARCH
-            // ==================================================
+            // ==========================================
+            // EMPTY QUERY
+            // ==========================================
 
-            const searchUrl =
-                `${API_BASE_URL}/search?q=${encodeURIComponent(
-                    searchQuery
-                )}&limit=20`;
+            if (!cleanQuery) {
 
-            const searchResponse =
-                await fetch(searchUrl);
-
-            if (!searchResponse.ok) {
-
-                throw new Error(
-                    `Search request failed: ${searchResponse.status}`
+                setError(
+                    'Please enter something to search.'
                 );
+
+                setLoading(false);
+
+                return;
 
             }
 
-            const searchData =
-                await searchResponse.json();
-
-            if (!searchData.success) {
-
-                throw new Error(
-                    searchData.message ||
-                    'Search failed.'
-                );
-
-            }
-
-
-            // ==================================================
-            // USERS
-            // ==================================================
-
-            setUsers(
-                Array.isArray(
-                    searchData.results?.users
-                )
-                    ? searchData.results.users
-                    : []
-            );
-
-
-            // ==================================================
-            // COMPANIES
-            // ==================================================
-
-            setCompanies(
-                Array.isArray(
-                    searchData.results?.companies
-                )
-                    ? searchData.results.companies
-                    : []
-            );
-
-
-            // ==================================================
-            // QUESTIONS
-            // ==================================================
-
-            setQuestions(
-                Array.isArray(
-                    searchData.questions
-                )
-                    ? searchData.questions
-                    : []
-            );
-
-
-            // ==================================================
-            // POSTS
-            //
-            // We use the dedicated posts endpoint because
-            // your backend supports:
-            //
-            // GET /api/v1/posts?search=import&limit=20
-            // ==================================================
 
             try {
 
-                const postsUrl =
-                    `${API_BASE_URL}/posts?search=${encodeURIComponent(
-                        searchQuery
-                    )}&limit=20`;
+                setLoading(true);
 
-                const postsResponse =
-                    await fetch(postsUrl);
+                setError('');
 
-                if (postsResponse.ok) {
 
-                    const postsData =
-                        await postsResponse.json();
+                // ======================================
+                // CLEAR OLD RESULTS
+                // ======================================
 
-                    if (postsData.success) {
+                setUsers([]);
 
-                        const postResults =
-                            Array.isArray(
-                                postsData.posts
-                            )
-                                ? postsData.posts
-                                : [];
+                setCompanies([]);
 
-                        /*
-                         * Questions are already displayed
-                         * separately, so don't show QUESTION
-                         * posts again inside Posts.
-                         */
-
-                        const normalPosts =
-                            postResults.filter(
-                                (post) =>
-                                    post?.postType !==
-                                    'QUESTION'
-                            );
-
-                        setPosts(
-                            normalPosts
-                        );
-
-                    }
-
-                }
-
-            } catch (postsError) {
-
-                console.error(
-                    'Posts search failed:',
-                    postsError
-                );
-
-                /*
-                 * Don't fail the entire search if
-                 * posts API has an issue.
-                 */
+                setQuestions([]);
 
                 setPosts([]);
 
-            }
+                setHsCodes([]);
+
+                setDocumentation([]);
 
 
-            // ==================================================
-            // HS CODES
-            // ==================================================
+                // ======================================
+                // API URL
+                // ======================================
 
-            /*
-             * If the global search API already returns
-             * HS Codes, use them.
-             */
+                const searchUrl =
+                    `${API_BASE_URL}/search?q=${encodeURIComponent(
+                        cleanQuery
+                    )}&limit=20`;
 
-            if (
-                Array.isArray(
-                    searchData.hsCodes
-                )
-            ) {
 
-                setHsCodes(
-                    searchData.hsCodes
+                console.log(
+                    'Searching:',
+                    searchUrl
                 );
 
-            }
+
+                // ======================================
+                // API REQUEST
+                // ======================================
+
+                const response =
+                    await fetch(
+                        searchUrl,
+                        {
+                            method: 'GET',
+
+                            headers: {
+                                Accept:
+                                    'application/json'
+                            },
+
+                            cache: 'no-store'
+                        }
+                    );
 
 
-            // ==================================================
-            // FALLBACK HS CODE SEARCH
-            //
-            // This allows HS Code search to work even if the
-            // global search controller has not yet been updated.
-            // ==================================================
+                // ======================================
+                // RESPONSE JSON
+                // ======================================
 
-            if (
-                !Array.isArray(
-                    searchData.hsCodes
-                ) ||
-                searchData.hsCodes.length === 0
-            ) {
+                let result;
+
 
                 try {
 
-                    const hsUrl =
-                        `${API_BASE_URL}/hs-codes?search=${encodeURIComponent(
-                            searchQuery
-                        )}&limit=20`;
+                    result =
+                        await response.json();
 
-                    const hsResponse =
-                        await fetch(hsUrl);
-
-                    if (
-                        hsResponse.ok
-                    ) {
-
-                        const hsData =
-                            await hsResponse.json();
-
-                        if (
-                            hsData.success
-                        ) {
-
-                            const hsResults =
-                                hsData.hsCodes ||
-                                hsData.results ||
-                                hsData.data ||
-                                [];
-
-                            setHsCodes(
-                                Array.isArray(
-                                    hsResults
-                                )
-                                    ? hsResults
-                                    : []
-                            );
-
-                        }
-
-                    }
-
-                } catch (hsError) {
+                } catch (jsonError) {
 
                     console.error(
-                        'HS Code search failed:',
-                        hsError
+                        'Invalid search response:',
+                        jsonError
+                    );
+
+                    throw new Error(
+                        `Search request failed: ${response.status}`
                     );
 
                 }
 
+
+                // ======================================
+                // HTTP ERROR
+                // ======================================
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result?.message ||
+                        `Search request failed: ${response.status}`
+                    );
+
+                }
+
+
+                // ======================================
+                // API ERROR
+                // ======================================
+
+                if (!result?.success) {
+
+                    throw new Error(
+                        result?.message ||
+                        'Search failed.'
+                    );
+
+                }
+
+
+                const results =
+                    result.results || {};
+
+
+                // ======================================
+                // USERS
+                // ======================================
+
+                setUsers(
+                    Array.isArray(
+                        results.users
+                    )
+                        ? results.users
+                        : []
+                );
+
+
+                // ======================================
+                // COMPANIES
+                // ======================================
+
+                setCompanies(
+                    Array.isArray(
+                        results.companies
+                    )
+                        ? results.companies
+                        : []
+                );
+
+
+                // ======================================
+                // QUESTIONS
+                // ======================================
+
+                setQuestions(
+                    Array.isArray(
+                        results.questions
+                    )
+                        ? results.questions
+                        : []
+                );
+
+
+                // ======================================
+                // POSTS
+                // ======================================
+
+                const postResults =
+                    Array.isArray(
+                        results.posts
+                    )
+                        ? results.posts
+                        : [];
+
+
+                setPosts(
+                    postResults.filter(
+                        (post) =>
+                            post?.postType !==
+                            'QUESTION'
+                    )
+                );
+
+
+                // ======================================
+                // HS CODES
+                // ======================================
+
+                setHsCodes(
+                    Array.isArray(
+                        results.hsCodes
+                    )
+                        ? results.hsCodes
+                        : []
+                );
+
+
+                // ======================================
+                // DOCUMENTATION
+                // ======================================
+
+                setDocumentation(
+                    Array.isArray(
+                        results.documentation
+                    )
+                        ? results.documentation
+                        : []
+                );
+
+
+            } catch (searchError) {
+
+                console.error(
+                    'Global search error:',
+                    searchError
+                );
+
+
+                setError(
+                    searchError?.message ||
+                    'Unable to perform search.'
+                );
+
+
+            } finally {
+
+                setLoading(false);
+
             }
 
-        } catch (searchError) {
-
-            console.error(
-                'Global search error:',
-                searchError
-            );
-
-            setError(
-                searchError.message ||
-                'Unable to perform search.'
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
+        };
 
 
     // ==================================================
-    // Render
+    // TOTAL RESULTS
+    // ==================================================
+
+    const totalResults =
+        hsCodes.length +
+        documentation.length +
+        posts.length +
+        questions.length +
+        users.length +
+        companies.length;
+
+
+    // ==================================================
+    // RENDER
     // ==================================================
 
     return (
@@ -342,7 +394,7 @@ export default function SearchPage() {
         >
 
             {/* ==========================================
-                Header
+                HEADER
             ========================================== */}
 
             <div
@@ -367,14 +419,13 @@ export default function SearchPage() {
                         Search Results
                     </h1>
 
+
                     <p>
 
-                        Results for:
+                        Results for:{' '}
 
                         <strong>
-                            {' "'}
-                            {query}
-                            {'"'}
+                            "{query}"
                         </strong>
 
                     </p>
@@ -385,7 +436,7 @@ export default function SearchPage() {
 
 
             {/* ==========================================
-                Loading
+                LOADING
             ========================================== */}
 
             {loading && (
@@ -402,701 +453,844 @@ export default function SearchPage() {
 
 
             {/* ==========================================
-                Error
+                ERROR
             ========================================== */}
 
-            {!loading && error && (
+            {!loading &&
+                error && (
 
-                <div
-                    className={
-                        styles.error
-                    }
-                >
-
-                    {error}
-
-                </div>
-
-            )}
-
-
-            {!loading && !error && (
-
-                <div
-                    className={
-                        styles.results
-                    }
-                >
-
-
-                    {/* ==================================
-                        HS CODES
-                    ================================== */}
-
-                    <section
+                    <div
                         className={
-                            styles.section
+                            styles.error
+                        }
+                    >
+                        {error}
+                    </div>
+
+                )}
+
+
+            {/* ==========================================
+                RESULTS
+            ========================================== */}
+
+            {!loading &&
+                !error &&
+                query && (
+
+                    <div
+                        className={
+                            styles.results
                         }
                     >
 
+                        {/* ==================================
+                            SUMMARY
+                        ================================== */}
+
                         <div
                             className={
-                                styles.sectionHeader
+                                styles.resultSummary
                             }
                         >
 
-                            <h2>
-                                HS Codes
-                            </h2>
+                            Found{' '}
 
-                            <span>
-                                {hsCodes.length}
-                            </span>
+                            <strong>
+                                {totalResults}
+                            </strong>{' '}
+
+                            {totalResults === 1
+                                ? 'result'
+                                : 'results'}
 
                         </div>
 
 
-                        {hsCodes.length === 0 ? (
+                        {/* ==================================
+                            HS CODES
+                        ================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
 
                             <div
                                 className={
-                                    styles.empty
+                                    styles.sectionHeader
                                 }
                             >
 
-                                No HS Codes found.
+                                <h2>
+                                    HS Codes
+                                </h2>
+
+                                <span>
+                                    {hsCodes.length}
+                                </span>
 
                             </div>
 
-                        ) : (
 
-                            <div
-                                className={
-                                    styles.cardList
-                                }
-                            >
+                            {hsCodes.length === 0 ? (
 
-                                {hsCodes.map(
-                                    (item) => (
+                                <div
+                                    className={
+                                        styles.empty
+                                    }
+                                >
+                                    No HS Codes found.
+                                </div>
 
-                                        <Link
-                                            key={
-                                                `hs-${item._id || item.hsCode}`
-                                            }
-                                            href={`/hs-codes/${item._id || item.hsCode}`}
-                                            className={
-                                                styles.hsCard
-                                            }
-                                        >
+                            ) : (
 
-                                            <div>
+                                <div
+                                    className={
+                                        styles.cardList
+                                    }
+                                >
 
-                                                <div
-                                                    className={
-                                                        styles.hsCode
-                                                    }
-                                                >
+                                    {hsCodes.map(
+                                        (item) => (
 
-                                                    {
+                                            <Link
+                                                key={
+                                                    item._id ||
+                                                    item.hsCode
+                                                }
+                                                href={
+                                                    `/hs-codes/${
+                                                        item._id ||
                                                         item.hsCode
-                                                    }
-
-                                                </div>
-
-
-                                                <h3>
-
-                                                    {
-                                                        item.description
-                                                    }
-
-                                                </h3>
-
-
-                                                <div
-                                                    className={
-                                                        styles.meta
-                                                    }
-                                                >
-
-                                                    {item.chapter && (
-
-                                                        <span>
-
-                                                            Chapter{' '}
-
-                                                            {
-                                                                item.chapterNumber
-                                                            }
-
-                                                        </span>
-
-                                                    )}
-
-
-                                                    {item.heading && (
-
-                                                        <span>
-
-                                                            Heading{' '}
-
-                                                            {
-                                                                item.heading
-                                                            }
-
-                                                        </span>
-
-                                                    )}
-
-
-                                                    {item.country && (
-
-                                                        <span>
-
-                                                            {
-                                                                item.country
-                                                            }
-
-                                                        </span>
-
-                                                    )}
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <span
+                                                    }`
+                                                }
                                                 className={
-                                                    styles.arrow
+                                                    styles.hsCard
                                                 }
                                             >
-                                                →
-                                            </span>
 
-                                        </Link>
+                                                <div>
 
-                                    )
-                                )}
+                                                    <div
+                                                        className={
+                                                            styles.hsCode
+                                                        }
+                                                    >
+                                                        {
+                                                            item.hsCode
+                                                        }
+                                                    </div>
 
-                            </div>
 
-                        )}
+                                                    <h3>
+                                                        {
+                                                            item.description ||
+                                                            'HS Code'
+                                                        }
+                                                    </h3>
 
-                    </section>
+
+                                                    <div
+                                                        className={
+                                                            styles.meta
+                                                        }
+                                                    >
+
+                                                        {item.chapter && (
+
+                                                            <span>
+                                                                Chapter{' '}
+
+                                                                {
+                                                                    item.chapterNumber ||
+                                                                    item.chapter
+                                                                }
+                                                            </span>
+
+                                                        )}
 
 
-                    {/* ==================================
-                        POSTS
-                    ================================== */}
+                                                        {item.heading && (
 
-                    <section
-                        className={
-                            styles.section
-                        }
-                    >
+                                                            <span>
+                                                                Heading{' '}
 
-                        <div
+                                                                {
+                                                                    item.heading
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+
+                                                        {item.country && (
+
+                                                            <span>
+                                                                {
+                                                                    item.country
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <span
+                                                    className={
+                                                        styles.arrow
+                                                    }
+                                                >
+                                                    →
+                                                </span>
+
+                                            </Link>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            )}
+
+                        </section>
+
+
+                        {/* ==================================
+                            DOCUMENTATION
+                        ================================== */}
+
+                        <section
                             className={
-                                styles.sectionHeader
+                                styles.section
                             }
                         >
 
-                            <h2>
-                                Posts
-                            </h2>
-
-                            <span>
-                                {posts.length}
-                            </span>
-
-                        </div>
-
-
-                        {posts.length === 0 ? (
-
                             <div
                                 className={
-                                    styles.empty
+                                    styles.sectionHeader
                                 }
                             >
 
-                                No posts found.
+                                <h2>
+                                    Documentation
+                                </h2>
+
+                                <span>
+                                    {
+                                        documentation.length
+                                    }
+                                </span>
 
                             </div>
 
-                        ) : (
+
+                            {documentation.length === 0 ? (
+
+                                <div
+                                    className={
+                                        styles.empty
+                                    }
+                                >
+                                    No documentation found.
+                                </div>
+
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.cardList
+                                    }
+                                >
+
+                                    {documentation.map(
+                                        (item) => (
+
+                                            <Link
+                                                key={
+                                                    item._id ||
+                                                    item.id
+                                                }
+                                                href={
+                                                    `/documentation/${
+                                                        item._id ||
+                                                        item.id
+                                                    }`
+                                                }
+                                                className={
+                                                    styles.questionCard
+                                                }
+                                            >
+
+                                                <div>
+
+                                                    <h3>
+                                                        {
+                                                            item.title ||
+                                                            'Documentation'
+                                                        }
+                                                    </h3>
+
+
+                                                    {item.description && (
+
+                                                        <p>
+                                                            {
+                                                                item.description
+                                                            }
+                                                        </p>
+
+                                                    )}
+
+
+                                                    <div
+                                                        className={
+                                                            styles.meta
+                                                        }
+                                                    >
+
+                                                        {item.documentType && (
+
+                                                            <span>
+                                                                {
+                                                                    item.documentType
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+
+                                                        {item.category && (
+
+                                                            <span>
+                                                                {
+                                                                    item.category
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+
+                                                        {item.hsCode && (
+
+                                                            <span>
+                                                                HS{' '}
+
+                                                                {
+                                                                    item.hsCode
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <span
+                                                    className={
+                                                        styles.arrow
+                                                    }
+                                                >
+                                                    →
+                                                </span>
+
+                                            </Link>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            )}
+
+                        </section>
+
+
+                        {/* ==================================
+                            POSTS
+                        ================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
 
                             <div
                                 className={
-                                    styles.cardList
+                                    styles.sectionHeader
                                 }
                             >
 
-                                {posts.map(
-                                    (post) => (
+                                <h2>
+                                    Posts
+                                </h2>
 
-                                        <Link
-                                            key={
-                                                `post-${post._id || post.id}`
-                                            }
-                                            href={`/posts/${post._id || post.id}`}
-                                            className={
-                                                styles.questionCard
-                                            }
-                                        >
+                                <span>
+                                    {posts.length}
+                                </span>
 
-                                            <div>
+                            </div>
+
+
+                            {posts.length === 0 ? (
+
+                                <div
+                                    className={
+                                        styles.empty
+                                    }
+                                >
+                                    No posts found.
+                                </div>
+
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.cardList
+                                    }
+                                >
+
+                                    {posts.map(
+                                        (post) => (
+
+                                            <Link
+                                                key={
+                                                    post._id ||
+                                                    post.id
+                                                }
+                                                href={
+                                                    `/posts/${
+                                                        post._id ||
+                                                        post.id
+                                                    }`
+                                                }
+                                                className={
+                                                    styles.questionCard
+                                                }
+                                            >
+
+                                                <div>
+
+                                                    <h3>
+                                                        {
+                                                            post.title ||
+                                                            'Untitled Post'
+                                                        }
+                                                    </h3>
+
+
+                                                    {post.content && (
+
+                                                        <p>
+                                                            {
+                                                                post.content
+                                                            }
+                                                        </p>
+
+                                                    )}
+
+
+                                                    <div
+                                                        className={
+                                                            styles.meta
+                                                        }
+                                                    >
+
+                                                        {post.author?.fullName && (
+
+                                                            <span>
+                                                                {
+                                                                    post.author.fullName
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+
+                                                        {post.author?.profession && (
+
+                                                            <span>
+                                                                {
+                                                                    post.author.profession
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+
+                                                        {post.category && (
+
+                                                            <span>
+                                                                {
+                                                                    post.category
+                                                                }
+                                                            </span>
+
+                                                        )}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <span
+                                                    className={
+                                                        styles.arrow
+                                                    }
+                                                >
+                                                    →
+                                                </span>
+
+                                            </Link>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            )}
+
+                        </section>
+
+
+                        {/* ==================================
+                            QUESTIONS
+                        ================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
+
+                                <h2>
+                                    Questions
+                                </h2>
+
+                                <span>
+                                    {
+                                        questions.length
+                                    }
+                                </span>
+
+                            </div>
+
+
+                            {questions.length === 0 ? (
+
+                                <div
+                                    className={
+                                        styles.empty
+                                    }
+                                >
+                                    No questions found.
+                                </div>
+
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.cardList
+                                    }
+                                >
+
+                                    {questions.map(
+                                        (question) => (
+
+                                            <Link
+                                                key={
+                                                    question._id
+                                                }
+                                                href={
+                                                    `/posts/${question._id}`
+                                                }
+                                                className={
+                                                    styles.questionCard
+                                                }
+                                            >
 
                                                 <h3>
-
                                                     {
-                                                        post.title ||
-                                                        'Untitled Post'
+                                                        question.title
                                                     }
-
                                                 </h3>
 
 
-                                                {post.content && (
+                                                {question.content && (
 
                                                     <p>
-
                                                         {
-                                                            post.content
+                                                            question.content
                                                         }
-
                                                     </p>
 
                                                 )}
 
+                                            </Link>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            )}
+
+                        </section>
+
+
+                        {/* ==================================
+                            PEOPLE
+                        ================================== */}
+
+                        <section
+                            className={
+                                styles.section
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.sectionHeader
+                                }
+                            >
+
+                                <h2>
+                                    People
+                                </h2>
+
+                                <span>
+                                    {users.length}
+                                </span>
+
+                            </div>
+
+
+                            {users.length === 0 ? (
+
+                                <div
+                                    className={
+                                        styles.empty
+                                    }
+                                >
+                                    No people found.
+                                </div>
+
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.peopleGrid
+                                    }
+                                >
+
+                                    {users.map(
+                                        (user) => (
+
+                                            <Link
+                                                key={
+                                                    user._id
+                                                }
+                                                href={
+                                                    `/profile/${user._id}`
+                                                }
+                                                className={
+                                                    styles.personCard
+                                                }
+                                            >
 
                                                 <div
                                                     className={
-                                                        styles.meta
+                                                        styles.avatar
                                                     }
                                                 >
-
-                                                    {post.author?.fullName && (
-
-                                                        <span>
-
-                                                            {
-                                                                post.author.fullName
-                                                            }
-
-                                                        </span>
-
-                                                    )}
-
-
-                                                    {post.author?.profession && (
-
-                                                        <span>
-
-                                                            {
-                                                                post.author.profession
-                                                            }
-
-                                                        </span>
-
-                                                    )}
-
-
-                                                    {post.category && (
-
-                                                        <span>
-
-                                                            {
-                                                                post.category
-                                                            }
-
-                                                        </span>
-
-                                                    )}
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <span
-                                                className={
-                                                    styles.arrow
-                                                }
-                                            >
-                                                →
-                                            </span>
-
-                                        </Link>
-
-                                    )
-                                )}
-
-                            </div>
-
-                        )}
-
-                    </section>
-
-
-                    {/* ==================================
-                        QUESTIONS
-                    ================================== */}
-
-                    <section
-                        className={
-                            styles.section
-                        }
-                    >
-
-                        <div
-                            className={
-                                styles.sectionHeader
-                            }
-                        >
-
-                            <h2>
-                                Questions
-                            </h2>
-
-                            <span>
-                                {questions.length}
-                            </span>
-
-                        </div>
-
-
-                        {questions.length === 0 ? (
-
-                            <div
-                                className={
-                                    styles.empty
-                                }
-                            >
-
-                                No questions found.
-
-                            </div>
-
-                        ) : (
-
-                            <div
-                                className={
-                                    styles.cardList
-                                }
-                            >
-
-                                {questions.map(
-                                    (question) => (
-
-                                        <Link
-                                            key={
-                                                `question-${question._id}`
-                                            }
-                                            href={
-                                                `/questions/${question._id}`
-                                            }
-                                            className={
-                                                styles.questionCard
-                                            }
-                                        >
-
-                                            <h3>
-
-                                                {
-                                                    question.title
-                                                }
-
-                                            </h3>
-
-
-                                            {question.content && (
-
-                                                <p>
-
-                                                    {
-                                                        question.content
-                                                    }
-
-                                                </p>
-
-                                            )}
-
-                                        </Link>
-
-                                    )
-                                )}
-
-                            </div>
-
-                        )}
-
-                    </section>
-
-
-                    {/* ==================================
-                        PEOPLE
-                    ================================== */}
-
-                    <section
-                        className={
-                            styles.section
-                        }
-                    >
-
-                        <div
-                            className={
-                                styles.sectionHeader
-                            }
-                        >
-
-                            <h2>
-                                People
-                            </h2>
-
-                            <span>
-                                {users.length}
-                            </span>
-
-                        </div>
-
-
-                        {users.length === 0 ? (
-
-                            <div
-                                className={
-                                    styles.empty
-                                }
-                            >
-
-                                No people found.
-
-                            </div>
-
-                        ) : (
-
-                            <div
-                                className={
-                                    styles.peopleGrid
-                                }
-                            >
-
-                                {users.map(
-                                    (user) => (
-
-                                        <Link
-                                            key={
-                                                `user-${user._id}`
-                                            }
-                                            href={
-                                                `/profile/${user._id}`
-                                            }
-                                            className={
-                                                styles.personCard
-                                            }
-                                        >
-
-                                            <div
-                                                className={
-                                                    styles.avatar
-                                                }
-                                            >
-
-                                                {
-                                                    user.fullName
-                                                        ?.charAt(0)
-                                                        ?.toUpperCase()
-                                                }
-
-                                            </div>
-
-
-                                            <div>
-
-                                                <h3>
-
                                                     {
                                                         user.fullName
+                                                            ?.charAt(0)
+                                                            ?.toUpperCase()
                                                     }
+                                                </div>
 
-                                                    {user.isVerified && (
 
-                                                        <span
-                                                            className={
-                                                                styles.verified
+                                                <div>
+
+                                                    <h3>
+
+                                                        {
+                                                            user.fullName
+                                                        }
+
+
+                                                        {user.isVerified && (
+
+                                                            <span
+                                                                className={
+                                                                    styles.verified
+                                                                }
+                                                            >
+                                                                ✓
+                                                            </span>
+
+                                                        )}
+
+                                                    </h3>
+
+
+                                                    <p>
+                                                        {
+                                                            user.profession ||
+                                                            user.designation ||
+                                                            'Trade Professional'
+                                                        }
+                                                    </p>
+
+
+                                                    {user.companyName && (
+
+                                                        <small>
+                                                            {
+                                                                user.companyName
                                                             }
-                                                        >
-                                                            ✓
-                                                        </span>
+                                                        </small>
 
                                                     )}
 
-                                                </h3>
+                                                </div>
+
+                                            </Link>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            )}
+
+                        </section>
 
 
-                                                <p>
+                        {/* ==================================
+                            COMPANIES
+                        ================================== */}
 
-                                                    {
-                                                        user.profession ||
-                                                        user.designation ||
-                                                        'Trade Professional'
-                                                    }
-
-                                                </p>
-
-
-                                                {user.companyName && (
-
-                                                    <small>
-
-                                                        {
-                                                            user.companyName
-                                                        }
-
-                                                    </small>
-
-                                                )}
-
-                                            </div>
-
-                                        </Link>
-
-                                    )
-                                )}
-
-                            </div>
-
-                        )}
-
-                    </section>
-
-
-                    {/* ==================================
-                        COMPANIES
-                    ================================== */}
-
-                    <section
-                        className={
-                            styles.section
-                        }
-                    >
-
-                        <div
+                        <section
                             className={
-                                styles.sectionHeader
+                                styles.section
                             }
                         >
 
-                            <h2>
-                                Companies
-                            </h2>
-
-                            <span>
-                                {companies.length}
-                            </span>
-
-                        </div>
-
-
-                        {companies.length === 0 ? (
-
                             <div
                                 className={
-                                    styles.empty
+                                    styles.sectionHeader
                                 }
                             >
 
-                                No companies found.
+                                <h2>
+                                    Companies
+                                </h2>
+
+                                <span>
+                                    {
+                                        companies.length
+                                    }
+                                </span>
 
                             </div>
 
-                        ) : (
 
-                            <div
-                                className={
-                                    styles.cardList
-                                }
-                            >
+                            {companies.length === 0 ? (
 
-                                {companies.map(
-                                    (company) => (
+                                <div
+                                    className={
+                                        styles.empty
+                                    }
+                                >
+                                    No companies found.
+                                </div>
 
-                                        <Link
-                                            key={
-                                                `company-${company._id}`
-                                            }
-                                            href={
-                                                `/companies/${encodeURIComponent(
-                                                    company.companyName
-                                                )}`
-                                            }
-                                            className={
-                                                styles.companyCard
-                                            }
-                                        >
+                            ) : (
+
+                                <div
+                                    className={
+                                        styles.cardList
+                                    }
+                                >
+
+                                    {companies.map(
+                                        (company) => (
 
                                             <div
+                                                key={
+                                                    company.companyName
+                                                }
                                                 className={
-                                                    styles.companyIcon
+                                                    styles.companyCard
                                                 }
                                             >
 
-                                                {
-                                                    company.companyName
-                                                        ?.charAt(0)
-                                                        ?.toUpperCase()
-                                                }
-
-                                            </div>
-
-
-                                            <div>
-
-                                                <h3>
-
+                                                <div
+                                                    className={
+                                                        styles.companyIcon
+                                                    }
+                                                >
                                                     {
                                                         company.companyName
+                                                            ?.charAt(0)
+                                                            ?.toUpperCase()
                                                     }
+                                                </div>
 
-                                                </h3>
 
+                                                <div>
 
-                                                {company.location && (
-
-                                                    <p>
-
+                                                    <h3>
                                                         {
-                                                            company.location
+                                                            company.companyName
                                                         }
+                                                    </h3>
 
-                                                    </p>
 
-                                                )}
+                                                    {company.location && (
+
+                                                        <p>
+                                                            {
+                                                                company.location
+                                                            }
+                                                        </p>
+
+                                                    )}
+
+                                                </div>
 
                                             </div>
 
-                                        </Link>
+                                        )
+                                    )}
 
-                                    )
-                                )}
+                                </div>
 
-                            </div>
+                            )}
 
-                        )}
-
-                    </section>
+                        </section>
 
 
-                    {/* ==================================
-                        NO RESULTS
-                    ================================== */}
+                        {/* ==================================
+                            NO RESULTS
+                        ================================== */}
 
-                    {hsCodes.length === 0 &&
-                        posts.length === 0 &&
-                        questions.length === 0 &&
-                        users.length === 0 &&
-                        companies.length === 0 && (
+                        {totalResults === 0 && (
 
                             <div
                                 className={
@@ -1108,22 +1302,22 @@ export default function SearchPage() {
                                     No results found
                                 </h2>
 
-                                <p>
 
+                                <p>
                                     Try searching for an
                                     HS Code, post, question,
-                                    company, person or
-                                    trade-related topic.
-
+                                    documentation, company,
+                                    person or trade-related
+                                    topic.
                                 </p>
 
                             </div>
 
                         )}
 
-                </div>
+                    </div>
 
-            )}
+                )}
 
         </main>
 
