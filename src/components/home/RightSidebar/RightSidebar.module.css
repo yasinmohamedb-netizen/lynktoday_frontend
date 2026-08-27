@@ -52,10 +52,7 @@
     text-decoration: underline;
 }
 
-
-/* ======================================================
-   LISTS
-====================================================== */
+/* Lists */
 
 .topicList,
 .newsList {
@@ -63,10 +60,7 @@
     flex-direction: column;
 }
 
-
-/* ======================================================
-   TOPIC ITEMS
-====================================================== */
+/* Topics */
 
 .topicItem {
     display: flex;
@@ -81,9 +75,7 @@
 
     text-decoration: none;
 
-    transition:
-        background .2s ease,
-        transform .2s ease;
+    transition: background .2s ease, transform .2s ease;
 }
 
 .topicItem:first-child {
@@ -99,11 +91,6 @@
     background: #f8fafc;
     transform: translateX(3px);
 }
-
-
-/* ======================================================
-   TOPIC CONTENT
-====================================================== */
 
 .topicContent {
     min-width: 0;
@@ -129,10 +116,7 @@
     font-size: 13px;
 }
 
-
-/* ======================================================
-   RANK
-====================================================== */
+/* Rank */
 
 .rank {
     width: 40px;
@@ -147,17 +131,13 @@
     border-radius: 50%;
 
     background: #4B5563;
-
     color: #fff;
 
     font-size: 13px;
     font-weight: 700;
 }
 
-
-/* ======================================================
-   NEWS
-====================================================== */
+/* News */
 
 .newsItem {
     display: block;
@@ -169,9 +149,7 @@
 
     text-decoration: none;
 
-    transition:
-        background .2s ease,
-        transform .2s ease;
+    transition: background .2s ease, transform .2s ease;
 }
 
 .newsItem:first-child {
@@ -187,11 +165,6 @@
     background: #f8fafc;
     transform: translateX(3px);
 }
-
-
-/* ======================================================
-   NEWS CONTENT
-====================================================== */
 
 .newsContent {
     min-width: 0;
@@ -231,40 +204,29 @@
     font-size: 12px;
 }
 
-
-/* ======================================================
-   EMPTY
-====================================================== */
+/* Empty */
 
 .emptyNews {
     padding: 24px 10px;
 
     text-align: center;
-
     color: #9ca3af;
 }
 
 .emptyNews span {
     display: block;
-
     margin-bottom: 8px;
-
     font-size: 28px;
 }
 
 .emptyNews p {
     margin: 0;
-
     font-size: 13px;
 }
 
-
-/* ======================================================
-   TABLET
-====================================================== */
+/* Tablet */
 
 @media (max-width: 1200px) {
-
     .card {
         padding: 17px;
     }
@@ -275,25 +237,9 @@
     }
 }
 
-
-/* ======================================================
-   HIDE SIDEBAR
-====================================================== */
-
-@media (max-width: 992px) {
-
-    .sidebar {
-        display: none;
-    }
-}
-
-
-/* ======================================================
-   MOBILE
-====================================================== */
+/* Mobile */
 
 @media (max-width: 600px) {
-
     .card {
         padding: 16px;
         border-radius: 14px;
@@ -332,13 +278,9 @@
     }
 }
 
-
-/* ======================================================
-   REDUCE MOTION
-====================================================== */
+/* Reduce motion */
 
 @media (prefers-reduced-motion: reduce) {
-
     .topicItem,
     .newsItem {
         transition: none;
