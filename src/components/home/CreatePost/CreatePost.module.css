@@ -1,267 +1,291 @@
-.card{
-  width:100%;
-  box-sizing:border-box;
-  padding:22px 24px;
-  background:#fff;
-  border:1px solid #e2e8f0;
-  border-radius:12px;
-  box-shadow:0 2px 8px rgba(15,23,42,.04);
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 22px 24px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.heading{
-  margin:0;
-  color:#0f172a;
-  font-size:18px;
-  font-weight:700;
-  line-height:1.3;
+.heading {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-.subheading{
-  margin:5px 0 0;
-  color:#64748b;
-  font-size:13px;
-  line-height:1.5;
+.subheading {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.form{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.topRow{
-  display:grid;
-  grid-template-columns:minmax(0,1.8fr) minmax(150px,.8fr) minmax(150px,.8fr);
-  gap:14px;
+/* ============================================================
+   TOP ROW
+   ============================================================ */
+
+.topRow {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.8fr)
+    minmax(150px, 0.8fr)
+    minmax(150px, 0.8fr);
+  gap: 14px;
 }
 
-.field{
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+/* ============================================================
+   FIELD
+   ============================================================ */
+
+.field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.label{
-  color:#475569;
-  font-size:12px;
-  font-weight:600;
-  line-height:1.3;
+.label {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
 }
+
+/* ============================================================
+   INPUT / SELECT / TEXTAREA
+   ============================================================ */
 
 .input,
 .select,
-.textarea{
-  width:100%;
-  box-sizing:border-box;
-  border:1px solid #cbd5e1;
-  border-radius:8px;
-  background:#fff;
-  color:#0f172a;
-  font:14px inherit;
-  transition:.15s;
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font: 14px inherit;
+  transition: 0.15s;
 }
 
 .input,
-.select{
-  height:44px;
-  padding:0 13px;
+.select {
+  height: 44px;
+  padding: 0 13px;
 }
 
-.textarea{
-  min-height:150px;
-  padding:13px 14px;
-  line-height:1.55;
-  resize:vertical;
+.textarea {
+  min-height: 150px;
+  padding: 13px 14px;
+  line-height: 1.55;
+  resize: vertical;
 }
+
+/* ============================================================
+   PLACEHOLDER
+   ============================================================ */
 
 .input::placeholder,
-.textarea::placeholder{
-  color:#94a3b8;
+.textarea::placeholder {
+  color: #94a3b8;
 }
+
+/* ============================================================
+   HOVER
+   ============================================================ */
 
 .input:hover,
 .select:hover,
-.textarea:hover{
-  border-color:#94a3b8;
+.textarea:hover {
+  border-color: #94a3b8;
 }
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
 
 .input:focus,
 .select:focus,
-.textarea:focus{
-  outline:none;
-  border-color:var(--primary-color);
-  box-shadow:0 0 0 3px rgba(59,91,122,.1);
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 91, 122, 0.1);
 }
+
+/* ============================================================
+   DISABLED
+   ============================================================ */
 
 .input:disabled,
 .select:disabled,
-.textarea:disabled{
-  background:#f8fafc;
-  cursor:not-allowed;
+.textarea:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
 }
 
-.characterCount{
-  align-self:flex-end;
-  margin-top:-2px;
-  color:#94a3b8;
-  font-size:11px;
+/* ============================================================
+   CHARACTER COUNT
+   ============================================================ */
+
+.characterCount {
+  align-self: flex-end;
+  margin-top: -2px;
+  color: #94a3b8;
+  font-size: 11px;
 }
 
-.error{
-  margin-bottom:16px;
-  padding:11px 13px;
-  border:1px solid #fecaca;
-  border-radius:8px;
-  background:#fff5f5;
-  color:#b42318;
-  font-size:13px;
-  line-height:1.5;
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.error {
+  margin-bottom: 16px;
+  padding: 11px 13px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #b42318;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.footer{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  padding-top:2px;
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding-top: 2px;
 }
 
-.fileSection{
-  min-width:0;
-  display:flex;
-  align-items:center;
-  gap:10px;
+/* ============================================================
+   PUBLISH BUTTON
+   ============================================================ */
+
+.button {
+  min-width: 120px;
+  height: 42px;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: var(--primary-color);
+  color: #fff;
+
+  font: 600 14px inherit;
+
+  cursor: pointer;
+  transition: 0.15s;
 }
 
-.fileInput{
-  display:none;
+.button:hover:not(:disabled) {
+  background: var(--primary-dark);
+  box-shadow: 0 4px 10px rgba(59, 91, 122, 0.18);
 }
 
-.upload{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:38px;
-  padding:0 14px;
-  box-sizing:border-box;
-  border:1px solid #cbd5e1;
-  border-radius:8px;
-  background:#fff;
-  color:#475569;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  white-space:nowrap;
-  transition:.15s;
+.button:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
-.upload:hover{
-  background:#f8fafc;
-  border-color:#94a3b8;
-  color:#0f172a;
+.button:disabled {
+  background: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
 }
 
-.fileName{
-  max-width:280px;
-  overflow:hidden;
-  color:#64748b;
-  font-size:12px;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
+/* ============================================================
+   TABLET
+   ============================================================ */
 
-.button{
-  min-width:120px;
-  height:42px;
-  padding:0 20px;
-  box-sizing:border-box;
-  border:0;
-  border-radius:8px;
-  background:var(--primary-color);
-  color:#fff;
-  font:600 14px inherit;
-  cursor:pointer;
-  transition:.15s;
-}
-
-.button:hover:not(:disabled){
-  background:var(--primary-dark);
-  box-shadow:0 4px 10px rgba(59,91,122,.18);
-}
-
-.button:active:not(:disabled){
-  transform:translateY(1px);
-}
-
-.button:disabled{
-  background:#cbd5e1;
-  color:#64748b;
-  cursor:not-allowed;
-}
-
-@media(max-width:900px){
-  .topRow{
-    grid-template-columns:minmax(0,1fr) minmax(150px,.7fr);
+@media (max-width: 900px) {
+  .topRow {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(150px, 0.7fr);
   }
 
-  .topRow .field:first-child{
-    grid-column:1/-1;
+  .topRow .field:first-child {
+    grid-column: 1 / -1;
   }
 }
 
-@media(max-width:600px){
-  .card{
-    padding:18px;
-    border-radius:10px;
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .card {
+    padding: 18px;
+    border-radius: 10px;
   }
 
-  .topRow{
-    grid-template-columns:1fr;
-    gap:12px;
+  .topRow {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .topRow .field:first-child{
-    grid-column:auto;
+  .topRow .field:first-child {
+    grid-column: auto;
   }
 
-  .textarea{
-    min-height:140px;
+  .textarea {
+    min-height: 140px;
   }
 
-  .footer{
-    align-items:stretch;
-    flex-direction:column;
-    gap:12px;
+  .footer {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 12px;
   }
 
-  .fileSection{
-    width:100%;
-  }
-
-  .fileName{
-    max-width:calc(100vw - 160px);
-  }
-
-  .button{
-    width:100%;
+  .button {
+    width: auto;
+    min-width: 120px;
   }
 }
 
-@media(prefers-reduced-motion:reduce){
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
   .input,
   .select,
   .textarea,
-  .upload,
-  .button{
-    transition:none;
+  .button {
+    transition: none;
   }
 }

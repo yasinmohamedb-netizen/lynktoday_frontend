@@ -1,127 +1,993 @@
-.container{min-height:100vh;display:flex;background:#f5f7fa}
+/* ============================================================
+   LYNKTODAY SIGNUP
+   signup.module.css
+   ============================================================ */
 
-.leftPanel{flex:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:60px;box-sizing:border-box;background:linear-gradient(135deg,#3B5B7A,#496F91);color:#fff}
-.overlay{width:100%;max-width:500px}
-.overlay h1{margin:0 0 14px;font-size:48px;font-weight:800;line-height:1.1}
-.overlay h2{margin:0 0 22px;font-size:32px;font-weight:700;line-height:1.25}
-.overlay p{max-width:480px;margin:0 0 34px;color:rgba(255,255,255,.92);font-size:17px;line-height:1.7}
-
-.features{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;padding:0;margin:0;list-style:none}
-.features li{position:relative;padding-left:18px;color:rgba(255,255,255,.92);font-size:14px;line-height:1.5}
-.features li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.85)}
-
-.rightPanel{flex:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px 50px;box-sizing:border-box;background:#fff;overflow-y:auto}
-.card{width:100%;max-width:620px;margin:0 auto;animation:fadeUp .4s ease}
-
-.title{margin:0 0 8px;color:#172033;font-size:32px;font-weight:750;line-height:1.25}
-.subtitle{margin:0 0 30px;color:#6b7280;font-size:14px;line-height:1.6}
-
-.form{width:100%;display:flex;flex-direction:column}
-.fieldGroup{width:100%;display:flex;flex-direction:column;margin-bottom:18px}
-.fieldGroup label{margin-bottom:7px;color:#344054;font-size:13px;font-weight:650}
-
-.accountTypeSelector{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.accountTypeBtn,.activeType{min-height:44px;padding:0 16px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:650;cursor:pointer;transition:.18s}
-.accountTypeBtn{border:1px solid #d5dce5;background:#fff;color:#475467}
-.accountTypeBtn:hover{background:#f8fafc;border-color:#b8c5d2}
-.activeType{border:1px solid #3B5B7A;background:#3B5B7A;color:#fff}
-
-.twoColumn{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-
-.input,.select,.textarea{width:100%;box-sizing:border-box;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#172033;font-family:inherit;font-size:14px;outline:none;transition:.18s}
-.input,.select{min-height:44px;padding:10px 13px}
-.textarea{min-height:110px;padding:12px 13px;resize:vertical;line-height:1.55}
-
-.input::placeholder,.textarea::placeholder{color:#98a2b3}
-.input:hover,.select:hover,.textarea:hover{border-color:#b9c4d0}
-.input:focus,.select:focus,.textarea:focus{border-color:#3B5B7A;box-shadow:0 0 0 3px rgba(59,91,122,.10)}
-.input:disabled,.select:disabled,.textarea:disabled{background:#f8fafc;color:#98a2b3;cursor:not-allowed}
-.select{cursor:pointer}
-
-.checkbox{display:flex;align-items:flex-start;gap:9px;margin:4px 0 22px;color:#667085;font-size:12px;line-height:1.55;cursor:pointer}
-.checkbox input{width:16px;height:16px;flex-shrink:0;margin:1px 0 0;accent-color:#3B5B7A;cursor:pointer}
-
-.errorAlert,.successAlert{width:100%;box-sizing:border-box;margin-bottom:20px;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.5}
-.errorAlert{border:1px solid #fecaca;background:#fff5f5;color:#b42318}
-.successAlert{border:1px solid #bbf7d0;background:#f0fdf4;color:#166534}
-
-.submitBtn{width:100%;min-height:46px;padding:0 18px;border:0;border-radius:8px;background:#3B5B7A;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.18s}
-.submitBtn:hover:not(:disabled){background:#304D68;transform:translateY(-1px)}
-.submitBtn:disabled{background:#94a3b8;opacity:.8;cursor:not-allowed}
-
-.footer{margin-top:24px;color:#7b8797;text-align:center;font-size:13px}
-.link{margin-left:5px;color:#3B5B7A;font-weight:650;text-decoration:none}
-.link:hover{text-decoration:underline}
-
-.otpContainer{width:100%;max-width:420px;margin:0 auto;text-align:center}
-.otpIcon{width:58px;height:58px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#edf3f7;color:#3B5B7A;font-size:25px;box-shadow:0 4px 12px rgba(59,91,122,.08)}
-.otpEmail{display:block;margin-top:7px;color:#3B5B7A;font-weight:700;word-break:break-word}
-
-.otpInputWrapper{width:100%;display:flex;justify-content:center;margin-top:10px}
-.otpInput{width:280px;max-width:100%;min-height:58px;box-sizing:border-box;padding:10px 16px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#172033;font-family:inherit;font-size:25px;font-weight:700;letter-spacing:8px;text-align:center;outline:none;transition:.18s}
-.otpInput::placeholder{color:#cbd5e1;font-size:20px;letter-spacing:5px}
-.otpInput:hover{border-color:#b9c4d0}
-.otpInput:focus{border-color:#3B5B7A;box-shadow:0 0 0 3px rgba(59,91,122,.10)}
-.otpInput:disabled{background:#f8fafc;cursor:not-allowed}
-
-.otpVerifyButton{width:280px;max-width:100%;min-height:46px;margin:18px auto 0;display:block;padding:0 18px;border:0;border-radius:8px;background:#3B5B7A;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.18s}
-.otpVerifyButton:hover:not(:disabled){background:#304D68;transform:translateY(-1px)}
-.otpVerifyButton:disabled{background:#aeb9ca;cursor:not-allowed}
-
-.otpResend{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;color:#667085;font-size:13px}
-.resendButton{padding:0;border:0;background:transparent;color:#3B5B7A;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
-.resendButton:hover:not(:disabled){color:#304D68;text-decoration:underline}
-.resendButton:disabled{color:#98a2b3;cursor:not-allowed}
-
-.backButton{margin-top:20px;padding:8px 12px;border:0;background:transparent;color:#667085;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.backButton:hover:not(:disabled){color:#3B5B7A}
-.backButton:disabled{opacity:.5;cursor:not-allowed}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-@media(max-width:1200px){
-.leftPanel{padding:45px}
-.overlay h1{font-size:42px}
-.overlay h2{font-size:28px}
-.overlay p{font-size:15px}
-.rightPanel{padding:42px 36px}
+   .container {
+    min-height: 100vh;
+    display: flex;
+    background: #f5f7fa;
 }
 
-@media(max-width:992px){
-.container{display:block}
-.leftPanel{display:none}
-.rightPanel{min-height:100vh;padding:40px 28px}
+/* ============================================================
+   LEFT PANEL
+   ============================================================ */
+
+.leftPanel {
+    flex: 1;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 56px;
+    box-sizing: border-box;
+
+    background: linear-gradient(
+        135deg,
+        #3b5b7a,
+        #496f91
+    );
+
+    color: #fff;
 }
 
-@media(max-width:700px){
-.rightPanel{padding:28px 18px}
-.title{font-size:27px}
-.subtitle{margin-bottom:25px;font-size:13px}
-.twoColumn{grid-template-columns:1fr;gap:0}
-.accountTypeSelector{gap:8px}
-.input,.select{min-height:43px}
-.textarea{min-height:100px}
-.submitBtn{min-height:45px}
-.otpContainer{max-width:100%}
-.otpIcon{width:54px;height:54px;font-size:23px}
-.otpInput,.otpVerifyButton{width:100%;max-width:320px}
+.overlay {
+    width: 100%;
+    max-width: 500px;
 }
 
-@media(max-width:480px){
-.rightPanel{padding:22px 14px}
-.title{font-size:24px}
-.subtitle{font-size:12px}
-.fieldGroup{margin-bottom:16px}
-.fieldGroup label{font-size:12px}
-.input,.select,.textarea{font-size:13px}
-.accountTypeBtn,.activeType{min-height:42px;padding:0 10px;font-size:12px}
-.checkbox,.footer{font-size:11px}
-.otpIcon{width:50px;height:50px;font-size:21px}
-.otpInput{min-height:54px;font-size:22px;letter-spacing:6px}
-.otpVerifyButton{min-height:45px}
-.otpResend,.resendButton,.backButton{font-size:12px}
+.overlay h1 {
+    margin: 0 0 14px;
+
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.8px;
 }
 
-@media(prefers-reduced-motion:reduce){
-.card,.submitBtn,.accountTypeBtn,.activeType,.input,.select,.textarea,.otpInput,.otpVerifyButton,.backButton{animation:none;transition:none}
+.overlay h2 {
+    margin: 0 0 20px;
+
+    font-size: 31px;
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.4px;
+}
+
+.overlay p {
+    max-width: 480px;
+
+    margin: 0 0 30px;
+
+    color: rgba(255, 255, 255, 0.92);
+
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 11px 24px;
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+}
+
+.features li {
+    position: relative;
+
+    padding-left: 17px;
+
+    color: rgba(255, 255, 255, 0.92);
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.features li::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    top: 7px;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.85);
+}
+
+/* ============================================================
+   RIGHT PANEL
+   ============================================================ */
+
+.rightPanel {
+    flex: 1;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 42px 50px;
+
+    box-sizing: border-box;
+
+    background: #fff;
+
+    overflow-y: auto;
+}
+
+.card {
+    width: 100%;
+    max-width: 620px;
+
+    margin: 0 auto;
+
+    animation: fadeUp 0.4s ease;
+}
+
+/* ============================================================
+   TITLE
+   ============================================================ */
+
+.title {
+    margin: 0 0 7px;
+
+    color: #172033;
+
+    font-size: 30px;
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.45px;
+}
+
+.subtitle {
+    margin: 0 0 25px;
+
+    color: #667085;
+
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Every field gets the same vertical rhythm */
+
+.fieldGroup {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 15px;
+}
+
+.fieldGroup label {
+    margin: 0 0 6px;
+
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+/* ============================================================
+   ACCOUNT TYPE
+   ============================================================ */
+
+.accountTypeSelector {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.accountTypeBtn,
+.activeType {
+    min-height: 43px;
+
+    padding: 0 15px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.accountTypeBtn {
+    border: 1px solid #d5dce5;
+
+    background: #fff;
+
+    color: #475467;
+}
+
+.accountTypeBtn:hover:not(:disabled) {
+    background: #f8fafc;
+    border-color: #b8c5d2;
+}
+
+.activeType {
+    border: 1px solid #4b5563;
+
+    background: #4b5563;
+
+    color: #fff;
+}
+
+.activeType:hover:not(:disabled) {
+    background: #414a57;
+}
+
+/* ============================================================
+   TWO COLUMN
+   ============================================================ */
+
+.twoColumn {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(
+        2,
+        minmax(0, 1fr)
+    );
+
+    gap: 16px;
+}
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
+.input,
+.select,
+.textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #fff;
+    color: #172033;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+.input,
+.select {
+    min-height: 43px;
+
+    padding: 9px 13px;
+}
+
+.textarea {
+    min-height: 104px;
+
+    padding: 11px 13px;
+
+    resize: vertical;
+
+    line-height: 1.55;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+    color: #98a2b3;
+}
+
+.input:hover,
+.select:hover,
+.textarea:hover {
+    border-color: #b9c4d0;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: #3b5b7a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59, 91, 122, 0.1);
+}
+
+.input:disabled,
+.select:disabled,
+.textarea:disabled {
+    background: #f8fafc;
+
+    color: #98a2b3;
+
+    cursor: not-allowed;
+}
+
+.select {
+    cursor: pointer;
+}
+
+/* ============================================================
+   ALERTS
+   ============================================================ */
+
+.errorAlert,
+.successAlert {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin: 0 0 17px;
+
+    padding: 10px 13px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.errorAlert {
+    border: 1px solid #fecaca;
+
+    background: #fff5f5;
+
+    color: #b42318;
+}
+
+.successAlert {
+    border: 1px solid #bbf7d0;
+
+    background: #f0fdf4;
+
+    color: #166534;
+}
+
+/* ============================================================
+   TERMS
+   IMPORTANT:
+   JSX uses styles.terms
+   ============================================================ */
+
+.terms {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    width: 100%;
+
+    margin: 2px 0 18px;
+
+    color: #667085;
+
+    font-size: 13px;
+    line-height: 1.45;
+
+    cursor: pointer;
+}
+
+.terms input {
+    width: 16px;
+    height: 16px;
+
+    flex: 0 0 16px;
+
+    margin: 1px 0 0;
+
+    accent-color: #4b5563;
+
+    cursor: pointer;
+}
+
+.terms span {
+    display: block;
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+   ============================================================ */
+
+.submitBtn {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 0 18px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #4b5563;
+
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+    background: #3f4854;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px
+        rgba(75, 85, 99, 0.16);
+}
+
+.submitBtn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submitBtn:disabled {
+    background: #94a3b8;
+
+    opacity: 0.8;
+
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   LOGIN
+   IMPORTANT:
+   JSX uses styles.loginLink
+   ============================================================ */
+
+.loginLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 17px;
+
+    color: #7b8797;
+
+    text-align: center;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.loginLink a {
+    color: #4b5563;
+
+    font-weight: 650;
+
+    text-decoration: none;
+}
+
+.loginLink a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================================
+   OTP
+   ============================================================ */
+
+.otpContainer {
+    width: 100%;
+    max-width: 420px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.otpIcon {
+    width: 56px;
+    height: 56px;
+
+    margin: 0 auto 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #edf3f7;
+
+    color: #4b5563;
+
+    font-size: 24px;
+
+    box-shadow:
+        0 4px 12px
+        rgba(59, 91, 122, 0.08);
+}
+
+.otpEmail {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #3b5b7a;
+
+    font-weight: 700;
+
+    word-break: break-word;
+}
+
+.otpInputWrapper {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    margin-top: 8px;
+}
+
+.otpInput {
+    width: 280px;
+    max-width: 100%;
+
+    min-height: 56px;
+
+    box-sizing: border-box;
+
+    padding: 9px 16px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: #172033;
+
+    font-family: inherit;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    letter-spacing: 8px;
+
+    text-align: center;
+
+    outline: none;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.otpInput::placeholder {
+    color: #cbd5e1;
+
+    font-size: 20px;
+
+    letter-spacing: 5px;
+}
+
+.otpInput:hover {
+    border-color: #b9c4d0;
+}
+
+.otpInput:focus {
+    border-color: #3b5b7a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59, 91, 122, 0.1);
+}
+
+.otpInput:disabled {
+    background: #f8fafc;
+
+    cursor: not-allowed;
+}
+
+.otpVerifyButton {
+    width: 280px;
+    max-width: 100%;
+
+    min-height: 45px;
+
+    margin: 16px auto 0;
+
+    display: block;
+
+    padding: 0 18px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #4b5563;
+
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+.otpVerifyButton:hover:not(:disabled) {
+    background: #3f4854;
+
+    transform: translateY(-1px);
+}
+
+.otpVerifyButton:disabled {
+    background: #aeb9ca;
+
+    cursor: not-allowed;
+}
+
+.otpResend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 16px;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+.resendButton {
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #3b5b7a;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.resendButton:hover:not(:disabled) {
+    color: #304d68;
+
+    text-decoration: underline;
+}
+
+.resendButton:disabled {
+    color: #98a2b3;
+
+    cursor: not-allowed;
+}
+
+.backButton {
+    margin-top: 17px;
+
+    padding: 7px 11px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #667085;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.backButton:hover:not(:disabled) {
+    color: #3b5b7a;
+}
+
+.backButton:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   ANIMATION
+   ============================================================ */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   LARGE TABLET
+   ============================================================ */
+
+@media (max-width: 1200px) {
+    .leftPanel {
+        padding: 44px;
+    }
+
+    .overlay h1 {
+        font-size: 42px;
+    }
+
+    .overlay h2 {
+        font-size: 28px;
+    }
+
+    .overlay p {
+        font-size: 15px;
+    }
+
+    .rightPanel {
+        padding: 38px 36px;
+    }
+}
+
+/* ============================================================
+   TABLET / MOBILE
+   ============================================================ */
+
+@media (max-width: 992px) {
+    .container {
+        display: block;
+    }
+
+    .leftPanel {
+        display: none;
+    }
+
+    .rightPanel {
+        min-height: 100vh;
+
+        padding: 36px 28px;
+
+        align-items: flex-start;
+    }
+
+    .card {
+        max-width: 620px;
+
+        margin: 20px auto 30px;
+    }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+    .rightPanel {
+        padding: 26px 18px;
+    }
+
+    .card {
+        margin-top: 8px;
+    }
+
+    .title {
+        font-size: 27px;
+    }
+
+    .subtitle {
+        margin-bottom: 22px;
+
+        font-size: 13px;
+    }
+
+    .twoColumn {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .accountTypeSelector {
+        gap: 8px;
+    }
+
+    .input,
+    .select {
+        min-height: 43px;
+    }
+
+    .textarea {
+        min-height: 100px;
+    }
+
+    .submitBtn {
+        min-height: 45px;
+    }
+
+    .terms {
+        font-size: 12px;
+    }
+
+    .loginLink {
+        font-size: 12px;
+    }
+
+    .otpContainer {
+        max-width: 100%;
+    }
+
+    .otpIcon {
+        width: 54px;
+        height: 54px;
+
+        font-size: 23px;
+    }
+
+    .otpInput,
+    .otpVerifyButton {
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+    .rightPanel {
+        padding: 22px 14px;
+    }
+
+    .card {
+        margin-top: 4px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .subtitle {
+        margin-bottom: 20px;
+
+        font-size: 12px;
+    }
+
+    .fieldGroup {
+        margin-bottom: 14px;
+    }
+
+    .fieldGroup label {
+        margin-bottom: 5px;
+
+        font-size: 12px;
+    }
+
+    .input,
+    .select,
+    .textarea {
+        font-size: 13px;
+    }
+
+    .accountTypeBtn,
+    .activeType {
+        min-height: 42px;
+
+        padding: 0 10px;
+
+        font-size: 12px;
+    }
+
+    .terms {
+        gap: 7px;
+
+        margin-top: 1px;
+        margin-bottom: 17px;
+
+        font-size: 11px;
+    }
+
+    .loginLink {
+        margin-top: 15px;
+
+        font-size: 11px;
+    }
+
+    .otpIcon {
+        width: 50px;
+        height: 50px;
+
+        font-size: 21px;
+    }
+
+    .otpInput {
+        min-height: 54px;
+
+        font-size: 22px;
+
+        letter-spacing: 6px;
+    }
+
+    .otpVerifyButton {
+        min-height: 45px;
+    }
+
+    .otpResend,
+    .resendButton,
+    .backButton {
+        font-size: 12px;
+    }
+}
+
+/* ============================================================
+   ACCESSIBILITY / REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .submitBtn,
+    .accountTypeBtn,
+    .activeType,
+    .input,
+    .select,
+    .textarea,
+    .otpInput,
+    .otpVerifyButton,
+    .backButton {
+        animation: none;
+
+        transition: none;
+    }
 }

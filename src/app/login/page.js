@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -8,221 +8,1398 @@ import api from '@/utils/api';
 
 import styles from './login.module.css';
 
-const FEATURES = [
-    'Sea freight discussions',
-    'Air freight community',
-    'Customs and HS Code knowledge',
-    'Import and export resources',
-    'Shipping documentation',
-    'Verified industry professionals'
-];
+const PRIMARY_COLOR = '#4B5563';
 
 export default function Login() {
     const router = useRouter();
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        remember: false
-    });
+    // ============================================================
+    // LOGIN STATE
+    // ============================================================
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
 
-    const handleChange = (event) => {
-        const {
-            name,
-            value,
-            type,
-            checked
-        } = event.target;
+    // ============================================================
+    // OTP STATE
+    // ============================================================
 
-        setFormData((previous) => ({
-            ...previous,
-            [name]:
-                type === 'checkbox'
-                    ? checked
-                    : value
-        }));
+    const [otpMode, setOtpMode] = useState(false);
 
-        if (error) {
-            setError('');
+    const [verificationEmail, setVerificationEmail] =
+        useState('');
+
+    const [otp, setOtp] = useState('');
+
+    const [otpLoading, setOtpLoading] =
+        useState(false);
+
+    const [resendLoading, setResendLoading] =
+        useState(false);
+
+    const [resendSeconds, setResendSeconds] =
+        useState(0);
+
+    // ============================================================
+    // MESSAGES
+    // ============================================================
+
+    const [error, setError] =
+        useState('');
+
+    const [success, setSuccess] =
+        useState('');
+
+    // ============================================================
+    // OTP RESEND TIMER
+    // ============================================================
+
+    useEffect(() => {
+        if (resendSeconds <= 0) {
+            return undefined;
+        }
+
+        const timer = setTimeout(() => {
+            setResendSeconds(
+                (previous) =>
+                    previous > 0
+                        ? previous - 1
+                        : 0
+            );
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [resendSeconds]);
+
+    // ============================================================
+    // LOGIN
+    // ============================================================
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        if (loading) {
+            return;
+        }
+    
+        setError('');
+        setSuccess('');
+    
+        const normalizedEmail =
+            email
+                .trim()
+                .toLowerCase();
+    
+        // ========================================================
+        // VALIDATION
+        // ========================================================
+    
+        if (!normalizedEmail) {
+            setError(
+                'Please enter your email.'
+            );
+    
+            return;
+        }
+    
+        if (!password) {
+            setError(
+                'Please enter your password.'
+            );
+    
+            return;
+        }
+    
+        try {
+    
+            setLoading(true);
+    
+            console.log(
+                '========================================'
+            );
+    
+            console.log(
+                'LYNKTODAY LOGIN ATTEMPT'
+            );
+    
+            console.log(
+                'LOGIN EMAIL:',
+                normalizedEmail
+            );
+    
+            console.log(
+                '========================================'
+            );
+    
+            // ====================================================
+            // LOGIN API
+            // ====================================================
+    
+            const response =
+                await api.post(
+                    '/auth/login',
+                    {
+                        email:
+                            normalizedEmail,
+    
+                        password:
+                            password
+                    }
+                );
+    
+            const data =
+                response?.data;
+    
+            console.log(
+                'LOGIN RESPONSE:',
+                data
+            );
+    
+            // ====================================================
+            // SUCCESSFUL LOGIN
+            // ====================================================
+    
+            if (data?.success) {
+    
+                console.log(
+                    '========================================'
+                );
+    
+                console.log(
+                    'LYNKTODAY LOGIN SUCCESS'
+                );
+    
+                console.log(
+                    'USER:',
+                    data.user
+                );
+    
+                console.log(
+                    'TOKEN RECEIVED:',
+                    !!data.token
+                );
+    
+                console.log(
+                    '========================================'
+                );
+    
+                // ----------------------------------------------
+                // SAVE JWT
+                // ----------------------------------------------
+    
+                if (data.token) {
+    
+                    localStorage.setItem(
+                        'lynktoday_token',
+                        data.token
+                    );
+    
+                }
+    
+                // ----------------------------------------------
+                // SAVE USER
+                // ----------------------------------------------
+    
+                if (data.user) {
+    
+                    localStorage.setItem(
+                        'lynktoday_user',
+                        JSON.stringify(
+                            data.user
+                        )
+                    );
+    
+                }
+    
+                // ----------------------------------------------
+                // CLEAR PENDING VERIFICATION
+                // ----------------------------------------------
+    
+                localStorage.removeItem(
+                    'lynktoday_pending_verification'
+                );
+    
+                // ----------------------------------------------
+                // CLEAR OTP STATE
+                // ----------------------------------------------
+    
+                setOtpMode(false);
+    
+                setOtp('');
+    
+                setVerificationEmail('');
+    
+                setError('');
+    
+                setSuccess(
+                    data.message ||
+                    'Login successful. Welcome back!'
+                );
+    
+                // ----------------------------------------------
+                // GO HOME
+                // ----------------------------------------------
+    
+                console.log(
+                    'LYNKTODAY: Redirecting to home...'
+                );
+    
+                router.replace('/');
+    
+                router.refresh();
+    
+                return;
+            }
+    
+            // ====================================================
+            // UNEXPECTED NON-SUCCESS RESPONSE
+            // ====================================================
+    
+            setError(
+                data?.message ||
+                'Unable to login. Please try again.'
+            );
+    
+        } catch (err) {
+    
+            const status =
+                err?.response?.status;
+    
+            const data =
+                err?.response?.data;
+    
+            // ====================================================
+            // EMAIL NOT VERIFIED
+            //
+            // THIS IS AN EXPECTED LOGIN STATE.
+            //
+            // DO NOT LOG THIS AS AN ERROR.
+            // ====================================================
+    
+            if (
+                status === 403 &&
+                data?.code ===
+                    'EMAIL_NOT_VERIFIED'
+            ) {
+    
+                const emailForVerification =
+                    (
+                        data?.email ||
+                        normalizedEmail
+                    )
+                        .trim()
+                        .toLowerCase();
+    
+                console.log(
+                    '========================================'
+                );
+    
+                console.log(
+                    'LYNKTODAY: EMAIL VERIFICATION REQUIRED'
+                );
+    
+                console.log(
+                    'EMAIL:',
+                    emailForVerification
+                );
+    
+                console.log(
+                    'OTP SENT:',
+                    data?.otpSent
+                );
+    
+                console.log(
+                    'MESSAGE:',
+                    data?.message
+                );
+    
+                console.log(
+                    '========================================'
+                );
+    
+                // ----------------------------------------------
+                // SAVE EMAIL FOR OTP
+                // ----------------------------------------------
+    
+                setVerificationEmail(
+                    emailForVerification
+                );
+    
+                // ----------------------------------------------
+                // CLEAR OLD OTP
+                // ----------------------------------------------
+    
+                setOtp('');
+    
+                // ----------------------------------------------
+                // SHOW OTP SCREEN
+                // ----------------------------------------------
+    
+                setOtpMode(true);
+    
+                // ----------------------------------------------
+                // OTP TIMER
+                //
+                // If backend says a new OTP was sent,
+                // start the 60 second timer.
+                //
+                // If otpSent is false, don't start timer.
+                // User can resend if required.
+                // ----------------------------------------------
+    
+                setResendSeconds(
+                    data?.otpSent
+                        ? 60
+                        : 0
+                );
+    
+                // ----------------------------------------------
+                // CLEAR ERROR
+                //
+                // 403 is expected here.
+                // ----------------------------------------------
+    
+                setError('');
+    
+                // ----------------------------------------------
+                // SHOW INFORMATION MESSAGE
+                // ----------------------------------------------
+    
+                setSuccess(
+                    data?.message ||
+                    'Your email is not verified. Please enter the OTP sent to your email.'
+                );
+    
+                return;
+            }
+    
+            // ====================================================
+            // OTHER LOGIN ERRORS
+            // ====================================================
+    
+            console.error(
+                '========================================'
+            );
+    
+            console.error(
+                'LYNKTODAY LOGIN ERROR'
+            );
+    
+            console.error(
+                'STATUS:',
+                status
+            );
+    
+            console.error(
+                'DATA:',
+                data
+            );
+    
+            console.error(
+                'MESSAGE:',
+                err?.message
+            );
+    
+            console.error(
+                '========================================'
+            );
+    
+            // ====================================================
+            // INVALID CREDENTIALS
+            // ====================================================
+    
+            if (status === 401) {
+    
+                setError(
+                    data?.message ||
+                    'Invalid email or password.'
+                );
+    
+                return;
+            }
+    
+            // ====================================================
+            // ACCOUNT INACTIVE
+            // ====================================================
+    
+            if (status === 403) {
+    
+                setError(
+                    data?.message ||
+                    'Your account is currently inactive.'
+                );
+    
+                return;
+            }
+    
+            // ====================================================
+            // VALIDATION ERROR
+            // ====================================================
+    
+            if (status === 400) {
+    
+                setError(
+                    data?.message ||
+                    'Please check your login details.'
+                );
+    
+                return;
+            }
+    
+            // ====================================================
+            // SERVER ERROR
+            // ====================================================
+    
+            if (status >= 500) {
+    
+                setError(
+                    'Server error. Please try again later.'
+                );
+    
+                return;
+            }
+    
+            // ====================================================
+            // NETWORK / UNKNOWN ERROR
+            // ====================================================
+    
+            setError(
+                data?.message ||
+                data?.error ||
+                err?.message ||
+                'Unable to login. Please try again.'
+            );
+    
+        } finally {
+    
+            setLoading(false);
+    
         }
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    // ============================================================
+    // VERIFY LOGIN OTP
+    // ============================================================
 
-        if (loading) {
+    const handleVerifyOtp = async (e) => {
+        e.preventDefault();
+
+        if (otpLoading) {
             return;
         }
 
         setError('');
-        setLoading(true);
+        setSuccess('');
 
-        try {
-            const { data } = await api.post(
-                '/auth/login',
-                {
-                    email: formData.email.trim(),
-                    password: formData.password
-                }
+        // ========================================================
+        // CLEAN OTP
+        // ========================================================
+
+        const cleanOtp =
+            otp
+                .trim()
+                .replace(/\D/g, '');
+
+        // ========================================================
+        // VALIDATE OTP
+        // ========================================================
+
+        if (!cleanOtp) {
+            setError(
+                'Please enter the OTP.'
             );
 
-            if (!data?.success) {
-                throw new Error(
-                    data?.message ||
-                    'Unable to sign in.'
+            return;
+        }
+
+        if (!/^\d{6}$/.test(cleanOtp)) {
+            setError(
+                'Please enter the 6-digit OTP.'
+            );
+
+            return;
+        }
+
+        if (!verificationEmail) {
+            setError(
+                'Verification email is missing.'
+            );
+
+            return;
+        }
+
+        if (!password) {
+            setError(
+                'Your login session has expired. Please enter your password again.'
+            );
+
+            setOtpMode(false);
+
+            return;
+        }
+
+        try {
+            setOtpLoading(true);
+
+            const normalizedEmail =
+                verificationEmail
+                    .trim()
+                    .toLowerCase();
+
+            console.log(
+                '========================================'
+            );
+
+            console.log(
+                'LYNKTODAY LOGIN OTP VERIFICATION'
+            );
+
+            console.log(
+                'EMAIL:',
+                normalizedEmail
+            );
+
+            console.log(
+                'OTP LENGTH:',
+                cleanOtp.length
+            );
+
+            console.log(
+                '========================================'
+            );
+
+            // ====================================================
+            // STEP 1
+            // VERIFY EMAIL OTP
+            // ====================================================
+
+            const verifyResponse =
+                await api.post(
+                    '/auth/verify-email',
+                    {
+                        email:
+                            normalizedEmail,
+
+                        otp:
+                            cleanOtp
+                    }
                 );
+
+            const verifyData =
+                verifyResponse?.data;
+
+            console.log(
+                'OTP VERIFICATION RESPONSE:',
+                verifyData
+            );
+
+            // ====================================================
+            // OTP VERIFICATION FAILED
+            // ====================================================
+
+            if (!verifyData?.success) {
+
+                setError(
+                    verifyData?.message ||
+                    'Unable to verify your email.'
+                );
+
+                return;
             }
+
+            console.log(
+                'EMAIL VERIFIED SUCCESSFULLY'
+            );
+
+            // ====================================================
+            // STEP 2
+            //
+            // IMPORTANT:
+            //
+            // /verify-email returns only:
+            //
+            // {
+            //     success: true,
+            //     message: "Email verified successfully..."
+            // }
+            //
+            // It does NOT return JWT.
+            //
+            // Therefore we MUST login again automatically.
+            // ====================================================
+
+            setSuccess(
+                'Email verified successfully. Signing you in...'
+            );
+
+            console.log(
+                'AUTO LOGIN STARTING...'
+            );
+
+            const loginResponse =
+                await api.post(
+                    '/auth/login',
+                    {
+                        email:
+                            normalizedEmail,
+
+                        password:
+                            password
+                    }
+                );
+
+            const loginData =
+                loginResponse?.data;
+
+            console.log(
+                'AUTO LOGIN RESPONSE:',
+                loginData
+            );
+
+            // ====================================================
+            // AUTO LOGIN FAILED
+            // ====================================================
+
+            if (
+                !loginData?.success ||
+                !loginData?.token
+            ) {
+
+                console.error(
+                    'AUTO LOGIN FAILED:',
+                    loginData
+                );
+
+                setError(
+                    loginData?.message ||
+                    'Email verified, but automatic login failed. Please login again.'
+                );
+
+                setSuccess('');
+
+                return;
+            }
+
+            // ====================================================
+            // STEP 3
+            // SAVE JWT
+            // ====================================================
+
+            console.log(
+                'AUTO LOGIN SUCCESS'
+            );
+
+            console.log(
+                'SAVING JWT TOKEN'
+            );
 
             localStorage.setItem(
                 'lynktoday_token',
-                data.token
+                loginData.token
             );
 
-            localStorage.setItem(
-                'lynktoday_user',
-                JSON.stringify(data.user)
+            // ====================================================
+            // STEP 4
+            // SAVE USER
+            // ====================================================
+
+            if (loginData.user) {
+
+                console.log(
+                    'SAVING USER DATA'
+                );
+
+                localStorage.setItem(
+                    'lynktoday_user',
+                    JSON.stringify(
+                        loginData.user
+                    )
+                );
+            }
+
+            // ====================================================
+            // STEP 5
+            // CLEAR PENDING VERIFICATION
+            // ====================================================
+
+            localStorage.removeItem(
+                'lynktoday_pending_verification'
             );
 
-            router.push('/');
-            router.refresh();
+            // ====================================================
+            // STEP 6
+            // REDIRECT HOME
+            // ====================================================
 
-        } catch (error) {
+            setSuccess(
+                'Email verified successfully. Welcome to LynkToday!'
+            );
+
+            console.log(
+                'REDIRECTING TO HOME...'
+            );
+
+            // Small delay so the success message is visible
+            // and localStorage is definitely updated.
+
+            setTimeout(() => {
+
+                router.replace('/');
+
+                router.refresh();
+
+            }, 500);
+
+        } catch (err) {
+
             console.error(
-                'Login error:',
-                error
+                '========================================'
             );
+
+            console.error(
+                'LYNKTODAY LOGIN OTP ERROR'
+            );
+
+            console.error(
+                'STATUS:',
+                err?.response?.status
+            );
+
+            console.error(
+                'DATA:',
+                err?.response?.data
+            );
+
+            console.error(
+                'MESSAGE:',
+                err?.message
+            );
+
+            console.error(
+                '========================================'
+            );
+
+            const status =
+                err?.response?.status;
+
+            const data =
+                err?.response?.data;
+
+            // ====================================================
+            // VERIFY OTP ERROR
+            // ====================================================
+
+            if (status === 400) {
+
+                setError(
+                    data?.message ||
+                    'Invalid or expired OTP.'
+                );
+
+                return;
+            }
+
+            // ====================================================
+            // AUTO LOGIN ERROR
+            // ====================================================
 
             setError(
-                error?.response?.data?.message ||
-                error?.message ||
-                'Unable to sign in. Please try again.'
+                data?.message ||
+                data?.error ||
+                'Unable to complete verification. Please try again.'
             );
 
         } finally {
-            setLoading(false);
+            setOtpLoading(false);
         }
     };
 
-    return (
-        <main className={styles.container}>
+    // ============================================================
+    // RESEND LOGIN OTP
+    // ============================================================
 
-            {/* LEFT BRAND PANEL */}
+    const handleResendOtp = async () => {
 
-            <section className={styles.leftPanel}>
-                <div className={styles.leftContent}>
+        if (
+            resendLoading ||
+            resendSeconds > 0 ||
+            !verificationEmail
+        ) {
+            return;
+        }
 
-                    <Link
-                        href="/"
-                        className={styles.brand}
-                    >
-                        Lynk<span>Today</span>
-                    </Link>
+        try {
 
-                    <div className={styles.brandLine} />
+            setResendLoading(true);
 
-                    <p className={styles.eyebrow}>
-                        FREIGHT FORWARDING COMMUNITY
-                    </p>
+            setError('');
+            setSuccess('');
 
-                    <h1>
-                        Connect with the
-                        <br />
-                        trade industry.
-                    </h1>
+            const normalizedEmail =
+                verificationEmail
+                    .trim()
+                    .toLowerCase();
 
-                    <p className={styles.description}>
-                        Learn, share knowledge and connect
-                        with freight forwarding professionals
-                        across the global trade community.
-                    </p>
+            console.log(
+                '========================================'
+            );
 
-                    <div className={styles.features}>
-                        {FEATURES.map((feature) => (
-                            <div
-                                key={feature}
-                                className={styles.feature}
-                            >
-                                <span
-                                    className={
-                                        styles.featureCheck
-                                    }
-                                >
-                                    ✓
-                                </span>
+            console.log(
+                'RESENDING VERIFICATION OTP'
+            );
 
-                                <span>
-                                    {feature}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
+            console.log(
+                'EMAIL:',
+                normalizedEmail
+            );
 
-                    <div className={styles.leftFooter}>
-                        Built for freight forwarding
-                        and global trade professionals.
-                    </div>
-                </div>
-            </section>
+            console.log(
+                '========================================'
+            );
 
+            // ====================================================
+            // RESEND OTP
+            // ====================================================
 
-            {/* LOGIN PANEL */}
+            const response =
+                await api.post(
+                    '/auth/resend-verification',
+                    {
+                        email:
+                            normalizedEmail
+                    }
+                );
 
-            <section className={styles.rightPanel}>
-                <div className={styles.card}>
+            const data =
+                response?.data;
 
-                    <div className={styles.mobileBrand}>
-                        <Link
-                            href="/"
-                            className={styles.mobileBrandLink}
-                        >
-                            Lynk<span>Today</span>
-                        </Link>
-                    </div>
+            console.log(
+                'RESEND OTP RESPONSE:',
+                data
+            );
 
-                    <div className={styles.heading}>
-                        <span className={styles.headingLabel}>
-                            ACCOUNT ACCESS
-                        </span>
+            // ====================================================
+            // CHECK RESPONSE
+            // ====================================================
+
+            if (!data?.success) {
+
+                setError(
+                    data?.message ||
+                    'Unable to resend OTP.'
+                );
+
+                return;
+            }
+
+            // ====================================================
+            // SUCCESS
+            // ====================================================
+
+            setOtp('');
+
+            setSuccess(
+                'A new verification OTP has been sent to your email.'
+            );
+
+            setResendSeconds(60);
+
+        } catch (err) {
+
+            console.error(
+                '========================================'
+            );
+
+            console.error(
+                'LYNKTODAY RESEND OTP ERROR'
+            );
+
+            console.error(
+                'STATUS:',
+                err?.response?.status
+            );
+
+            console.error(
+                'DATA:',
+                err?.response?.data
+            );
+
+            console.error(
+                'MESSAGE:',
+                err?.message
+            );
+
+            console.error(
+                '========================================'
+            );
+
+            setError(
+                err?.response?.data?.message ||
+                err?.response?.data?.error ||
+                'Unable to resend OTP.'
+            );
+
+        } finally {
+
+            setResendLoading(false);
+
+        }
+    };
+
+    // ============================================================
+    // BACK TO LOGIN
+    // ============================================================
+
+    const handleBackToLogin = () => {
+
+        setOtpMode(false);
+
+        setOtp('');
+
+        setVerificationEmail('');
+
+        setError('');
+
+        setSuccess('');
+
+        setResendSeconds(0);
+
+    };
+
+    // ============================================================
+    // OTP SCREEN
+    // ============================================================
+
+    if (otpMode) {
+
+        return (
+
+            <div className={styles.container}>
+
+                {/* ==================================================
+                    LEFT PANEL
+                ================================================== */}
+
+                <div className={styles.leftPanel}>
+
+                    <div className={styles.overlay}>
+
+                        <h1>
+                            LynkToday
+                        </h1>
 
                         <h2>
-                            Welcome back
+                            Join the Global
+                            <br />
+                            Trade Network
                         </h2>
 
                         <p>
-                            Sign in to continue to your
-                            LynkToday account.
+                            Connect with freight
+                            forwarders, customs
+                            brokers, importers,
+                            exporters, shipping
+                            lines, logistics
+                            companies and trade
+                            professionals worldwide.
                         </p>
+
+                        <ul className={styles.features}>
+
+                            <li>
+                                Sea Freight
+                            </li>
+
+                            <li>
+                                Air Freight
+                            </li>
+
+                            <li>
+                                Customs Clearance
+                            </li>
+
+                            <li>
+                                Import & Export
+                            </li>
+
+                            <li>
+                                Global Trade Network
+                            </li>
+
+                            <li>
+                                Verified Professionals
+                            </li>
+
+                        </ul>
+
                     </div>
 
+                </div>
+
+                {/* ==================================================
+                    OTP PANEL
+                ================================================== */}
+
+                <div className={styles.rightPanel}>
+
+                    <div className={styles.card}>
+
+                        <div
+                            className={
+                                styles.otpContainer
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.otpIcon
+                                }
+                                style={{
+                                    color:
+                                        PRIMARY_COLOR
+                                }}
+                            >
+                                @
+                            </div>
+
+                            <h2
+                                className={
+                                    styles.title
+                                }
+                            >
+                                Verify Your Email
+                            </h2>
+
+                            <p
+                                className={
+                                    styles.subtitle
+                                }
+                            >
+
+                                Your account exists,
+                                but your email has not
+                                been verified.
+
+                                <br />
+
+                                Enter the 6-digit OTP
+                                sent to:
+
+                                <strong
+                                    className={
+                                        styles.otpEmail
+                                    }
+                                >
+                                    {' '}
+                                    {verificationEmail}
+                                </strong>
+
+                            </p>
+
+                            {/* ==================================================
+                                ERROR
+                            ================================================== */}
+
+                            {error && (
+
+                                <div
+                                    className={
+                                        styles.errorAlert
+                                    }
+                                >
+                                    {error}
+                                </div>
+
+                            )}
+
+                            {/* ==================================================
+                                SUCCESS
+                            ================================================== */}
+
+                            {success && (
+
+                                <div
+                                    className={
+                                        styles.successAlert
+                                    }
+                                >
+                                    {success}
+                                </div>
+
+                            )}
+
+                            {/* ==================================================
+                                OTP FORM
+                            ================================================== */}
+
+                            <form
+                                className={
+                                    styles.form
+                                }
+                                onSubmit={
+                                    handleVerifyOtp
+                                }
+                            >
+
+                                <div
+                                    className={
+                                        styles.fieldGroup
+                                    }
+                                >
+
+                                    <label>
+                                        Verification Code
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        autoComplete="one-time-code"
+                                        maxLength={6}
+                                        className={
+                                            styles.otpInput
+                                        }
+                                        value={otp}
+                                        onChange={(e) => {
+
+                                            const value =
+                                                e.target.value
+                                                    .replace(
+                                                        /\D/g,
+                                                        ''
+                                                    )
+                                                    .slice(
+                                                        0,
+                                                        6
+                                                    );
+
+                                            setOtp(value);
+
+                                            setError('');
+
+                                        }}
+                                        placeholder="000000"
+                                        disabled={
+                                            otpLoading
+                                        }
+                                        autoFocus
+                                    />
+
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className={
+                                        styles.submitBtn
+                                    }
+                                    disabled={
+                                        otpLoading ||
+                                        otp.length !== 6
+                                    }
+                                    style={{
+                                        background:
+                                            PRIMARY_COLOR
+                                    }}
+                                >
+
+                                    {otpLoading
+                                        ? 'Verifying...'
+                                        : 'Verify Email'}
+
+                                </button>
+
+                            </form>
+
+                            {/* ==================================================
+                                RESEND OTP
+                            ================================================== */}
+
+                            <div
+                                className={
+                                    styles.otpResend
+                                }
+                            >
+
+                                <span>
+                                    Didn't receive the code?
+                                </span>
+
+                                <button
+                                    type="button"
+                                    onClick={
+                                        handleResendOtp
+                                    }
+                                    disabled={
+                                        resendLoading ||
+                                        resendSeconds > 0 ||
+                                        otpLoading
+                                    }
+                                    className={
+                                        styles.resendButton
+                                    }
+                                >
+
+                                    {resendLoading
+                                        ? 'Sending...'
+                                        : resendSeconds > 0
+                                            ? `Resend in ${resendSeconds}s`
+                                            : 'Resend OTP'}
+
+                                </button>
+
+                            </div>
+
+                            {/* ==================================================
+                                BACK TO LOGIN
+                            ================================================== */}
+
+                            <button
+                                type="button"
+                                className={
+                                    styles.backButton
+                                }
+                                onClick={
+                                    handleBackToLogin
+                                }
+                                disabled={
+                                    otpLoading
+                                }
+                            >
+                                ← Back to login
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        );
+    }
+
+    // ============================================================
+    // NORMAL LOGIN SCREEN
+    // ============================================================
+
+    return (
+
+        <div className={styles.container}>
+
+            {/* ==================================================
+                LEFT PANEL
+            ================================================== */}
+
+            <div className={styles.leftPanel}>
+
+                <div className={styles.overlay}>
+
+                    <h1>
+                        LynkToday
+                    </h1>
+
+                    <h2>
+                        Connect. Trade.
+                        <br />
+                        Grow.
+                    </h2>
+
+                    <p>
+                        Connect with freight
+                        forwarders, customs
+                        brokers, importers,
+                        exporters, shipping
+                        lines, logistics
+                        companies and trade
+                        professionals worldwide.
+                    </p>
+
+                    <ul className={styles.features}>
+
+                        <li>
+                            Sea Freight
+                        </li>
+
+                        <li>
+                            Air Freight
+                        </li>
+
+                        <li>
+                            Customs Clearance
+                        </li>
+
+                        <li>
+                            Import & Export
+                        </li>
+
+                        <li>
+                            Global Trade Network
+                        </li>
+
+                        <li>
+                            Verified Professionals
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            {/* ==================================================
+                RIGHT PANEL
+            ================================================== */}
+
+            <div className={styles.rightPanel}>
+
+                <div className={styles.card}>
+
+                    <h2 className={styles.title}>
+                        Welcome Back
+                    </h2>
+
+                    <p className={styles.subtitle}>
+                        Sign in to your LynkToday account.
+                    </p>
+
+                    {/* ==================================================
+                        ERROR
+                    ================================================== */}
+
                     {error && (
+
                         <div
                             className={
                                 styles.errorAlert
                             }
-                            role="alert"
                         >
-                            <span
-                                className={
-                                    styles.errorIcon
-                                }
-                            >
-                                !
-                            </span>
-
-                            <div>
-                                <strong>
-                                    Sign in failed
-                                </strong>
-
-                                <p>
-                                    {error}
-                                </p>
-                            </div>
+                            {error}
                         </div>
+
                     )}
+
+                    {/* ==================================================
+                        SUCCESS
+                    ================================================== */}
+
+                    {success && (
+
+                        <div
+                            className={
+                                styles.successAlert
+                            }
+                        >
+                            {success}
+                        </div>
+
+                    )}
+
+                    {/* ==================================================
+                        LOGIN FORM
+                    ================================================== */}
 
                     <form
                         className={styles.form}
@@ -236,30 +1413,34 @@ export default function Login() {
                                 styles.fieldGroup
                             }
                         >
-                            <label htmlFor="email">
-                                Email Address
+
+                            <label>
+                                Email
                             </label>
 
                             <input
-                                id="email"
                                 type="email"
-                                name="email"
-                                value={
-                                    formData.email
+                                className={
+                                    styles.input
                                 }
-                                onChange={
-                                    handleChange
-                                }
+                                value={email}
+                                onChange={(e) => {
+
+                                    setEmail(
+                                        e.target.value
+                                    );
+
+                                    setError('');
+                                    setSuccess('');
+
+                                }}
                                 placeholder="you@example.com"
                                 autoComplete="email"
                                 disabled={loading}
                                 required
-                                className={
-                                    styles.input
-                                }
                             />
-                        </div>
 
+                        </div>
 
                         {/* PASSWORD */}
 
@@ -268,147 +1449,105 @@ export default function Login() {
                                 styles.fieldGroup
                             }
                         >
-                            <div
-                                className={
-                                    styles.passwordHeader
-                                }
-                            >
-                                <label htmlFor="password">
-                                    Password
-                                </label>
 
-                                <Link
-                                    href="/forgot-password"
-                                    className={
-                                        styles.link
-                                    }
-                                >
-                                    Forgot password?
-                                </Link>
-                            </div>
+                            <label>
+                                Password
+                            </label>
 
                             <input
-                                id="password"
                                 type="password"
-                                name="password"
-                                value={
-                                    formData.password
+                                className={
+                                    styles.input
                                 }
-                                onChange={
-                                    handleChange
-                                }
+                                value={password}
+                                onChange={(e) => {
+
+                                    setPassword(
+                                        e.target.value
+                                    );
+
+                                    setError('');
+                                    setSuccess('');
+
+                                }}
                                 placeholder="Enter your password"
                                 autoComplete="current-password"
                                 disabled={loading}
                                 required
-                                className={
-                                    styles.input
-                                }
                             />
+
                         </div>
 
+                        {/* FORGOT PASSWORD */}
 
-                        {/* REMEMBER */}
-
-                        <label
+                        <div
                             className={
-                                styles.checkbox
+                                styles.forgotRow
                             }
                         >
-                            <input
-                                type="checkbox"
-                                name="remember"
-                                checked={
-                                    formData.remember
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                disabled={loading}
-                            />
 
-                            <span
+                            <Link
+                                href="/forgot-password"
                                 className={
-                                    styles.checkboxBox
+                                    styles.forgotLink
                                 }
-                            />
+                            >
+                                Forgot password?
+                            </Link>
 
-                            <span>
-                                Remember me
-                            </span>
-                        </label>
+                        </div>
 
-
-                        {/* SUBMIT */}
+                        {/* LOGIN BUTTON */}
 
                         <button
                             type="submit"
-                            disabled={loading}
                             className={
                                 styles.submitBtn
                             }
+                            disabled={loading}
+                            style={{
+                                background:
+                                    PRIMARY_COLOR
+                            }}
                         >
-                            {loading ? (
-                                <>
-                                    <span
-                                        className={
-                                            styles.spinner
-                                        }
-                                    />
 
-                                    Signing in...
-                                </>
-                            ) : (
-                                <>
-                                    Sign in
+                            {loading
+                                ? 'Signing in...'
+                                : 'Login'}
 
-                                    <span
-                                        className={
-                                            styles.buttonArrow
-                                        }
-                                    >
-                                        →
-                                    </span>
-                                </>
-                            )}
                         </button>
+
                     </form>
 
-
-                    {/* SIGN UP */}
+                    {/* CREATE ACCOUNT */}
 
                     <div
                         className={
-                            styles.signup
+                            styles.loginLink
                         }
                     >
+
                         <span>
                             Don't have an account?
                         </span>
 
                         <Link
                             href="/signup"
-                            className={
-                                styles.signupLink
-                            }
+                            style={{
+                                color:
+                                    PRIMARY_COLOR
+                            }}
                         >
-                            Create an account
+                            Create Account
                         </Link>
-                    </div>
 
-
-                    <div
-                        className={
-                            styles.securityNote
-                        }
-                    >
-                        Your account information is
-                        securely handled by LynkToday.
                     </div>
 
                 </div>
-            </section>
 
-        </main>
+            </div>
+
+        </div>
+
     );
 }

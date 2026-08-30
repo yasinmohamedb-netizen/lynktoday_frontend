@@ -6,6 +6,9 @@ import api from '@/utils/api';
 
 import styles from './CreatePost.module.css';
 
+// ============================================================
+// POST TYPES
+// ============================================================
 
 const POST_TYPES = [
     {
@@ -34,6 +37,9 @@ const POST_TYPES = [
     }
 ];
 
+// ============================================================
+// CATEGORIES
+// ============================================================
 
 const CATEGORIES = [
     'General',
@@ -48,18 +54,26 @@ const CATEGORIES = [
     'HS Code'
 ];
 
+// ============================================================
+// LIMITS
+// ============================================================
 
 const MAX_TITLE_LENGTH = 200;
 const MAX_CONTENT_LENGTH = 10000;
 
+// ============================================================
+// COMPONENT
+// ============================================================
 
 export default function CreatePost({
     onPostCreated
 }) {
 
-    const [title, setTitle] = useState('');
+    const [title, setTitle] =
+        useState('');
 
-    const [content, setContent] = useState('');
+    const [content, setContent] =
+        useState('');
 
     const [postType, setPostType] =
         useState('DISCUSSION');
@@ -67,18 +81,15 @@ export default function CreatePost({
     const [category, setCategory] =
         useState('General');
 
-    const [file, setFile] = useState(null);
-
     const [loading, setLoading] =
         useState(false);
 
     const [error, setError] =
         useState('');
 
-
-    // ==================================================
+    // ========================================================
     // CREATE POST
-    // ==================================================
+    // ========================================================
 
     const handleSubmit = async (event) => {
 
@@ -90,10 +101,9 @@ export default function CreatePost({
         const cleanContent =
             content.trim();
 
-
-        // ==================================================
+        // ====================================================
         // VALIDATION
-        // ==================================================
+        // ====================================================
 
         if (
             !cleanTitle ||
@@ -107,7 +117,6 @@ export default function CreatePost({
             return;
         }
 
-
         if (
             cleanTitle.length >
             MAX_TITLE_LENGTH
@@ -119,7 +128,6 @@ export default function CreatePost({
 
             return;
         }
-
 
         if (
             cleanContent.length >
@@ -133,55 +141,44 @@ export default function CreatePost({
             return;
         }
 
-
         try {
 
             setLoading(true);
 
             setError('');
 
-
             // ==================================================
             // FORM DATA
+            // ==================================================
+            //
+            // We are keeping FormData so the existing backend
+            // /posts endpoint continues to work without changes.
+            //
+            // There is NO file attached anymore.
             // ==================================================
 
             const formData =
                 new FormData();
-
 
             formData.append(
                 'title',
                 cleanTitle
             );
 
-
             formData.append(
                 'content',
                 cleanContent
             );
-
 
             formData.append(
                 'postType',
                 postType
             );
 
-
             formData.append(
                 'category',
                 category
             );
-
-
-            if (file) {
-
-                formData.append(
-                    'file',
-                    file
-                );
-
-            }
-
 
             // ==================================================
             // CREATE POST API
@@ -193,20 +190,16 @@ export default function CreatePost({
                     formData
                 );
 
-
             if (!data?.success) {
 
                 throw new Error(
                     data?.message ||
                     'Unable to publish the post.'
                 );
-
             }
-
 
             const createdPost =
                 data?.post;
-
 
             // ==================================================
             // RESET FORM
@@ -224,9 +217,6 @@ export default function CreatePost({
                 'General'
             );
 
-            setFile(null);
-
-
             // ==================================================
             // SEND NEW POST TO PARENT
             // ==================================================
@@ -240,9 +230,7 @@ export default function CreatePost({
                 onPostCreated(
                     createdPost
                 );
-
             }
-
 
             // ==================================================
             // SEND GLOBAL EVENT
@@ -263,9 +251,7 @@ export default function CreatePost({
                         }
                     )
                 );
-
             }
-
 
         } catch (error) {
 
@@ -274,60 +260,33 @@ export default function CreatePost({
                 error
             );
 
-
             setError(
                 error.response?.data?.message ||
                 error.message ||
                 'Unable to publish the post. Please try again.'
             );
 
-
         } finally {
 
             setLoading(false);
-
         }
-
     };
 
-
-    // ==================================================
-    // FILE CHANGE
-    // ==================================================
-
-    const handleFileChange = (
-        event
-    ) => {
-
-        const selectedFile =
-            event.target.files?.[0] ||
-            null;
-
-        setFile(
-            selectedFile
-        );
-
-    };
-
-
-    // ==================================================
+    // ========================================================
     // CLEAR ERROR
-    // ==================================================
+    // ========================================================
 
     const clearError = () => {
 
         if (error) {
 
             setError('');
-
         }
-
     };
 
-
-    // ==================================================
+    // ========================================================
     // RENDER
-    // ==================================================
+    // ========================================================
 
     return (
 
@@ -353,7 +312,6 @@ export default function CreatePost({
                         Create a Post
                     </h2>
 
-
                     <p
                         className={
                             styles.subheading
@@ -366,7 +324,6 @@ export default function CreatePost({
                 </div>
 
             </div>
-
 
             {/* ==================================================
                 ERROR
@@ -383,7 +340,6 @@ export default function CreatePost({
                 </div>
 
             )}
-
 
             {/* ==================================================
                 FORM
@@ -404,7 +360,9 @@ export default function CreatePost({
                     }
                 >
 
-                    {/* TITLE */}
+                    {/* ==================================================
+                        TITLE
+                    ================================================== */}
 
                     <div
                         className={
@@ -420,7 +378,6 @@ export default function CreatePost({
                         >
                             Title
                         </label>
-
 
                         <input
                             id="post-title"
@@ -448,8 +405,9 @@ export default function CreatePost({
 
                     </div>
 
-
-                    {/* POST TYPE */}
+                    {/* ==================================================
+                        POST TYPE
+                    ================================================== */}
 
                     <div
                         className={
@@ -465,7 +423,6 @@ export default function CreatePost({
                         >
                             Post Type
                         </label>
-
 
                         <select
                             id="post-type"
@@ -504,8 +461,9 @@ export default function CreatePost({
 
                     </div>
 
-
-                    {/* CATEGORY */}
+                    {/* ==================================================
+                        CATEGORY
+                    ================================================== */}
 
                     <div
                         className={
@@ -521,7 +479,6 @@ export default function CreatePost({
                         >
                             Category
                         </label>
-
 
                         <select
                             id="post-category"
@@ -556,7 +513,6 @@ export default function CreatePost({
 
                 </div>
 
-
                 {/* ==================================================
                     CONTENT
                 ================================================== */}
@@ -575,7 +531,6 @@ export default function CreatePost({
                     >
                         Content
                     </label>
-
 
                     <textarea
                         id="post-content"
@@ -601,7 +556,6 @@ export default function CreatePost({
                         required
                     />
 
-
                     <span
                         className={
                             styles.characterCount
@@ -613,7 +567,6 @@ export default function CreatePost({
 
                 </div>
 
-
                 {/* ==================================================
                     FOOTER
                 ================================================== */}
@@ -624,52 +577,9 @@ export default function CreatePost({
                     }
                 >
 
-                    <div
-                        className={
-                            styles.fileSection
-                        }
-                    >
-
-                        <label
-                            htmlFor="post-file"
-                            className={
-                                styles.upload
-                            }
-                        >
-                            Attach File
-                        </label>
-
-
-                        <input
-                            id="post-file"
-                            type="file"
-                            className={
-                                styles.fileInput
-                            }
-                            onChange={
-                                handleFileChange
-                            }
-                            disabled={loading}
-                        />
-
-
-                        {file && (
-
-                            <span
-                                className={
-                                    styles.fileName
-                                }
-                                title={
-                                    file.name
-                                }
-                            >
-                                {file.name}
-                            </span>
-
-                        )}
-
-                    </div>
-
+                    {/* ==================================================
+                        PUBLISH
+                    ================================================== */}
 
                     <button
                         type="submit"
@@ -692,5 +602,4 @@ export default function CreatePost({
         </section>
 
     );
-
 }
