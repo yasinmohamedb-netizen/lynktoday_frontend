@@ -197,238 +197,349 @@ export default function Signup() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        // ========================================================
+        // PREVENT DOUBLE SUBMISSION
+        // ========================================================
+    
         if (loading) {
             return;
         }
-
+    
+        // ========================================================
+        // CLEAR PREVIOUS MESSAGES
+        // ========================================================
+    
         setError('');
         setSuccess('');
-
+    
+        // ========================================================
+        // FRONTEND VALIDATION
+        // ========================================================
+    
         const validationError =
             validateForm();
-
+    
         if (validationError) {
             setError(validationError);
             return;
         }
-
+    
         try {
+    
+            // ====================================================
+            // START LOADING
+            // ====================================================
+    
             setLoading(true);
-
+    
+            // ====================================================
+            // NORMALIZE EMAIL
+            // ====================================================
+    
             const normalizedEmail =
                 formData.email
                     .trim()
                     .toLowerCase();
-
+    
+            // ====================================================
+            // ACCOUNT TYPE
+            // ====================================================
+    
             const isCompany =
                 formData.accountType === 'company';
-
+    
             // ====================================================
             // BACKEND PAYLOAD
             // ====================================================
-
+    
             const payload = {
+    
                 accountType:
                     formData.accountType,
-
+    
                 fullName:
                     isCompany
                         ? formData.companyName.trim()
                         : formData.fullName.trim(),
-
+    
                 email:
                     normalizedEmail,
-
+    
                 password:
                     formData.password,
-
+    
                 profession:
                     formData.profession,
-
+    
                 companyName:
                     formData.companyName.trim(),
-
+    
                 designation:
                     formData.designation.trim(),
-
+    
                 location:
                     formData.location.trim(),
-
+    
                 bio:
                     formData.bio.trim(),
-
+    
                 tradeIntent:
                     formData.tradeIntent,
-
+    
                 agreeToTerms:
                     formData.agreeToTerms
+    
             };
-
+    
+            // ====================================================
+            // DEBUG LOG
+            // ====================================================
+    
             console.log(
                 '========================================'
             );
-
+    
             console.log(
                 'LYNKTODAY SIGNUP ATTEMPT'
             );
-
+    
             console.log(
                 'SIGNUP EMAIL:',
                 normalizedEmail
             );
-
+    
+            console.log(
+                'ACCOUNT TYPE:',
+                payload.accountType
+            );
+    
             console.log(
                 'PROFESSION:',
                 payload.profession
             );
-
+    
             console.log(
                 'TRADE INTENT:',
                 payload.tradeIntent
             );
-
+    
+            console.log(
+                'AGREE TO TERMS:',
+                payload.agreeToTerms
+            );
+    
+            console.log(
+                'SIGNUP PAYLOAD:',
+                payload
+            );
+    
             console.log(
                 '========================================'
             );
-
+    
             // ====================================================
             // CREATE ACCOUNT
             // ====================================================
-
+    
             const response =
                 await api.post(
                     '/auth/signup',
                     payload
                 );
-
+    
+            // ====================================================
+            // RESPONSE DATA
+            // ====================================================
+    
             const data =
                 response?.data;
-
+    
+            console.log(
+                '========================================'
+            );
+    
             console.log(
                 'SIGNUP RESPONSE:',
                 data
             );
-
+    
+            console.log(
+                '========================================'
+            );
+    
             // ====================================================
             // CHECK SUCCESS
             // ====================================================
-
+    
             if (!data?.success) {
+    
                 setError(
                     data?.message ||
                     'Unable to create your account.'
                 );
-
+    
                 return;
             }
-
+    
             // ====================================================
             // EMAIL VERIFICATION REQUIRED
-            //
-            // IMPORTANT:
-            // Backend returns:
-            //
-            // requiresVerification: true
-            //
-            // NOT:
-            //
-            // requiresEmailVerification
             // ====================================================
-
+    
             if (
                 data.requiresVerification === true
             ) {
+    
                 const emailForVerification =
                     data.email ||
                     normalizedEmail;
-
+    
+                // -----------------------------------------------
+                // SAVE EMAIL FOR OTP VERIFICATION
+                // -----------------------------------------------
+    
                 setVerificationEmail(
                     emailForVerification
                 );
-
+    
+                // -----------------------------------------------
+                // CLEAR OTP INPUT
+                // -----------------------------------------------
+    
                 setOtp('');
-
+    
+                // -----------------------------------------------
+                // CLEAR ERROR
+                // -----------------------------------------------
+    
                 setError('');
-
+    
+                // -----------------------------------------------
+                // SUCCESS MESSAGE
+                // -----------------------------------------------
+    
                 setSuccess(
                     'Account created successfully. Please check your email for the verification OTP.'
                 );
-
+    
+                // -----------------------------------------------
+                // START RESEND TIMER
+                // -----------------------------------------------
+    
                 setResendSeconds(60);
-
-                // IMPORTANT:
-                // Show OTP screen.
+    
+                // -----------------------------------------------
+                // SHOW OTP SCREEN
+                // -----------------------------------------------
+    
                 setOtpMode(true);
-
+    
                 return;
             }
-
+    
             // ====================================================
-            // FALLBACK
-            //
-            // If backend ever returns a token directly.
+            // FALLBACK LOGIN TOKEN
             // ====================================================
-
+    
             if (data.token) {
+    
                 localStorage.setItem(
                     'lynktoday_token',
                     data.token
                 );
+    
             }
-
+    
+            // ====================================================
+            // FALLBACK USER DATA
+            // ====================================================
+    
             if (data.user) {
+    
                 localStorage.setItem(
                     'lynktoday_user',
                     JSON.stringify(
                         data.user
                     )
                 );
+    
             }
-
+    
+            // ====================================================
+            // REDIRECT
+            // ====================================================
+    
             router.push('/');
-
+    
             router.refresh();
-
+    
         } catch (err) {
+    
+            // ====================================================
+            // ERROR DEBUGGING
+            // ====================================================
+    
             console.error(
                 '========================================'
             );
-
+    
             console.error(
                 'LYNKTODAY SIGNUP ERROR'
             );
-
+    
             console.error(
                 'STATUS:',
                 err?.response?.status
             );
-
+    
             console.error(
                 'DATA:',
-                err?.response?.data
+                JSON.stringify(
+                    err?.response?.data,
+                    null,
+                    2
+                )
             );
-
+    
             console.error(
                 'MESSAGE:',
                 err?.message
             );
-
+    
+            console.error(
+                'FULL ERROR:',
+                err
+            );
+    
             console.error(
                 '========================================'
             );
-
+    
+            // ====================================================
+            // BACKEND ERROR MESSAGE
+            // ====================================================
+    
             const backendMessage =
                 err?.response?.data?.message ||
                 err?.response?.data?.error;
-
+    
+            // ====================================================
+            // DISPLAY ERROR
+            // ====================================================
+    
             setError(
                 backendMessage ||
                 'Unable to create your account. Please try again.'
             );
-
+    
         } finally {
+    
+            // ====================================================
+            // STOP LOADING
+            // ====================================================
+    
             setLoading(false);
+    
         }
     };
 
