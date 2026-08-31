@@ -1682,7 +1682,7 @@ export default function Signup() {
                                 onChange={
                                     handleChange
                                 }
-                                placeholder="Minimum 6 characters"
+                                placeholder="Minimum 8 characters"
                                 autoComplete="new-password"
                                 disabled={
                                     loading
