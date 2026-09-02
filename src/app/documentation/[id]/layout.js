@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
             title: 'Documentation Not Found',
             description:
                 'The requested LynkToday documentation could not be found.',
-            path: `/documentation/${id}`,
+            path: `/documentation/${encodeURIComponent(id)}`,
             noIndex: true
         });
     }
@@ -58,10 +58,21 @@ export async function generateMetadata({ params }) {
         document.description ||
         'Practical trade, customs, shipping and logistics knowledge on LynkToday.';
 
+    const identifier =
+        document.slug ||
+        document._id ||
+        document.id ||
+        id;
+
+    const canonicalPath =
+        `/documentation/${encodeURIComponent(
+            String(identifier)
+        )}`;
+
     return createMetadata({
         title,
         description,
-        path: `/documentation/${id}`
+        path: canonicalPath
     });
 }
 

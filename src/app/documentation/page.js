@@ -9,6 +9,17 @@ const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     'http://localhost:5001/api/v1';
 
+const getDocumentationHref = document => {
+    const value =
+        document?.slug ||
+        document?._id ||
+        document?.id;
+
+    return value
+        ? `/documentation/${encodeURIComponent(String(value))}`
+        : '/documentation';
+};
+
 const categories = [
     'All',
     'Customs',
@@ -42,10 +53,6 @@ export default function DocumentationPage() {
 
     const [user, setUser] = useState(null);
 
-    /* ======================================================
-       LOAD USER
-    ====================================================== */
-
     useEffect(() => {
         try {
             const storedUser =
@@ -68,10 +75,6 @@ export default function DocumentationPage() {
             setUser(null);
         }
     }, []);
-
-    /* ======================================================
-       FETCH DOCUMENTATION
-    ====================================================== */
 
     const fetchDocuments = async () => {
         try {
@@ -147,10 +150,6 @@ export default function DocumentationPage() {
                 );
             }
 
-            /* ------------------------------------------
-               SUPPORT BACKEND RESPONSE STRUCTURES
-            ------------------------------------------ */
-
             let list = [];
 
             if (
@@ -185,10 +184,6 @@ export default function DocumentationPage() {
 
             setDocuments(list);
 
-            /* ------------------------------------------
-               PAGINATION
-            ------------------------------------------ */
-
             if (data?.pagination) {
                 setTotalPages(
                     Number(
@@ -202,10 +197,6 @@ export default function DocumentationPage() {
                         : page + 1
                 );
             }
-
-            /* ------------------------------------------
-               FEATURED
-            ------------------------------------------ */
 
             if (
                 page === 1 &&
@@ -223,7 +214,6 @@ export default function DocumentationPage() {
             } else {
                 setFeaturedDocuments([]);
             }
-
         } catch (error) {
             console.error(
                 'Documentation error:',
@@ -250,10 +240,6 @@ export default function DocumentationPage() {
         submittedSearch
     ]);
 
-    /* ======================================================
-       SEARCH
-    ====================================================== */
-
     const handleSearch = event => {
         event.preventDefault();
 
@@ -279,10 +265,6 @@ export default function DocumentationPage() {
         setSubmittedSearch(query);
     };
 
-    /* ======================================================
-       CATEGORY
-    ====================================================== */
-
     const handleCategory = category => {
         setActiveCategory(category);
         setSearch('');
@@ -291,10 +273,6 @@ export default function DocumentationPage() {
         setError('');
     };
 
-    /* ======================================================
-       CLEAR SEARCH
-    ====================================================== */
-
     const clearSearch = () => {
         setSearch('');
         setSubmittedSearch('');
@@ -302,18 +280,10 @@ export default function DocumentationPage() {
         setError('');
     };
 
-    /* ======================================================
-       RETRY
-    ====================================================== */
-
     const handleRetry = () => {
         setError('');
         fetchDocuments();
     };
-
-    /* ======================================================
-       FEATURED IDS
-    ====================================================== */
 
     const featuredIds =
         new Set(
@@ -326,10 +296,6 @@ export default function DocumentationPage() {
                     )
             )
         );
-
-    /* ======================================================
-       DISPLAYED DOCUMENTS
-    ====================================================== */
 
     const displayedDocuments =
         page === 1 &&
@@ -350,23 +316,11 @@ export default function DocumentationPage() {
     const recentDocuments =
         displayedDocuments.slice(0, 5);
 
-    /* ======================================================
-       RENDER
-    ====================================================== */
-
     return (
         <main className={styles.page}>
-
             <div className={styles.container}>
-
-                {/* ==================================================
-                   HEADER
-                ================================================== */}
-
                 <header className={styles.header}>
-
                     <div className={styles.headerLeft}>
-
                         <Link
                             href="/"
                             className={styles.logo}
@@ -375,7 +329,6 @@ export default function DocumentationPage() {
                         </Link>
 
                         <div className={styles.headerText}>
-
                             <h1>
                                 Documentation
                             </h1>
@@ -384,21 +337,16 @@ export default function DocumentationPage() {
                                 Trade, customs, shipping
                                 and logistics knowledge.
                             </p>
-
                         </div>
-
                     </div>
 
-
                     <div className={styles.headerActions}>
-
                         <Link
                             href="/"
                             className={styles.headerButton}
                         >
                             Home
                         </Link>
-
 
                         <Link
                             href="/hs-codes"
@@ -407,9 +355,14 @@ export default function DocumentationPage() {
                             HS Code
                         </Link>
 
-
                         {user && (
                             <>
+                                <Link
+                                    href="/documentation/my-documents"
+                                    className={styles.myDocumentsButton}
+                                >
+                                    My Documents
+                                </Link>
 
                                 <Link
                                     href="/documentation/create"
@@ -430,38 +383,22 @@ export default function DocumentationPage() {
                                     <span>+</span>
                                     Create HS Code
                                 </Link>
-
                             </>
                         )}
-
                     </div>
-
                 </header>
 
-
-                {/* ==================================================
-                   MAIN LAYOUT
-                ================================================== */}
-
                 <div className={styles.layout}>
-
                     <section className={styles.main}>
-
-                        {/* ==================================================
-                           SEARCH
-                        ================================================== */}
-
                         <form
                             onSubmit={handleSearch}
                             className={styles.searchBox}
                         >
-
                             <div
                                 className={
                                     styles.searchInputWrap
                                 }
                             >
-
                                 <span
                                     className={
                                         styles.searchIcon
@@ -494,9 +431,7 @@ export default function DocumentationPage() {
                                         ×
                                     </button>
                                 )}
-
                             </div>
-
 
                             <button
                                 type="submit"
@@ -506,18 +441,13 @@ export default function DocumentationPage() {
                             >
                                 Search
                             </button>
-
                         </form>
-
-
-                        {/* SEARCH ERROR */}
 
                         {error &&
                             !loading &&
                             error.includes(
                                 'at least 2 characters'
                             ) && (
-
                                 <div
                                     className={
                                         styles.validationError
@@ -525,26 +455,18 @@ export default function DocumentationPage() {
                                 >
                                     {error}
                                 </div>
-
                             )}
-
-
-                        {/* ==================================================
-                           CATEGORIES
-                        ================================================== */}
 
                         <section
                             className={
                                 styles.categorySection
                             }
                         >
-
                             <div
                                 className={
                                     styles.sectionIntro
                                 }
                             >
-
                                 <span>
                                     EXPLORE
                                 </span>
@@ -557,19 +479,15 @@ export default function DocumentationPage() {
                                     Find practical knowledge
                                     by trade area.
                                 </p>
-
                             </div>
-
 
                             <div
                                 className={
                                     styles.categories
                                 }
                             >
-
                                 {categories.map(
                                     category => (
-
                                         <button
                                             key={category}
                                             type="button"
@@ -587,31 +505,19 @@ export default function DocumentationPage() {
                                         >
                                             {category}
                                         </button>
-
                                     )
                                 )}
-
                             </div>
-
                         </section>
 
-
-                        {/* ==================================================
-                           FEATURED
-                        ================================================== */}
-
                         {featuredDocuments.length > 0 && (
-
                             <section>
-
                                 <div
                                     className={
                                         styles.sectionHeader
                                     }
                                 >
-
                                     <div>
-
                                         <span>
                                             EDITOR'S PICK
                                         </span>
@@ -624,43 +530,31 @@ export default function DocumentationPage() {
                                             Useful resources selected
                                             for the LynkToday community.
                                         </p>
-
                                     </div>
-
                                 </div>
-
 
                                 <div
                                     className={
                                         styles.featuredGrid
                                     }
                                 >
-
                                     {featuredDocuments.map(
                                         document => (
-
                                             <Link
                                                 key={
                                                     document._id ||
                                                     document.id
                                                 }
-                                                href={
-                                                    `/documentation/${
-                                                        document._id ||
-                                                        document.id
-                                                    }`
-                                                }
+                                                href={getDocumentationHref(document)}
                                                 className={
                                                     styles.featuredCard
                                                 }
                                             >
-
                                                 <div
                                                     className={
                                                         styles.featuredTop
                                                     }
                                                 >
-
                                                     <span>
                                                         FEATURED
                                                     </span>
@@ -669,9 +563,7 @@ export default function DocumentationPage() {
                                                         {document.documentType ||
                                                             'GUIDE'}
                                                     </small>
-
                                                 </div>
-
 
                                                 <div
                                                     className={
@@ -681,24 +573,20 @@ export default function DocumentationPage() {
                                                     📖
                                                 </div>
 
-
                                                 <h3>
                                                     {document.title}
                                                 </h3>
-
 
                                                 <p>
                                                     {document.description ||
                                                         'Practical trade and industry documentation.'}
                                                 </p>
 
-
                                                 <div
                                                     className={
                                                         styles.cardMeta
                                                     }
                                                 >
-
                                                     <span>
                                                         {document.category ||
                                                             'General'}
@@ -707,35 +595,21 @@ export default function DocumentationPage() {
                                                     <strong>
                                                         Read Guide →
                                                     </strong>
-
                                                 </div>
-
                                             </Link>
-
                                         )
                                     )}
-
                                 </div>
-
                             </section>
-
                         )}
 
-
-                        {/* ==================================================
-                           DOCUMENTATION
-                        ================================================== */}
-
                         <section>
-
                             <div
                                 className={
                                     styles.sectionHeader
                                 }
                             >
-
                                 <div>
-
                                     <span>
                                         KNOWLEDGE LIBRARY
                                     </span>
@@ -749,31 +623,22 @@ export default function DocumentationPage() {
                                     {activeCategory !==
                                         'All' &&
                                         !submittedSearch && (
-
                                             <p>
                                                 Category:{' '}
                                                 <strong>
                                                     {activeCategory}
                                                 </strong>
                                             </p>
-
                                         )}
-
                                 </div>
-
                             </div>
 
-
-                            {/* LOADING */}
-
                             {loading && (
-
                                 <div
                                     className={
                                         styles.stateCard
                                     }
                                 >
-
                                     <div
                                         className={
                                             styles.spinner
@@ -783,26 +648,19 @@ export default function DocumentationPage() {
                                     <p>
                                         Loading documentation...
                                     </p>
-
                                 </div>
-
                             )}
-
-
-                            {/* ERROR */}
 
                             {!loading &&
                                 error &&
                                 !error.includes(
                                     'at least 2 characters'
                                 ) && (
-
                                     <div
                                         className={
                                             styles.stateCard
                                         }
                                     >
-
                                         <div
                                             className={
                                                 styles.errorIcon
@@ -830,24 +688,17 @@ export default function DocumentationPage() {
                                         >
                                             Try Again
                                         </button>
-
                                     </div>
-
                                 )}
-
-
-                            {/* EMPTY */}
 
                             {!loading &&
                                 !error &&
                                 displayedDocuments.length === 0 && (
-
                                     <div
                                         className={
                                             styles.stateCard
                                         }
                                     >
-
                                         <div
                                             className={
                                                 styles.emptyIcon
@@ -866,13 +717,11 @@ export default function DocumentationPage() {
                                         </p>
 
                                         {user && (
-
                                             <div
                                                 className={
                                                     styles.emptyActions
                                                 }
                                             >
-
                                                 <Link
                                                     href="/documentation/create"
                                                     className={
@@ -890,47 +739,31 @@ export default function DocumentationPage() {
                                                 >
                                                     + Create HS Code
                                                 </Link>
-
                                             </div>
-
                                         )}
-
                                     </div>
-
                                 )}
-
-
-                            {/* DOCUMENT LIST */}
 
                             {!loading &&
                                 !error &&
                                 displayedDocuments.length > 0 && (
-
                                     <div
                                         className={
                                             styles.documentList
                                         }
                                     >
-
                                         {displayedDocuments.map(
                                             document => (
-
                                                 <Link
                                                     key={
                                                         document._id ||
                                                         document.id
                                                     }
-                                                    href={
-                                                        `/documentation/${
-                                                            document._id ||
-                                                            document.id
-                                                        }`
-                                                    }
+                                                    href={getDocumentationHref(document)}
                                                     className={
                                                         styles.documentCard
                                                     }
                                                 >
-
                                                     <div
                                                         className={
                                                             styles.documentIcon
@@ -939,25 +772,21 @@ export default function DocumentationPage() {
                                                         📄
                                                     </div>
 
-
                                                     <div
                                                         className={
                                                             styles.documentBody
                                                         }
                                                     >
-
                                                         <div
                                                             className={
                                                                 styles.documentTop
                                                             }
                                                         >
-
                                                             <div
                                                                 className={
                                                                     styles.badges
                                                                 }
                                                             >
-
                                                                 <span
                                                                     className={
                                                                         styles.badge
@@ -968,7 +797,6 @@ export default function DocumentationPage() {
                                                                 </span>
 
                                                                 {document.isFeatured && (
-
                                                                     <span
                                                                         className={
                                                                             styles.featuredBadge
@@ -976,11 +804,8 @@ export default function DocumentationPage() {
                                                                     >
                                                                         FEATURED
                                                                     </span>
-
                                                                 )}
-
                                                             </div>
-
 
                                                             <span
                                                                 className={
@@ -989,27 +814,22 @@ export default function DocumentationPage() {
                                                             >
                                                                 →
                                                             </span>
-
                                                         </div>
-
 
                                                         <h3>
                                                             {document.title}
                                                         </h3>
-
 
                                                         <p>
                                                             {document.description ||
                                                                 'No description available.'}
                                                         </p>
 
-
                                                         <div
                                                             className={
                                                                 styles.documentMeta
                                                             }
                                                         >
-
                                                             <span>
                                                                 {document.category ||
                                                                     'General'}
@@ -1020,22 +840,18 @@ export default function DocumentationPage() {
                                                                     0}{' '}
                                                                 views
                                                             </span>
-
                                                         </div>
-
 
                                                         {Array.isArray(
                                                             document.tags
                                                         ) &&
                                                             document.tags.length >
                                                             0 && (
-
                                                                 <div
                                                                     className={
                                                                         styles.tags
                                                                     }
                                                                 >
-
                                                                     {document.tags
                                                                         .slice(
                                                                             0,
@@ -1043,7 +859,6 @@ export default function DocumentationPage() {
                                                                         )
                                                                         .map(
                                                                             tag => (
-
                                                                                 <span
                                                                                     key={
                                                                                         tag
@@ -1052,39 +867,26 @@ export default function DocumentationPage() {
                                                                                     #
                                                                                     {tag}
                                                                                 </span>
-
                                                                             )
                                                                         )}
-
                                                                 </div>
-
                                                             )}
-
                                                     </div>
-
                                                 </Link>
-
                                             )
                                         )}
-
                                     </div>
-
                                 )}
-
-
-                            {/* PAGINATION */}
 
                             {!loading &&
                                 !error &&
                                 displayedDocuments.length > 0 &&
                                 totalPages > 1 && (
-
                                     <div
                                         className={
                                             styles.pagination
                                         }
                                     >
-
                                         <button
                                             type="button"
                                             disabled={
@@ -1120,32 +922,18 @@ export default function DocumentationPage() {
                                         >
                                             Next →
                                         </button>
-
                                     </div>
-
                                 )}
-
                         </section>
-
                     </section>
 
-
-                    {/* ==================================================
-                       SIDEBAR
-                    ================================================== */}
-
                     <aside className={styles.sidebar}>
-
-                        {/* CONTRIBUTE */}
-
                         {user && (
-
                             <div
                                 className={
                                     styles.contributeCard
                                 }
                             >
-
                                 <div
                                     className={
                                         styles.contributeIcon
@@ -1166,6 +954,13 @@ export default function DocumentationPage() {
                                 </p>
 
                                 <Link
+                                    href="/documentation/my-documents"
+                                    className={styles.sidebarButton}
+                                >
+                                    My Documents
+                                </Link>
+
+                                <Link
                                     href="/documentation/create"
                                     className={
                                         styles.sidebarButton
@@ -1182,26 +977,19 @@ export default function DocumentationPage() {
                                 >
                                     + Create HS Code
                                 </Link>
-
                             </div>
-
                         )}
-
-
-                        {/* QUICK ACCESS */}
 
                         <div
                             className={
                                 styles.sidebarCard
                             }
                         >
-
                             <div
                                 className={
                                     styles.sidebarHeader
                                 }
                             >
-
                                 <span>
                                     EXPLORE
                                 </span>
@@ -1209,16 +997,13 @@ export default function DocumentationPage() {
                                 <h3>
                                     Quick Access
                                 </h3>
-
                             </div>
-
 
                             <div
                                 className={
                                     styles.quickLinks
                                 }
                             >
-
                                 {[
                                     'All',
                                     'Customs',
@@ -1228,7 +1013,6 @@ export default function DocumentationPage() {
                                     'Shipping'
                                 ].map(
                                     category => (
-
                                         <button
                                             key={category}
                                             type="button"
@@ -1244,7 +1028,6 @@ export default function DocumentationPage() {
                                                 )
                                             }
                                         >
-
                                             <span>
                                                 {category ===
                                                     'All'
@@ -1255,12 +1038,9 @@ export default function DocumentationPage() {
                                             <span>
                                                 →
                                             </span>
-
                                         </button>
-
                                     )
                                 )}
-
 
                                 <Link
                                     href="/hs-codes"
@@ -1268,7 +1048,6 @@ export default function DocumentationPage() {
                                         styles.quickLink
                                     }
                                 >
-
                                     <span>
                                         HS Code
                                     </span>
@@ -1276,28 +1055,20 @@ export default function DocumentationPage() {
                                     <span>
                                         →
                                     </span>
-
                                 </Link>
-
                             </div>
-
                         </div>
-
-
-                        {/* RECENT */}
 
                         <div
                             className={
                                 styles.sidebarCard
                             }
                         >
-
                             <div
                                 className={
                                     styles.sidebarHeader
                                 }
                             >
-
                                 <span>
                                     RECENT
                                 </span>
@@ -1305,37 +1076,26 @@ export default function DocumentationPage() {
                                 <h3>
                                     Recent Documents
                                 </h3>
-
                             </div>
 
-
                             {recentDocuments.length > 0 ? (
-
                                 <div
                                     className={
                                         styles.recentList
                                     }
                                 >
-
                                     {recentDocuments.map(
                                         document => (
-
                                             <Link
                                                 key={
                                                     document._id ||
                                                     document.id
                                                 }
-                                                href={
-                                                    `/documentation/${
-                                                        document._id ||
-                                                        document.id
-                                                    }`
-                                                }
+                                                href={getDocumentationHref(document)}
                                                 className={
                                                     styles.recentItem
                                                 }
                                             >
-
                                                 <div
                                                     className={
                                                         styles.recentIcon
@@ -1349,7 +1109,6 @@ export default function DocumentationPage() {
                                                         styles.recentBody
                                                     }
                                                 >
-
                                                     <strong>
                                                         {document.title}
                                                     </strong>
@@ -1358,18 +1117,12 @@ export default function DocumentationPage() {
                                                         {document.category ||
                                                             'General'}
                                                     </span>
-
                                                 </div>
-
                                             </Link>
-
                                         )
                                     )}
-
                                 </div>
-
                             ) : (
-
                                 <div
                                     className={
                                         styles.sidebarEmpty
@@ -1377,26 +1130,19 @@ export default function DocumentationPage() {
                                 >
                                     No recent documents.
                                 </div>
-
                             )}
-
                         </div>
-
-
-                        {/* TOPICS */}
 
                         <div
                             className={
                                 styles.sidebarCard
                             }
                         >
-
                             <div
                                 className={
                                     styles.sidebarHeader
                                 }
                             >
-
                                 <span>
                                     TOPICS
                                 </span>
@@ -1404,16 +1150,13 @@ export default function DocumentationPage() {
                                 <h3>
                                     Documentation Areas
                                 </h3>
-
                             </div>
-
 
                             <div
                                 className={
                                     styles.topicCloud
                                 }
                             >
-
                                 {categories
                                     .filter(
                                         category =>
@@ -1422,7 +1165,6 @@ export default function DocumentationPage() {
                                     )
                                     .map(
                                         category => (
-
                                             <button
                                                 key={category}
                                                 type="button"
@@ -1440,20 +1182,13 @@ export default function DocumentationPage() {
                                             >
                                                 {category}
                                             </button>
-
                                         )
                                     )}
-
                             </div>
-
                         </div>
-
                     </aside>
-
                 </div>
-
             </div>
-
         </main>
     );
 }

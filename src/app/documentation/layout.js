@@ -1,9 +1,9 @@
 import { createMetadata } from '@/seo/metadata';
 
 export const metadata = createMetadata({
-    title: 'Trade & Logistics Documentation',
+    title: 'Import, Export & Trade Documentation',
     description:
-        'Explore practical documentation and knowledge covering customs, import, export, DGFT, GST, FEMA, HS codes, shipping and logistics.',
+        'Explore practical guides and documentation covering import, export, customs, DGFT, GST, FEMA, HS codes, shipping, freight forwarding and global trade.',
     path: '/documentation'
 });
 

@@ -6,11 +6,6 @@ const apiUrl =
     process.env.NEXT_PUBLIC_API_URL ||
     'http://localhost:5001/api/v1';
 
-
-// ======================================================
-// Fetch helper
-// ======================================================
-
 async function fetchJson(endpoint) {
     try {
         const response = await fetch(
@@ -27,74 +22,40 @@ async function fetchJson(endpoint) {
         }
 
         return await response.json();
-
     } catch {
         return null;
     }
 }
 
-
-// ======================================================
-// Sitemap
-// ======================================================
-
 export default async function sitemap() {
-
     const now = new Date();
 
-
-    // ==================================================
-    // Static pages
-    // ==================================================
-
     const staticPages = [
-
         {
             url: siteUrl,
-
             lastModified: now,
-
             changeFrequency: 'daily',
-
             priority: 1
         },
-
         {
             url: `${siteUrl}/discover`,
-
             lastModified: now,
-
             changeFrequency: 'daily',
-
             priority: 0.9
         },
-
         {
             url: `${siteUrl}/documentation`,
-
             lastModified: now,
-
             changeFrequency: 'weekly',
-
             priority: 0.8
         },
-
         {
             url: `${siteUrl}/help`,
-
             lastModified: now,
-
             changeFrequency: 'monthly',
-
             priority: 0.6
         }
-
     ];
-
-
-    // ==================================================
-    // Fetch public content
-    // ==================================================
 
     const [
         documentationData,
@@ -102,29 +63,11 @@ export default async function sitemap() {
         postsData,
         topicsData
     ] = await Promise.all([
-
-        fetchJson(
-            '/documentation?limit=100'
-        ),
-
-        fetchJson(
-            '/hs-codes?limit=100'
-        ),
-
-        fetchJson(
-            '/posts?limit=100'
-        ),
-
-        fetchJson(
-            '/topics/trending'
-        )
-
+        fetchJson('/documentation?limit=100'),
+        fetchJson('/hs-codes?limit=100'),
+        fetchJson('/posts?limit=100'),
+        fetchJson('/topics/trending')
     ]);
-
-
-    // ==================================================
-    // Documentation pages
-    // ==================================================
 
     const documentation =
         Array.isArray(
@@ -133,37 +76,38 @@ export default async function sitemap() {
             ? documentationData.documentation
             : [];
 
-
     const documentationPages =
         documentation
             .filter(
-                (document) =>
+                document =>
+                    document?.slug ||
                     document?._id
             )
             .map(
-                (document) => ({
+                document => {
+                    const identifier =
+                        document.slug ||
+                        document._id;
 
-                    url:
-                        `${siteUrl}/documentation/${document._id}`,
+                    return {
+                        url:
+                            `${siteUrl}/documentation/${encodeURIComponent(
+                                String(identifier)
+                            )}`,
 
-                    lastModified:
-                        document.updatedAt ||
-                        document.createdAt ||
-                        now,
+                        lastModified:
+                            document.updatedAt ||
+                            document.createdAt ||
+                            now,
 
-                    changeFrequency:
-                        'weekly',
+                        changeFrequency:
+                            'weekly',
 
-                    priority:
-                        0.8
-
-                })
+                        priority:
+                            0.8
+                    };
+                }
             );
-
-
-    // ==================================================
-    // HS Code pages
-    // ==================================================
 
     const hsCodes =
         Array.isArray(
@@ -172,16 +116,14 @@ export default async function sitemap() {
             ? hsCodeData.hsCodes
             : [];
 
-
     const hsCodePages =
         hsCodes
             .filter(
-                (hsCode) =>
+                hsCode =>
                     hsCode?._id
             )
             .map(
-                (hsCode) => ({
-
+                hsCode => ({
                     url:
                         `${siteUrl}/hs-codes/${hsCode._id}`,
 
@@ -195,14 +137,8 @@ export default async function sitemap() {
 
                     priority:
                         0.7
-
                 })
             );
-
-
-    // ==================================================
-    // Post pages
-    // ==================================================
 
     const posts =
         Array.isArray(
@@ -211,16 +147,14 @@ export default async function sitemap() {
             ? postsData.posts
             : [];
 
-
     const postPages =
         posts
             .filter(
-                (post) =>
+                post =>
                     post?._id
             )
             .map(
-                (post) => ({
-
+                post => ({
                     url:
                         `${siteUrl}/posts/${post._id}`,
 
@@ -234,14 +168,8 @@ export default async function sitemap() {
 
                     priority:
                         0.7
-
                 })
             );
-
-
-    // ==================================================
-    // Topic pages
-    // ==================================================
 
     const topics =
         Array.isArray(
@@ -250,18 +178,18 @@ export default async function sitemap() {
             ? topicsData.topics
             : [];
 
-
     const topicPages =
         topics
             .filter(
-                (topic) =>
+                topic =>
                     topic?.slug
             )
             .map(
-                (topic) => ({
-
+                topic => ({
                     url:
-                        `${siteUrl}/topics/${topic.slug}`,
+                        `${siteUrl}/topics/${encodeURIComponent(
+                            String(topic.slug)
+                        )}`,
 
                     lastModified:
                         now,
@@ -271,27 +199,14 @@ export default async function sitemap() {
 
                     priority:
                         0.7
-
                 })
             );
 
-
-    // ==================================================
-    // Final sitemap
-    // ==================================================
-
     return [
-
         ...staticPages,
-
         ...documentationPages,
-
         ...hsCodePages,
-
         ...postPages,
-
         ...topicPages
-
     ];
-
 }

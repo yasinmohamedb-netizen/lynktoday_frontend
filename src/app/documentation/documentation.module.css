@@ -78,7 +78,8 @@
 
 .headerButton,
 .hsCodeButton,
-.createButton {
+.createButton,
+.myDocumentsButton {
     min-height: 42px;
     display: inline-flex;
     align-items: center;
@@ -112,6 +113,18 @@
 
 .hsCodeButton:hover {
     background: #eef3f7;
+    transform: translateY(-1px);
+}
+
+.myDocumentsButton {
+    border: 1px solid #d7e0ea;
+    background: #fff;
+    color: #3b5b7a;
+}
+
+.myDocumentsButton:hover {
+    background: #eef3f7;
+    border-color: #9aafc1;
     transform: translateY(-1px);
 }
 
@@ -539,7 +552,6 @@
     color: #64748b;
     font-size: 13px;
     line-height: 1.6;
-
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -702,49 +714,37 @@
     font-size: 12px;
     font-weight: 600;
 }
-
-
 /* ======================================================
    SIDEBAR
 ====================================================== */
 
 .sidebar {
-    position: sticky;
-    top: 90px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-height: calc(100vh - 110px);
-    overflow-y: auto;
-}
-
-.sidebar::-webkit-scrollbar {
-    width: 5px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 999px;
+    position: sticky;
+    top: 20px;
 }
 
 .contributeCard {
     padding: 20px;
     border: 1px solid #d8e4f2;
     border-radius: 16px;
-    background: linear-gradient(145deg, #fff, #f0f5f9);
-    box-shadow: 0 6px 18px rgba(15, 23, 42, .045);
+    background: linear-gradient(145deg, #f4f7fa, #ffffff);
 }
 
 .contributeIcon {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
-    border-radius: 10px;
+    margin-bottom: 13px;
+    border-radius: 11px;
     background: #eaf0f5;
     color: #3b5b7a;
+    font-size: 20px;
 }
 
 .contributeCard h3 {
@@ -762,15 +762,23 @@
 
 .sidebarButton {
     width: 100%;
-    margin-top: 7px;
+    margin-top: 8px;
+    border: 1px solid #3b5b7a;
+    box-sizing: border-box;
+}
+
+.sidebarButton:first-of-type {
+    margin-top: 0;
 }
 
 .sidebarCard {
     padding: 18px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .025);
 }
 
 .sidebarHeader {
-    margin-bottom: 13px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #edf1f5;
 }
 
 .sidebarHeader h3 {
@@ -787,19 +795,20 @@
 .quickLinks {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    margin-top: 5px;
 }
 
 .quickLink,
 .quickActive {
     width: 100%;
-    min-height: 39px;
+    min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    gap: 10px;
+    padding: 0 7px;
     border: 0;
-    border-radius: 8px;
+    border-bottom: 1px solid #f0f3f6;
     background: transparent;
     color: #64748b;
     font: inherit;
@@ -812,31 +821,38 @@
 }
 
 .quickLink:hover {
-    background: #f3f6f9;
     color: #3b5b7a;
+    background: #f8fafc;
 }
 
 .quickActive {
-    background: #eef3f7;
     color: #3b5b7a;
+    background: #eef3f7;
+}
+
+.quickLink:last-child,
+.quickActive:last-child {
+    border-bottom: 0;
 }
 
 
 /* ======================================================
-   RECENT
+   RECENT DOCUMENTS
 ====================================================== */
 
 .recentList {
     display: flex;
     flex-direction: column;
+    margin-top: 6px;
 }
 
 .recentItem {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-    padding: 10px 4px;
-    border-bottom: 1px solid #f1f5f9;
+    padding: 11px 4px;
+    border-bottom: 1px solid #f0f3f6;
+    color: inherit;
     text-decoration: none;
 }
 
@@ -844,15 +860,20 @@
     border-bottom: 0;
 }
 
+.recentItem:hover {
+    background: #f8fafc;
+}
+
 .recentIcon {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
     background: #eef3f7;
+    font-size: 14px;
 }
 
 .recentBody {
@@ -863,53 +884,60 @@
 }
 
 .recentBody strong {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     color: #334155;
-    font-size: 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.recentBody span,
-.sidebarEmpty {
+.recentBody span {
     color: #94a3b8;
-    font-size: 10px;
+    font-size: 9px;
+    font-weight: 600;
 }
 
 .sidebarEmpty {
-    padding: 14px 4px;
+    padding: 18px 4px 5px;
+    color: #94a3b8;
+    font-size: 11px;
+    text-align: center;
 }
 
 
 /* ======================================================
-   TOPICS
+   TOPIC CLOUD
 ====================================================== */
 
 .topicCloud {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: 13px;
 }
 
 .topic,
 .topicActive {
-    padding: 7px 9px;
+    min-height: 30px;
+    padding: 0 10px;
     border-radius: 7px;
     font: inherit;
     font-size: 10px;
     font-weight: 600;
     cursor: pointer;
+    transition: .15s ease;
 }
 
 .topic {
-    border: 1px solid #e2e8f0;
+    border: 1px solid #dfe6ed;
     background: #fff;
     color: #64748b;
 }
 
 .topic:hover {
-    border-color: #b7c6d4;
-    background: #f8fafc;
+    border-color: #a9b9c8;
     color: #3b5b7a;
 }
 
@@ -925,6 +953,10 @@
 ====================================================== */
 
 @keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
     to {
         transform: rotate(360deg);
     }
@@ -932,93 +964,102 @@
 
 
 /* ======================================================
-   RESPONSIVE
+   TABLET
 ====================================================== */
 
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
     .layout {
-        grid-template-columns: minmax(0, 1fr) 290px;
+        grid-template-columns: minmax(0, 1fr) 280px;
         gap: 18px;
     }
 
     .header {
-        padding: 17px 20px;
+        padding: 16px 18px;
+    }
+
+    .headerActions {
+        gap: 6px;
+    }
+
+    .headerButton,
+    .hsCodeButton,
+    .createButton,
+    .myDocumentsButton {
+        padding-left: 11px;
+        padding-right: 11px;
+        font-size: 12px;
+    }
+
+    .featuredGrid {
+        grid-template-columns: 1fr;
     }
 }
 
-@media (max-width: 1000px) {
+
+/* ======================================================
+   MOBILE / TABLET
+====================================================== */
+
+@media (max-width: 800px) {
+    .page {
+        padding: 16px 12px 50px;
+    }
+
+    .header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .headerLeft {
+        width: 100%;
+    }
+
+    .headerActions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .headerButton,
+    .hsCodeButton,
+    .createButton,
+    .myDocumentsButton {
+        flex: 1 1 auto;
+    }
+
     .layout {
         grid-template-columns: 1fr;
     }
 
     .sidebar {
         position: static;
-        max-height: none;
-        overflow: visible;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .contributeCard {
-        grid-column: 1 / -1;
-    }
-}
-
-@media (max-width: 700px) {
-    .page {
-        padding: 16px 12px 45px;
-    }
-
-    .header {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 18px;
-    }
-
-    .headerLeft,
-    .headerActions {
-        width: 100%;
-    }
-
-    .headerActions {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .headerButton,
-    .hsCodeButton,
-    .createButton {
-        width: 100%;
-    }
-
-    .layout {
-        margin-top: 16px;
-        gap: 16px;
     }
 
     .searchBox {
         grid-template-columns: 1fr;
     }
 
-    .featuredGrid,
-    .sidebar {
-        grid-template-columns: 1fr;
-    }
-
-    .categorySection,
-    .sidebarCard,
-    .contributeCard {
-        padding: 17px;
-    }
-
-    .documentCard {
-        padding: 15px;
+    .searchButton {
+        width: 100%;
     }
 }
 
-@media (max-width: 480px) {
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 550px) {
+    .page {
+        padding: 10px 9px 40px;
+    }
+
+    .header {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
     .headerLeft {
-        align-items: flex-start;
         gap: 13px;
     }
 
@@ -1027,56 +1068,138 @@
     }
 
     .headerText {
-        padding-left: 12px;
+        padding-left: 13px;
     }
 
     .headerText h1 {
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .headerText p {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .headerActions {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .headerButton,
+    .hsCodeButton,
+    .createButton,
+    .myDocumentsButton {
+        width: 100%;
+        min-height: 40px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+
+    .categorySection {
+        padding: 15px;
+    }
+
+    .sectionIntro h2 {
+        font-size: 18px;
     }
 
     .sectionHeader h2 {
         font-size: 19px;
     }
 
+    .categories {
+        gap: 6px;
+    }
+
+    .categoryButton,
+    .categoryActive {
+        min-height: 33px;
+        padding: 0 10px;
+        font-size: 10px;
+    }
+
     .featuredCard {
-        padding: 17px;
+        padding: 15px;
+    }
+
+    .featuredCard h3 {
+        font-size: 16px;
+    }
+
+    .documentCard {
+        gap: 11px;
+        padding: 13px;
     }
 
     .documentIcon {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
         font-size: 17px;
     }
 
     .documentCard h3 {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .documentCard p {
-        font-size: 12px;
+        font-size: 11px;
+    }
+
+    .documentMeta {
+        gap: 9px;
+        font-size: 9px;
     }
 
     .pagination {
-        gap: 8px;
+        gap: 7px;
+    }
+
+    .pagination button {
+        padding: 0 9px;
+        font-size: 10px;
+    }
+
+    .pagination span {
+        font-size: 10px;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .featuredCard,
-    .documentCard,
+
+/* ======================================================
+   EXTRA SMALL MOBILE
+====================================================== */
+
+@media (max-width: 380px) {
+    .headerActions {
+        grid-template-columns: 1fr;
+    }
+
+    .headerButton,
+    .hsCodeButton,
     .createButton,
-    .categoryButton,
-    .quickLink,
-    .spinner {
-        transition: none;
-        animation: none;
+    .myDocumentsButton {
+        width: 100%;
+    }
+
+    .searchBox {
+        padding: 10px;
+    }
+
+    .searchInputWrap input {
+        min-height: 42px;
+        font-size: 12px;
+    }
+
+    .searchButton {
+        min-height: 42px;
+        font-size: 12px;
+    }
+
+    .documentCard {
+        padding: 11px;
+    }
+
+    .documentIcon {
+        width: 36px;
+        height: 36px;
     }
 }
