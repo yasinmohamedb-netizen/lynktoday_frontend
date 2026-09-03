@@ -9,6 +9,7 @@ export default function LeftSidebar() {
 
     const [user, setUser] = useState(null);
 
+
     /* =====================================================
        LOAD USER
     ===================================================== */
@@ -108,6 +109,7 @@ export default function LeftSidebar() {
     return (
 
         <aside className={styles.sidebar}>
+
 
             {/* =================================================
                PROFILE CARD
@@ -232,6 +234,7 @@ export default function LeftSidebar() {
                     className={styles.menu}
                     aria-label="Quick Access"
                 >
+
 
                     {/* =========================================
                        MY PROFILE
@@ -513,6 +516,178 @@ export default function LeftSidebar() {
                 </nav>
 
             </section>
+
+
+            {/* =================================================
+               FOLLOW LYNTODAY
+            ================================================= */}
+
+            <section className={styles.socialCard}>
+
+                <div className={styles.socialHeader}>
+
+                    <h4>
+                        Follow LynkToday
+                    </h4>
+
+                </div>
+
+
+                <div className={styles.socialLinks}>
+
+
+                    {/* =========================================
+                       INSTAGRAM
+                    ========================================= */}
+
+                    <a
+                        href="https://www.instagram.com/lynktoday"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.socialLink}
+                        aria-label="LynkToday on Instagram"
+                    >
+
+                        <span
+                            className={styles.socialIcon}
+                            aria-hidden="true"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                            >
+
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="18"
+                                    height="18"
+                                    rx="5"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="4"
+                                />
+
+                                <circle
+                                    cx="17.5"
+                                    cy="6.5"
+                                    r="1"
+                                    fill="currentColor"
+                                    stroke="none"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                        <span className={styles.socialLabel}>
+                            Instagram
+                        </span>
+
+                    </a>
+
+
+                    {/* =========================================
+                       FACEBOOK
+                    ========================================= */}
+
+                    <a
+                        href="https://www.facebook.com/share/19NLFCVVLM/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.socialLink}
+                        aria-label="LynkToday on Facebook"
+                    >
+
+                        <span
+                            className={styles.socialIcon}
+                            aria-hidden="true"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                            >
+
+                                <path
+                                    d="M14 8h3V4h-3a5 5 0 0 0-5 5v3H6v4h3v4h4v-4h3l1-4h-4V9a1 1 0 0 1 1-1Z"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                        <span className={styles.socialLabel}>
+                            Facebook
+                        </span>
+
+                    </a>
+
+
+                    {/* =========================================
+                       LINKEDIN
+                    ========================================= */}
+
+                    <a
+                        href="https://www.linkedin.com/company/lynktoday/?viewAsMember=true"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.socialLink}
+                        aria-label="LynkToday on LinkedIn"
+                    >
+
+                        <span
+                            className={styles.socialIcon}
+                            aria-hidden="true"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                            >
+
+                                <rect
+                                    x="4"
+                                    y="4"
+                                    width="16"
+                                    height="16"
+                                    rx="2"
+                                />
+
+                                <path d="M8 10v6" />
+
+                                <path d="M8 7.5v.01" />
+
+                                <path
+                                    d="M12 16v-3.2a2.8 2.8 0 0 1 5.6 0V16"
+                                />
+
+                                <path d="M12 10v6" />
+
+                            </svg>
+
+                        </span>
+
+                        <span className={styles.socialLabel}>
+                            LinkedIn
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
 
         </aside>
 

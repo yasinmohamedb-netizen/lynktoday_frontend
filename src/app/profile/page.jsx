@@ -477,6 +477,7 @@ export default function ProfilePage() {
 
                                 </div>
 
+
                             </div>
 
                         </section>
@@ -529,9 +530,7 @@ export default function ProfilePage() {
 
 
                         <div
-                            className={
-                                styles.infoGrid
-                            }
+                            className={`${styles.infoGrid} ${styles.socialLinksGrid}`}
                         >
 
 
@@ -585,6 +584,33 @@ export default function ProfilePage() {
                                 </a>
 
                             </div>
+
+
+                            {/* LinkedIn */}
+
+                            <div
+                                className={
+                                    styles.infoItem
+                                }
+                            >
+
+                                <span>
+                                    LinkedIn
+                                </span>
+
+                                <a
+                                    href="https://www.linkedin.com/company/lynktoday/?viewAsMember=true"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={
+                                        styles.website
+                                    }
+                                >
+                                    LynkToday
+                                </a>
+
+                            </div>
+
 
                         </div>
 
