@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 
 import styles from './page.module.css';
 
@@ -19,7 +20,20 @@ const API_BASE_URL =
 // HS CODE DETAILS PAGE
 // ======================================================
 
-export default function HSCodeDetailsPage({ params }) {
+export default function HSCodeDetailsPage() {
+
+    // ==================================================
+    // GET DYNAMIC ROUTE PARAMETER
+    // ==================================================
+
+    const params = useParams();
+
+    const code = params?.id;
+
+
+    // ==================================================
+    // STATE
+    // ==================================================
 
     const [hsCode, setHSCode] = useState(null);
 
@@ -31,7 +45,7 @@ export default function HSCodeDetailsPage({ params }) {
 
 
     // ==================================================
-    // Load HS Code
+    // LOAD HS CODE
     // ==================================================
 
     useEffect(() => {
@@ -44,22 +58,17 @@ export default function HSCodeDetailsPage({ params }) {
 
                 setError('');
 
+                setHSCode(null);
+
 
                 // ==========================================
-                // Get Route Parameter
+                // CHECK ROUTE PARAMETER
                 // ==========================================
 
-                const resolvedParams =
-                    await params;
-
-                const id =
-                    resolvedParams?.id;
-
-
-                if (!id) {
+                if (!code) {
 
                     throw new Error(
-                        'HS Code ID is missing.'
+                        'HS Code is missing from the URL.'
                     );
 
                 }
@@ -67,19 +76,24 @@ export default function HSCodeDetailsPage({ params }) {
 
                 console.log(
                     'Loading HS Code:',
-                    id
+                    code
                 );
 
 
                 // ==========================================
-                // API Request
+                // BUILD API URL
+                //
+                // Frontend:
+                // /hs-codes/08051010
                 //
                 // Backend:
-                // GET /api/v1/hs-codes/id/:id
+                // /hs-codes/code/08051010
                 // ==========================================
 
                 const apiUrl =
-                    `${API_BASE_URL}/hs-codes/id/${encodeURIComponent(id)}`;
+                    `${API_BASE_URL}/hs-codes/code/${encodeURIComponent(
+                        String(code).trim()
+                    )}`;
 
 
                 console.log(
@@ -88,6 +102,10 @@ export default function HSCodeDetailsPage({ params }) {
                 );
 
 
+                // ==========================================
+                // API REQUEST
+                // ==========================================
+
                 const response =
                     await fetch(
                         apiUrl,
@@ -95,7 +113,7 @@ export default function HSCodeDetailsPage({ params }) {
                             method: 'GET',
 
                             headers: {
-                                'Content-Type':
+                                Accept:
                                     'application/json'
                             },
 
@@ -105,7 +123,7 @@ export default function HSCodeDetailsPage({ params }) {
 
 
                 // ==========================================
-                // Check Content Type
+                // CONTENT TYPE
                 // ==========================================
 
                 const contentType =
@@ -115,7 +133,7 @@ export default function HSCodeDetailsPage({ params }) {
 
 
                 // ==========================================
-                // Handle Non-JSON Response
+                // NON JSON RESPONSE
                 // ==========================================
 
                 if (
@@ -126,6 +144,7 @@ export default function HSCodeDetailsPage({ params }) {
 
                     const text =
                         await response.text();
+
 
                     console.error(
                         'HS Code API returned non-JSON response:',
@@ -145,14 +164,14 @@ export default function HSCodeDetailsPage({ params }) {
 
 
                     throw new Error(
-                        `HS Code API returned ${response.status}. Check the API URL.`
+                        `Server returned ${response.status}. Please check the API URL.`
                     );
 
                 }
 
 
                 // ==========================================
-                // Parse JSON
+                // PARSE JSON
                 // ==========================================
 
                 const data =
@@ -166,7 +185,7 @@ export default function HSCodeDetailsPage({ params }) {
 
 
                 // ==========================================
-                // Handle API Error
+                // API ERROR
                 // ==========================================
 
                 if (
@@ -183,26 +202,41 @@ export default function HSCodeDetailsPage({ params }) {
 
 
                 // ==========================================
-                // Set HS Code
+                // GET HS CODE DATA
                 // ==========================================
 
-                setHSCode(
+                const result =
                     data.hsCode ||
                     data.data ||
-                    null
-                );
+                    null;
 
 
-            } catch (error) {
+                if (!result) {
+
+                    throw new Error(
+                        'HS Code data was not returned by the server.'
+                    );
+
+                }
+
+
+                // ==========================================
+                // SAVE DATA
+                // ==========================================
+
+                setHSCode(result);
+
+
+            } catch (err) {
 
                 console.error(
                     'HS Code details error:',
-                    error
+                    err
                 );
 
 
                 setError(
-                    error?.message ||
+                    err?.message ||
                     'Unable to load HS Code.'
                 );
 
@@ -218,12 +252,13 @@ export default function HSCodeDetailsPage({ params }) {
 
         loadHSCode();
 
-    }, [params]);
+
+    }, [code]);
 
 
-    // ==================================================
-    // Loading
-    // ==================================================
+    // ======================================================
+    // LOADING STATE
+    // ======================================================
 
     if (loading) {
 
@@ -252,9 +287,9 @@ export default function HSCodeDetailsPage({ params }) {
     }
 
 
-    // ==================================================
-    // Error / Not Found
-    // ==================================================
+    // ======================================================
+    // ERROR STATE
+    // ======================================================
 
     if (
         error ||
@@ -300,17 +335,21 @@ export default function HSCodeDetailsPage({ params }) {
                                 styles.backButton
                             }
                         >
+
                             ← Back to Home
+
                         </Link>
 
 
                         <Link
-                            href="/search"
+                            href="/hs-codes"
                             className={
                                 styles.backButton
                             }
                         >
-                            Search Again
+
+                            Search HS Codes
+
                         </Link>
 
                     </div>
@@ -324,9 +363,9 @@ export default function HSCodeDetailsPage({ params }) {
     }
 
 
-    // ==================================================
-    // Details Page
-    // ==================================================
+    // ======================================================
+    // MAIN DETAILS PAGE
+    // ======================================================
 
     return (
 
@@ -336,9 +375,9 @@ export default function HSCodeDetailsPage({ params }) {
             }
         >
 
-            {/* ==========================================
-                Header
-            ========================================== */}
+            {/* ==================================================
+                HEADER
+            ================================================== */}
 
             <div
                 className={
@@ -347,22 +386,22 @@ export default function HSCodeDetailsPage({ params }) {
             >
 
                 <Link
-                    href="/"
+                    href="/hs-codes"
                     className={
                         styles.backButton
                     }
                 >
 
-                    ← Back to Home
+                    ← Back to HS Codes
 
                 </Link>
 
             </div>
 
 
-            {/* ==========================================
-                Main Card
-            ========================================== */}
+            {/* ==================================================
+                MAIN CARD
+            ================================================== */}
 
             <section
                 className={
@@ -370,9 +409,10 @@ export default function HSCodeDetailsPage({ params }) {
                 }
             >
 
-                {/* ======================================
+
+                {/* ==================================================
                     HS CODE HEADER
-                ====================================== */}
+                ================================================== */}
 
                 <div
                     className={
@@ -419,9 +459,9 @@ export default function HSCodeDetailsPage({ params }) {
                     </div>
 
 
-                    {/* ==================================
-                        Active Status
-                    ================================== */}
+                    {/* ==================================================
+                        ACTIVE STATUS
+                    ================================================== */}
 
                     <span
                         className={
@@ -442,9 +482,9 @@ export default function HSCodeDetailsPage({ params }) {
                 </div>
 
 
-                {/* ======================================
+                {/* ==================================================
                     CLASSIFICATION
-                ====================================== */}
+                ================================================== */}
 
                 <div
                     className={
@@ -515,9 +555,9 @@ export default function HSCodeDetailsPage({ params }) {
                 </div>
 
 
-                {/* ======================================
+                {/* ==================================================
                     TARIFF INFORMATION
-                ====================================== */}
+                ================================================== */}
 
                 <div
                     className={
@@ -572,9 +612,9 @@ export default function HSCodeDetailsPage({ params }) {
                 </div>
 
 
-                {/* ======================================
+                {/* ==================================================
                     TRADE INFORMATION
-                ====================================== */}
+                ================================================== */}
 
                 <div
                     className={
@@ -621,9 +661,9 @@ export default function HSCodeDetailsPage({ params }) {
                 </div>
 
 
-                {/* ======================================
+                {/* ==================================================
                     KEYWORDS
-                ====================================== */}
+                ================================================== */}
 
                 {
                     Array.isArray(
@@ -682,9 +722,9 @@ export default function HSCodeDetailsPage({ params }) {
                 }
 
 
-                {/* ======================================
+                {/* ==================================================
                     NOTES
-                ====================================== */}
+                ================================================== */}
 
                 {
                     hsCode.notes && (
@@ -718,9 +758,9 @@ export default function HSCodeDetailsPage({ params }) {
                 }
 
 
-                {/* ======================================
-                    META INFORMATION
-                ====================================== */}
+                {/* ==================================================
+                    ADDITIONAL INFORMATION
+                ================================================== */}
 
                 <div
                     className={
@@ -828,9 +868,7 @@ function Info({
 // FORMAT DATE
 // ======================================================
 
-function formatDate(
-    date
-) {
+function formatDate(date) {
 
     if (!date) {
 

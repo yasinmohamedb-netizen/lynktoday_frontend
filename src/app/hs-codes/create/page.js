@@ -149,6 +149,10 @@ export default function CreateHSCodePage() {
         try {
             setLoading(true);
 
+            // ==================================================
+            // KEYWORDS
+            // ==================================================
+
             const keywords =
                 form.keywords
                     .split(',')
@@ -156,6 +160,10 @@ export default function CreateHSCodePage() {
                         keyword.trim()
                     )
                     .filter(Boolean);
+
+            // ==================================================
+            // PAYLOAD
+            // ==================================================
 
             const payload = {
                 hsCode:
@@ -217,8 +225,18 @@ export default function CreateHSCodePage() {
                 notes:
                     form.notes.trim(),
 
+                /*
+                --------------------------------------------------
+                NEW HS CODES ARE PUBLIC/ACTIVE
+                --------------------------------------------------
+                */
+
                 isActive: true
             };
+
+            // ==================================================
+            // CREATE HS CODE
+            // ==================================================
 
             const response =
                 await fetch(
@@ -239,6 +257,10 @@ export default function CreateHSCodePage() {
                         )
                     }
                 );
+
+            // ==================================================
+            // RESPONSE TYPE
+            // ==================================================
 
             const contentType =
                 response.headers.get(
@@ -268,52 +290,91 @@ export default function CreateHSCodePage() {
                 );
             }
 
-            if (!response.ok || !data?.success) {
+            // ==================================================
+            // API ERROR
+            // ==================================================
+
+            if (
+                !response.ok ||
+                !data?.success
+            ) {
                 throw new Error(
                     data?.message ||
                     'Unable to create HS Code.'
                 );
             }
 
+            // ==================================================
+            // SUCCESS
+            // ==================================================
+
             setSuccess(
                 'HS Code created successfully.'
             );
 
             const createdHSCode =
-                data.hsCode;
+                data?.hsCode;
 
-            if (
-                createdHSCode?._id
-            ) {
+            /*
+            ====================================================
+            IMPORTANT:
+            
+            Redirect using the ACTUAL HS CODE,
+            not MongoDB _id.
+
+            Example:
+
+            /hs-codes/08051010
+
+            NOT:
+
+            /hs-codes/6a9e5c9483a2d3d2d7c7a311
+            ====================================================
+            */
+
+            const createdCode =
+                createdHSCode?.hsCode?.trim();
+
+            if (createdCode) {
                 setTimeout(() => {
                     router.push(
-                        `/hs-codes/${createdHSCode._id}`
+                        `/hs-codes/${encodeURIComponent(
+                            createdCode
+                        )}`
                     );
                 }, 700);
 
                 return;
             }
 
-            setForm(
-                INITIAL_FORM
-            );
+            // ==================================================
+            // FALLBACK
+            // ==================================================
+
+            setForm({
+                ...INITIAL_FORM
+            });
+
         } catch (submitError) {
             console.error(
                 'Create HS Code error:',
                 submitError
             );
 
+            const message =
+                submitError?.message || '';
+
             if (
-                submitError?.message
-                    ?.toLowerCase()
-                    ?.includes('401')
+                message
+                    .toLowerCase()
+                    .includes('401')
             ) {
                 setError(
                     'Your session has expired. Please log in again.'
                 );
             } else {
                 setError(
-                    submitError?.message ||
+                    message ||
                     'Unable to create HS Code.'
                 );
             }
@@ -421,6 +482,7 @@ export default function CreateHSCodePage() {
                 styles.container
             }
         >
+
             {/* ==========================================
                 HEADER
             ========================================== */}
@@ -431,6 +493,7 @@ export default function CreateHSCodePage() {
                 }
             >
                 <div>
+
                     <Link
                         href="/documentation"
                         className={
@@ -464,8 +527,10 @@ export default function CreateHSCodePage() {
                             LynkToday community.
                         </p>
                     </div>
+
                 </div>
             </div>
+
 
             {/* ==========================================
                 FORM
@@ -479,6 +544,7 @@ export default function CreateHSCodePage() {
                     styles.form
                 }
             >
+
                 {/* ======================================
                     BASIC INFORMATION
                 ====================================== */}
@@ -488,12 +554,14 @@ export default function CreateHSCodePage() {
                         styles.section
                     }
                 >
+
                     <div
                         className={
                             styles.sectionHeader
                         }
                     >
                         <div>
+
                             <span
                                 className={
                                     styles.sectionNumber
@@ -503,6 +571,7 @@ export default function CreateHSCodePage() {
                             </span>
 
                             <div>
+
                                 <h2>
                                     Basic Information
                                 </h2>
@@ -512,20 +581,27 @@ export default function CreateHSCodePage() {
                                     Code and its
                                     description.
                                 </p>
+
                             </div>
+
                         </div>
                     </div>
+
 
                     <div
                         className={
                             styles.grid
                         }
                     >
+
+                        {/* HS CODE */}
+
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="hsCode">
                                 HS Code
                                 <span>
@@ -551,13 +627,18 @@ export default function CreateHSCodePage() {
                                 Enter the complete
                                 HS Code.
                             </small>
+
                         </div>
+
+
+                        {/* COUNTRY */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="country">
                                 Country
                             </label>
@@ -574,11 +655,16 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="India"
                             />
+
                         </div>
+
+
+                        {/* DESCRIPTION */}
 
                         <div
                             className={`${styles.field} ${styles.fullWidth}`}
                         >
+
                             <label htmlFor="description">
                                 Description
                                 <span>
@@ -599,9 +685,13 @@ export default function CreateHSCodePage() {
                                 rows={4}
                                 required
                             />
+
                         </div>
+
                     </div>
+
                 </section>
+
 
                 {/* ======================================
                     CLASSIFICATION
@@ -612,12 +702,14 @@ export default function CreateHSCodePage() {
                         styles.section
                     }
                 >
+
                     <div
                         className={
                             styles.sectionHeader
                         }
                     >
                         <div>
+
                             <span
                                 className={
                                     styles.sectionNumber
@@ -627,6 +719,7 @@ export default function CreateHSCodePage() {
                             </span>
 
                             <div>
+
                                 <h2>
                                     Classification
                                 </h2>
@@ -636,20 +729,27 @@ export default function CreateHSCodePage() {
                                     chapter and
                                     heading details.
                                 </p>
+
                             </div>
+
                         </div>
                     </div>
+
 
                     <div
                         className={
                             styles.grid
                         }
                     >
+
+                        {/* SECTION */}
+
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="section">
                                 Section
                             </label>
@@ -666,13 +766,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="Textiles and Textile Articles"
                             />
+
                         </div>
+
+
+                        {/* SECTION NUMBER */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="sectionNumber">
                                 Section Number
                             </label>
@@ -690,13 +795,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="11"
                             />
+
                         </div>
+
+
+                        {/* CHAPTER */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="chapter">
                                 Chapter
                             </label>
@@ -713,13 +823,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="Articles of apparel and clothing accessories"
                             />
+
                         </div>
+
+
+                        {/* CHAPTER NUMBER */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="chapterNumber">
                                 Chapter Number
                             </label>
@@ -737,13 +852,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="62"
                             />
+
                         </div>
+
+
+                        {/* HEADING */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="heading">
                                 Heading
                             </label>
@@ -760,13 +880,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="6203"
                             />
+
                         </div>
+
+
+                        {/* SUB HEADING */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="subHeading">
                                 Sub Heading
                             </label>
@@ -783,9 +908,13 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="620342"
                             />
+
                         </div>
+
                     </div>
+
                 </section>
+
 
                 {/* ======================================
                     TARIFF INFORMATION
@@ -796,12 +925,14 @@ export default function CreateHSCodePage() {
                         styles.section
                     }
                 >
+
                     <div
                         className={
                             styles.sectionHeader
                         }
                     >
                         <div>
+
                             <span
                                 className={
                                     styles.sectionNumber
@@ -811,6 +942,7 @@ export default function CreateHSCodePage() {
                             </span>
 
                             <div>
+
                                 <h2>
                                     Tariff Information
                                 </h2>
@@ -819,20 +951,27 @@ export default function CreateHSCodePage() {
                                     Add duty and tax
                                     information.
                                 </p>
+
                             </div>
+
                         </div>
                     </div>
+
 
                     <div
                         className={
                             styles.grid
                         }
                     >
+
+                        {/* UNIT */}
+
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="unit">
                                 Unit
                             </label>
@@ -849,13 +988,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="KG"
                             />
+
                         </div>
+
+
+                        {/* BASIC DUTY */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="basicDuty">
                                 Basic Duty
                             </label>
@@ -872,13 +1016,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="10%"
                             />
+
                         </div>
+
+
+                        {/* IGST */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="igst">
                                 IGST
                             </label>
@@ -895,13 +1044,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="5%"
                             />
+
                         </div>
+
+
+                        {/* CESS */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="cess">
                                 Cess
                             </label>
@@ -918,9 +1072,13 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="0%"
                             />
+
                         </div>
+
                     </div>
+
                 </section>
+
 
                 {/* ======================================
                     TRADE INFORMATION
@@ -931,12 +1089,14 @@ export default function CreateHSCodePage() {
                         styles.section
                     }
                 >
+
                     <div
                         className={
                             styles.sectionHeader
                         }
                     >
                         <div>
+
                             <span
                                 className={
                                     styles.sectionNumber
@@ -946,6 +1106,7 @@ export default function CreateHSCodePage() {
                             </span>
 
                             <div>
+
                                 <h2>
                                     Trade Information
                                 </h2>
@@ -955,20 +1116,27 @@ export default function CreateHSCodePage() {
                                     export policy
                                     information.
                                 </p>
+
                             </div>
+
                         </div>
                     </div>
+
 
                     <div
                         className={
                             styles.grid
                         }
                     >
+
+                        {/* IMPORT POLICY */}
+
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="importPolicy">
                                 Import Policy
                             </label>
@@ -985,13 +1153,18 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="Free"
                             />
+
                         </div>
+
+
+                        {/* EXPORT POLICY */}
 
                         <div
                             className={
                                 styles.field
                             }
                         >
+
                             <label htmlFor="exportPolicy">
                                 Export Policy
                             </label>
@@ -1008,9 +1181,13 @@ export default function CreateHSCodePage() {
                                 }
                                 placeholder="Free"
                             />
+
                         </div>
+
                     </div>
+
                 </section>
+
 
                 {/* ======================================
                     ADDITIONAL INFORMATION
@@ -1021,12 +1198,14 @@ export default function CreateHSCodePage() {
                         styles.section
                     }
                 >
+
                     <div
                         className={
                             styles.sectionHeader
                         }
                     >
                         <div>
+
                             <span
                                 className={
                                     styles.sectionNumber
@@ -1036,6 +1215,7 @@ export default function CreateHSCodePage() {
                             </span>
 
                             <div>
+
                                 <h2>
                                     Additional Information
                                 </h2>
@@ -1046,18 +1226,25 @@ export default function CreateHSCodePage() {
                                     community find
                                     this HS Code.
                                 </p>
+
                             </div>
+
                         </div>
                     </div>
+
 
                     <div
                         className={
                             styles.grid
                         }
                     >
+
+                        {/* KEYWORDS */}
+
                         <div
                             className={`${styles.field} ${styles.fullWidth}`}
                         >
+
                             <label htmlFor="keywords">
                                 Keywords
                             </label>
@@ -1079,11 +1266,16 @@ export default function CreateHSCodePage() {
                                 Separate multiple
                                 keywords with commas.
                             </small>
+
                         </div>
+
+
+                        {/* NOTES */}
 
                         <div
                             className={`${styles.field} ${styles.fullWidth}`}
                         >
+
                             <label htmlFor="notes">
                                 Notes
                             </label>
@@ -1100,9 +1292,13 @@ export default function CreateHSCodePage() {
                                 placeholder="Additional information about this HS Code..."
                                 rows={5}
                             />
+
                         </div>
+
                     </div>
+
                 </section>
+
 
                 {/* ======================================
                     STATUS
@@ -1124,6 +1320,7 @@ export default function CreateHSCodePage() {
                     </div>
                 )}
 
+
                 {success && (
                     <div
                         className={
@@ -1134,6 +1331,7 @@ export default function CreateHSCodePage() {
                     </div>
                 )}
 
+
                 {/* ======================================
                     ACTIONS
                 ====================================== */}
@@ -1143,6 +1341,7 @@ export default function CreateHSCodePage() {
                         styles.actions
                     }
                 >
+
                     <Link
                         href="/documentation"
                         className={
@@ -1151,6 +1350,7 @@ export default function CreateHSCodePage() {
                     >
                         Cancel
                     </Link>
+
 
                     <button
                         type="submit"
@@ -1163,7 +1363,9 @@ export default function CreateHSCodePage() {
                             ? 'Creating HS Code...'
                             : 'Create HS Code'}
                     </button>
+
                 </div>
+
 
                 <p
                     className={
@@ -1175,7 +1377,9 @@ export default function CreateHSCodePage() {
                     submitting. Duplicate HS Codes
                     cannot be created.
                 </p>
+
             </form>
+
         </main>
     );
 }
