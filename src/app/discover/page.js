@@ -18,6 +18,7 @@ export default function Discover() {
     const [accountType, setAccountType] = useState('');
     const [profession, setProfession] = useState('');
     const [location, setLocation] = useState('');
+    const [showAllIndustries, setShowAllIndustries] = useState(false);
 
     useEffect(() => {
         try {
@@ -36,6 +37,7 @@ export default function Discover() {
             if (search.trim()) params.append('q', search.trim());
             if (accountType) params.append('accountType', accountType);
             if (profession) params.append('profession', profession);
+            if (location) params.append('location', location);
             params.append('page', '1');
             params.append('limit', '30');
 
@@ -55,14 +57,7 @@ export default function Discover() {
                 );
             }
 
-            if (location) {
-                const locationQuery = location.toLowerCase();
-                fetchedUsers = fetchedUsers.filter((user) =>
-                    String(user.location || '').toLowerCase().includes(locationQuery)
-                );
-            }
-
-            setUsers(fetchedUsers);
+             setUsers(fetchedUsers);
         } catch (err) {
             console.error('Discover users error:', err);
             setUsers([]);
@@ -139,7 +134,7 @@ export default function Discover() {
 
                 <div className={styles.filterSection}>
                     <h3>Industry</h3>
-                    {professions.slice(0, 7).map((item) => (
+                    {professions.slice(0, showAllIndustries ? professions.length : 7).map((item) => (
                         <label key={item} className={styles.checkRow}>
                             <input
                                 type="checkbox"
@@ -149,10 +144,9 @@ export default function Discover() {
                             <span>{item}</span>
                         </label>
                     ))}
-                    <select className={styles.moreSelect} value={profession} onChange={(e) => setProfession(e.target.value)}>
-                        <option value="">More industries</option>
-                        {professions.map((item) => <option key={item} value={item}>{item}</option>)}
-                    </select>
+                    <button type="button" className={styles.moreIndustriesButton} onClick={() => setShowAllIndustries((value) => !value)}>
+                        {showAllIndustries ? 'Show fewer industries' : 'More industries'}
+                    </button>
                 </div>
 
                 <div className={styles.filterSection}>
