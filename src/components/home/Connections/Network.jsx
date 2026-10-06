@@ -6,7 +6,6 @@ import api from '@/utils/api';
 
 import UserCard from './UserCard';
 import styles from './Connections.module.css';
-import styles from './Connections.module.css';
 
 
 export default function Network() {
