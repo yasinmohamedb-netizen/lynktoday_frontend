@@ -20,6 +20,10 @@ const POST_TYPES = [
         label: 'Question'
     },
     {
+        value: 'TRADE_REQUEST',
+        label: 'Trade Requirement'
+    },
+    {
         value: 'NEWS',
         label: 'News'
     },
