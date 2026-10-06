@@ -1386,7 +1386,7 @@ export default function Signup() {
                                         onClick={() => handleAccountTypeChange('individual')}
                                         disabled={loading}
                                     >
-                                        <span className={'choice'Icon}>P</span>
+                                        <span className="choiceIcon">P</span>
                                         <span>
                                             <strong>I’m a Professional</strong>
                                             <small>Build your network, career and trade connections.</small>
@@ -1399,7 +1399,7 @@ export default function Signup() {
                                         onClick={() => handleAccountTypeChange('company')}
                                         disabled={loading}
                                     >
-                                        <span className={'choice'Icon}>B</span>
+                                        <span className="choiceIcon">B</span>
                                         <span>
                                             <strong>I’m a Business</strong>
                                             <small>Find customers, partners and logistics opportunities.</small>
@@ -1564,57 +1564,6 @@ export default function Signup() {
                                 </div>
                             </>
                         )}
-
-                        {/* LOGIN */}
-
-                        <label
-                            className={
-                                styles.terms
-                            }
-                        >
-
-                            <input
-                                type="checkbox"
-                                name="agreeToTerms"
-                                checked={
-                                    formData.agreeToTerms
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                disabled={
-                                    loading
-                                }
-                            />
-
-                            <span>
-                                I agree to the Terms &
-                                Privacy Policy.
-                            </span>
-
-                        </label>
-
-                        {/* SUBMIT */}
-
-                        <button
-                            type="submit"
-                            className={
-                                styles.submitBtn
-                            }
-                            disabled={
-                                loading
-                            }
-                            style={{
-                                background:
-                                    PRIMARY_COLOR
-                            }}
-                        >
-
-                            {loading
-                                ? 'Creating account...'
-                                : 'Create Account'}
-
-                        </button>
 
                     </form>
 
