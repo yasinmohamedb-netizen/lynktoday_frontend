@@ -421,3 +421,6 @@
       transition: none;
   }
 }
+
+.tradeHero{display:flex;align-items:stretch;justify-content:space-between;gap:18px;padding:22px;margin-bottom:2px;border-radius:12px;background:linear-gradient(135deg,#2F4A63 0%,#3B5B7A 100%);color:#fff;overflow:hidden}.tradeHeroCopy{min-width:0}.tradeHeroEyebrow{font-size:10px;font-weight:800;letter-spacing:.11em;opacity:.75}.tradeHero h1{margin:5px 0 6px;font-size:25px;letter-spacing:-.02em}.tradeHero p{max-width:650px;margin:0;color:rgba(255,255,255,.84);font-size:13px;line-height:1.55}.tradeHeroTags{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}.tradeHeroTags span{padding:5px 9px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.09);color:#fff;font-size:10px;font-weight:600}.tradeHeroAction{flex:0 0 205px;align-self:center;display:flex;flex-direction:column;gap:5px;padding:14px;border-radius:9px;background:#fff;color:#172033;text-decoration:none}.tradeHeroAction strong{font-size:12px}.tradeHeroAction span{color:#64748b;font-size:10px}.tradeHeroAction:hover{transform:translateY(-1px)}
+@media (max-width:700px){.tradeHero{flex-direction:column;padding:18px}.tradeHeroAction{flex-basis:auto;width:100%}.tradeHero h1{font-size:22px}}

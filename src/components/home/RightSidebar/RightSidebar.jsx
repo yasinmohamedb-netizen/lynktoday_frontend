@@ -129,9 +129,9 @@ export default function RightSidebar() {
         FALLBACK_TOPICS
     );
 
-    const [news, setNews] = useState(
-        FALLBACK_NEWS
-    );
+    const [news, setNews] = useState(FALLBACK_NEWS);
+
+    const [tradeOpportunities, setTradeOpportunities] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
@@ -185,13 +185,32 @@ export default function RightSidebar() {
                     setTopics(FALLBACK_TOPICS);
                 }
 
-                if (
-                    Array.isArray(data.industryNews) &&
-                    data.industryNews.length > 0
-                ) {
+                if (Array.isArray(data.industryNews)) {
                     setNews(data.industryNews);
                 } else {
                     setNews([]);
+                }
+
+                try {
+                    const tradeResponse = await fetch(
+                        `${API_BASE_URL}/posts?postType=TRADE_REQUEST&page=1&limit=5`,
+                        {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                            cache: 'no-store'
+                        }
+                    );
+
+                    const tradeData = await tradeResponse.json();
+
+                    if (tradeResponse.ok && tradeData?.success && Array.isArray(tradeData.posts)) {
+                        setTradeOpportunities(tradeData.posts.slice(0, 5));
+                    } else {
+                        setTradeOpportunities([]);
+                    }
+                } catch (tradeError) {
+                    console.error('Failed to load trade opportunities:', tradeError);
+                    setTradeOpportunities([]);
                 }
             } catch (error) {
                 console.error(
@@ -269,87 +288,78 @@ export default function RightSidebar() {
         <aside className={styles.sidebar}>
 
             {/* ==================================================
-                TRENDING TOPICS
+                TRADE OPPORTUNITIES
             ================================================== */}
 
             <section className={styles.card}>
 
                 <div className={styles.cardHeader}>
+                    <h3>Trade Opportunities</h3>
 
-                    <h3>
-                        🔥 Trending Topics
-                    </h3>
-
+                    <Link
+                        href="/trade-requirements"
+                        className={styles.viewAll}
+                    >
+                        View all →
+                    </Link>
                 </div>
 
-                <div className={styles.topicList}>
+                <div className={styles.opportunityList}>
+                    {tradeOpportunities.slice(0, 5).map((post, index) => {
+                        const category =
+                            post.category === 'Export'
+                                ? 'Export'
+                                : post.category === 'Import'
+                                    ? 'Import'
+                                    : post.category === 'Customs'
+                                        ? 'Customs'
+                                        : 'Logistics';
 
-                    {topics
-                        .slice(0, 8)
-                        .map((topic, index) => {
+                        const title =
+                            post.title ||
+                            post.content ||
+                            'Trade requirement';
 
-                            const slug =
-                                topic.slug ||
-                                createSlug(
-                                    topic.name
-                                );
+                        const location =
+                            post.author?.location ||
+                            post.location ||
+                            '';
 
-                            const score =
-                                Number(
-                                    topic.score
-                                ) || 0;
+                        return (
+                            <Link
+                                key={post._id || index}
+                                href={`/posts/${post._id}`}
+                                className={styles.opportunityItem}
+                            >
+                                <span className={styles.opportunityBadge}>
+                                    {category}
+                                </span>
 
-                            return (
-                                <Link
-                                    key={
-                                        topic._id ||
-                                        topic.slug ||
-                                        topic.name ||
-                                        index
-                                    }
-                                    href={`/topics/${slug}`}
-                                    className={
-                                        styles.topicItem
-                                    }
-                                    onClick={(event) =>
-                                        handleTopicClick(
-                                            event,
-                                            slug
-                                        )
-                                    }
-                                >
+                                <span className={styles.opportunityContent}>
+                                    <strong>{title}</strong>
+                                    <small>
+                                        {location
+                                            ? `${location} · ${formatTime(post.createdAt)}`
+                                            : formatTime(post.createdAt)}
+                                    </small>
+                                </span>
 
-                                    <div
-                                        className={
-                                            styles.topicContent
-                                        }
-                                    >
+                                <span className={styles.opportunityArrow}>›</span>
+                            </Link>
+                        );
+                    })}
 
-                                        <strong>
-                                            #{topic.name}
-                                        </strong>
+                    {!loading && tradeOpportunities.length === 0 && (
+                        <div className={styles.emptyNews}>
+                            <p>No trade requirements yet.</p>
+                        </div>
+                    )}
 
-                                        <span>
-                                            {score}{' '}
-                                            {score === 1
-                                                ? 'mention'
-                                                : 'mentions'}
-                                        </span>
-
-                                    </div>
-
-                                    <div
-                                        className={
-                                            styles.rank
-                                        }
-                                    >
-                                        #{index + 1}
-                                    </div>
-
-                                </Link>
-                            );
-                        })}
-
+                    {loading && (
+                        <div className={styles.emptyNews}>
+                            <p>Finding opportunities...</p>
+                        </div>
+                    )}
                 </div>
 
             </section>

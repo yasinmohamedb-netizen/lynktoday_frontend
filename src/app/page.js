@@ -359,6 +359,37 @@ export default function HomePage() {
 
 
                     {/* ==================================================
+                        TRADE NETWORK HERO
+                    ================================================== */}
+
+                    {user && (
+                        <section className={styles.tradeHero}>
+                            <div className={styles.tradeHeroCopy}>
+                                <span className={styles.tradeHeroEyebrow}>
+                                    BUILD YOUR TRADE NETWORK
+                                </span>
+                                <h1>Connect. Trade. Grow.</h1>
+                                <p>
+                                    Find importers, exporters and logistics partners,
+                                    or publish a requirement and find the right support.
+                                </p>
+                                <div className={styles.tradeHeroTags}>
+                                    <span>Importers</span>
+                                    <span>Exporters</span>
+                                    <span>Customs Brokers</span>
+                                    <span>Freight Forwarders</span>
+                                    <span>Transporters</span>
+                                </div>
+                            </div>
+                            <a href="/trade-requirements" className={styles.tradeHeroAction}>
+                                <strong>Find Trade Opportunities</strong>
+                                <span>See current requirements →</span>
+                            </a>
+                        </section>
+                    )}
+
+
+                    {/* ==================================================
                         CREATE POST
                     ================================================== */}
 

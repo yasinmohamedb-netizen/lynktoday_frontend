@@ -1,0 +1,261 @@
+.container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 300px;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left,
+.right {
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+  align-self: start;
+}
+
+.center {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header,
+.infoCard,
+.stateCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.header {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.eyebrow {
+  color: #3B5B7A;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.header h1 {
+  margin: 6px 0 6px;
+  color: #172033;
+  font-size: 26px;
+  letter-spacing: -.02em;
+}
+
+.header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.postButton,
+.infoCard a,
+.stateCard a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 15px;
+  border-radius: 8px;
+  background: #3B5B7A;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.postButton:hover,
+.infoCard a:hover,
+.stateCard a:hover {
+  background: #2F4A63;
+}
+
+.infoCard {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #f8fafc;
+}
+
+.infoCard div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.infoCard strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+.infoCard span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.infoCard a {
+  background: transparent;
+  color: #3B5B7A;
+  border: 1px solid #d7dee8;
+}
+
+.infoCard a:hover {
+  background: #fff;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filters button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d7dee8;
+  border-radius: 7px;
+  background: #fff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filters button:hover,
+.activeFilter {
+  border-color: #3B5B7A !important;
+  color: #3B5B7A !important;
+  background: #f8fafc !important;
+}
+
+.resultsHeader {
+  display: flex;
+  gap: 5px;
+  padding: 0 2px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.resultsHeader strong {
+  color: #172033;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.requirementCard {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.requestBadge {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #eff6ff;
+  color: #3B5B7A;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+
+.stateCard {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.stateCard h3 {
+  margin: 0 0 7px;
+  color: #172033;
+  font-size: 17px;
+}
+
+.stateCard p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.stateCard button {
+  margin-top: 16px;
+  min-height: 38px;
+  padding: 0 15px;
+  border: none;
+  border-radius: 7px;
+  background: #3B5B7A;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.emptyIcon {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #f1f5f9;
+  color: #3B5B7A;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.stateCard a {
+  margin-top: 16px;
+}
+
+.loader {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 12px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3B5B7A;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1250px) {
+  .container { grid-template-columns: 240px minmax(0, 1fr); max-width: 1100px; }
+  .right { display: none; }
+}
+
+@media (max-width: 900px) {
+  .container { grid-template-columns: 1fr; padding: 15px; }
+  .left { display: none; }
+  .header { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 600px) {
+  .container { padding: 12px; }
+  .header { padding: 18px; }
+  .header h1 { font-size: 21px; }
+  .infoCard { align-items: flex-start; flex-direction: column; }
+  .infoCard a { width: 100%; }
+}

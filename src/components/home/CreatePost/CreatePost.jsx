@@ -20,6 +20,10 @@ const POST_TYPES = [
         label: 'Question'
     },
     {
+        value: 'TRADE_REQUEST',
+        label: 'Trade Requirement'
+    },
+    {
         value: 'NEWS',
         label: 'News'
     },
@@ -317,8 +321,7 @@ export default function CreatePost({
                             styles.subheading
                         }
                     >
-                        Share knowledge with the
-                        freight forwarding community.
+                        Share knowledge or publish an import/export requirement.
                     </p>
 
                 </div>

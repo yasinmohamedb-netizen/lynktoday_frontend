@@ -473,6 +473,35 @@ export default function LeftSidebar() {
 
 
                     {/* =========================================
+                       TRADE REQUIREMENTS
+                    ========================================= */}
+
+                    <Link
+                        href="/trade-requirements"
+                        className={styles.menuItem}
+                    >
+                        <span
+                            className={styles.menuIcon}
+                            aria-hidden="true"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                            >
+                                <path d="M4 7h16M4 12h16M4 17h10" />
+                                <path d="m17 15 3 3-3 3" />
+                            </svg>
+                        </span>
+
+                        <span className={styles.menuLabel}>
+                            Trade Requirements
+                        </span>
+                    </Link>
+
+
+                    {/* =========================================
                        SETTINGS
                     ========================================= */}
 
