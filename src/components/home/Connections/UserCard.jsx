@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import ConnectionButton
     from './ConnectionButton';
+import styles from './Connections.module.css';
 
 
 export default function UserCard({
@@ -73,7 +74,7 @@ export default function UserCard({
                     href={`/profile/${user._id}`}
                 >
 
-                    <strong>
+                    <strong className={styles.name}>
 
                         {user.fullName}
 
