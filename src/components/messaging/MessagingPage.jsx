@@ -929,6 +929,62 @@ export default function MessagingPage() {
 
             />
 
+            {selectedConversation && (() => {
+                const participant = selectedConversation.participants?.find(
+                    user => String(user?._id) !== String(currentUser?._id)
+                );
+
+                if (!participant) return null;
+
+                const profileImage = participant.profileImage
+                    ? (participant.profileImage.startsWith('http')
+                        ? participant.profileImage
+                        : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api/v1').replace('/api/v1', '')}${participant.profileImage}`)
+                    : '';
+
+                return (
+                    <aside className={styles.contactPanel}>
+                        <div className={styles.contactHeader}>Contact Info</div>
+                        <div className={styles.contactProfile}>
+                            {profileImage ? (
+                                <img src={profileImage} alt={participant.fullName || 'Contact'} />
+                            ) : (
+                                <div className={styles.contactAvatar}>
+                                    {participant.fullName?.charAt(0)?.toUpperCase() || 'U'}
+                                </div>
+                            )}
+                            <h3>{participant.fullName || 'LynkToday Member'}</h3>
+                            <span className={styles.onlineStatus}>● Online</span>
+                            <p>{participant.designation || participant.profession || 'Trade & Logistics Professional'}</p>
+                            {participant.companyName && <p>{participant.companyName}</p>}
+                            {participant.location && <p>⌖ {participant.location}</p>}
+                        </div>
+
+                        <div className={styles.contactActions}>
+                            <a href={`/profile/${participant._id}`} className={styles.profileButton}>View Profile</a>
+                            <button type="button">Connect</button>
+                        </div>
+
+                        {(participant.headline || participant.bio) && (
+                            <div className={styles.contactSection}>
+                                <h4>About</h4>
+                                <p>{participant.headline || participant.bio}</p>
+                            </div>
+                        )}
+
+                        <div className={styles.contactSection}>
+                            <h4>Skills</h4>
+                            <div className={styles.skillTags}>
+                                {[participant.profession, participant.designation]
+                                    .filter(Boolean)
+                                    .slice(0, 6)
+                                    .map(skill => <span key={skill}>{skill}</span>)}
+                            </div>
+                        </div>
+                    </aside>
+                );
+            })()}
+
         </div>
 
     );
