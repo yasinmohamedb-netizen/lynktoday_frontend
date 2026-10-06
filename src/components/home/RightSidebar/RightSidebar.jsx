@@ -366,6 +366,51 @@ export default function RightSidebar() {
 
 
             {/* ==================================================
+                TRENDING TOPICS
+            ================================================== */}
+
+            <section className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <h3>Trending Topics</h3>
+                </div>
+
+                <div className={styles.topicList}>
+                    {topics.slice(0, 8).map((topic, index) => (
+                        <Link
+                            key={topic.slug || topic.name || index}
+                            href={`/topics/${topic.slug || createSlug(topic.name)}`}
+                            className={styles.topicItem}
+                            onClick={(event) =>
+                                handleTopicClick(
+                                    event,
+                                    topic.slug || createSlug(topic.name)
+                                )
+                            }
+                        >
+                            <span className={styles.rank}>
+                                {index + 1}
+                            </span>
+
+                            <span className={styles.topicContent}>
+                                <strong>
+                                    {topic.name || "Trending topic"}
+                                </strong>
+                                <span>
+                                    {Number(topic.score || 0)} signals
+                                </span>
+                            </span>
+                        </Link>
+                    ))}
+
+                    {!loading && topics.length === 0 && (
+                        <div className={styles.emptyNews}>
+                            <p>No trending topics yet.</p>
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* ==================================================
                 INDUSTRY NEWS
             ================================================== */}
 
@@ -482,51 +527,6 @@ export default function RightSidebar() {
 
             </section>
 
-
-            {/* ==================================================
-                TRENDING TOPICS
-            ================================================== */}
-
-            <section className={styles.card}>
-                <div className={styles.cardHeader}>
-                    <h3>Trending Topics</h3>
-                </div>
-
-                <div className={styles.topicList}>
-                    {topics.slice(0, 8).map((topic, index) => (
-                        <Link
-                            key={topic.slug || topic.name || index}
-                            href={`/topics/${topic.slug || createSlug(topic.name)}`}
-                            className={styles.topicItem}
-                            onClick={(event) =>
-                                handleTopicClick(
-                                    event,
-                                    topic.slug || createSlug(topic.name)
-                                )
-                            }
-                        >
-                            <span className={styles.rank}>
-                                {index + 1}
-                            </span>
-
-                            <span className={styles.topicContent}>
-                                <strong>
-                                    {topic.name || "Trending topic"}
-                                </strong>
-                                <span>
-                                    {Number(topic.score || 0)} signals
-                                </span>
-                            </span>
-                        </Link>
-                    ))}
-
-                    {!loading && topics.length === 0 && (
-                        <div className={styles.emptyNews}>
-                            <p>No trending topics yet.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
 
             {/* API ERROR — intentionally hidden */}
 
