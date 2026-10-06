@@ -1,38 +1,14 @@
 'use client';
 
-import LeftSidebar from '@/components/home/LeftSidebar/LeftSidebar';
-import RightSidebar from '@/components/home/RightSidebar/RightSidebar';
 import NotificationList from '@/components/home/Notifications/NotificationList';
-
-import styles from '../page.module.css';
+import styles from './notifications.module.css';
 
 export default function NotificationsPage() {
     return (
-        <main className={styles.container}>
-
-            {/* LEFT SIDEBAR */}
-
-            <aside className={styles.left}>
-                <LeftSidebar />
-            </aside>
-
-
-            {/* NOTIFICATIONS */}
-
-            <section
-                className={styles.center}
-                aria-label="Notifications"
-            >
+        <main className={styles.page}>
+            <div className={styles.content}>
                 <NotificationList />
-            </section>
-
-
-            {/* RIGHT SIDEBAR */}
-
-            <aside className={styles.right}>
-                <RightSidebar />
-            </aside>
-
+            </div>
         </main>
     );
 }
