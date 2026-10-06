@@ -19,6 +19,7 @@ export default function Discover() {
     const [profession, setProfession] = useState('');
     const [location, setLocation] = useState('');
     const [showAllIndustries, setShowAllIndustries] = useState(false);
+    const [trendingTopics, setTrendingTopics] = useState([]);
 
     useEffect(() => {
         try {
@@ -27,6 +28,23 @@ export default function Discover() {
         } catch (err) {
             console.error('Failed to load current user:', err);
         }
+    }, []);
+
+    useEffect(() => {
+        let cancelled = false;
+        const loadTrendingTopics = async () => {
+            try {
+                const response = await api.get('/right-sidebar');
+                if (!cancelled && response?.data?.success && Array.isArray(response.data.trendingTopics)) {
+                    setTrendingTopics(response.data.trendingTopics.slice(0, 8));
+                }
+            } catch (err) {
+                console.error('Failed to load trending topics:', err);
+                if (!cancelled) setTrendingTopics([]);
+            }
+        };
+        loadTrendingTopics();
+        return () => { cancelled = true; };
     }, []);
 
     const fetchUsers = async () => {
