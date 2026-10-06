@@ -293,11 +293,20 @@ export default function Discover() {
                 </section>
 
                 <section className={styles.sideCard}>
-                    <div className={styles.sideTitle}><h2>Popular Skills</h2></div>
-                    {['Customs Clearance','Freight Forwarding','Import Export Compliance','HS Code Classification','Supply Chain Management'].map((skill, index) => (
-                        <div key={skill} className={styles.skillRow}>
-                            <span>{index + 1}</span>
-                            <p>{skill}</p>
+                    <div className={styles.sideTitle}>
+                        <h2>Trending Topics</h2>
+                    </div>
+
+                    {[
+                        'Freight Forwarding',
+                        'Customs Clearance',
+                        'Import & Export',
+                        'HS Code Classification',
+                        'Global Trade'
+                    ].map((topic, index) => (
+                        <div key={topic} className={styles.trendingRow}>
+                            <span className={styles.trendingRank}>{index + 1}</span>
+                            <span className={styles.trendingTopic}>{topic}</span>
                         </div>
                     ))}
                 </section>
