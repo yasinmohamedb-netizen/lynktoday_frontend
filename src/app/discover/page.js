@@ -313,18 +313,22 @@ export default function Discover() {
                         <h2>Trending Topics</h2>
                     </div>
 
-                    {[
-                        'Freight Forwarding',
-                        'Customs Clearance',
-                        'Import & Export',
-                        'HS Code Classification',
-                        'Global Trade'
-                    ].map((topic, index) => (
-                        <div key={topic} className={styles.trendingRow}>
+                                        {trendingTopics.map((topic, index) => (
+                        <Link
+                            key={topic.slug || topic.name || index}
+                            href={'/topics/' + (topic.slug || '')}
+                            className={styles.trendingRow}
+                        >
                             <span className={styles.trendingRank}>{index + 1}</span>
-                            <span className={styles.trendingTopic}>{topic}</span>
-                        </div>
+                            <span className={styles.trendingTopic}>{topic.name || 'Trending topic'}</span>
+                        </Link>
                     ))}
+
+                    {trendingTopics.length === 0 && (
+                        <p className={styles.sideEmpty}>
+                            Trending topics will appear as the trade community becomes active.
+                        </p>
+                    )}
                 </section>
             </aside>
         </main>
