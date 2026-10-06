@@ -258,24 +258,22 @@ export default function Discover() {
                                     {user.companyName && <p className={styles.company}>{user.companyName}</p>}
                                     <p className={styles.location}><span>⌖</span> {user.location || 'Location not added'}</p>
                                     <div className={styles.tags}>
-                                        {[user.profession, user.designation].filter(Boolean).slice(0, 4).map((tag) => <span key={tag}>{tag}</span>)}
-                                    </div>
-                                </div>
+                                        {trendingTopics.map((topic, index) => (
+                        <Link
+                            key={topic.slug || topic.name || index}
+                            href={'/topics/' + (topic.slug || '')}
+                            className={styles.trendingRow}
+                        >
+                            <span className={styles.trendingRank}>{index + 1}</span>
+                            <span className={styles.trendingTopic}>{topic.name || 'Trending topic'}</span>
+                        </Link>
+                    ))}
 
-                                <div className={styles.resultActions}>
-                                    <Link href={'/profile/' + user._id} className={styles.viewButton}>View Profile</Link>
-                                    {!user.isOwnProfile && (
-                                        <FollowButton
-                                            userId={user._id}
-                                            isFollowing={Boolean(user.isFollowing)}
-                                            onFollowChange={(data) => handleFollowChange(user._id, data)}
-                                        />
-                                    )}
-                                </div>
-
-                                <button type="button" className={styles.moreButton} aria-label="More options">⋮</button>
-                            </article>
-                        ))}
+                    {trendingTopics.length === 0 && (
+                        <p className={styles.sideEmpty}>
+                            Trending topics will appear as the trade community becomes active.
+                        </p>
+                    )}
                     </div>
                 )}
             </section>
