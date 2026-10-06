@@ -123,6 +123,10 @@ export default function SettingsPage() {
 
                         <div>
 
+                            <p className={styles.eyebrow}>
+                                ACCOUNT
+                            </p>
+
                             <h1>
                                 Settings
                             </h1>
@@ -168,8 +172,7 @@ export default function SettingsPage() {
                                 styles.sectionDescription
                             }
                         >
-                            Manage your profile and account
-                            information.
+                            Keep your professional identity and account information up to date.
                         </p>
 
 
