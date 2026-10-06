@@ -311,3 +311,5 @@
   .deleteButton,
   .markAll{transition:none}
 }
+
+.page .pageHeader{min-height:82px}.page .empty{min-height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center}.page .notificationItem{min-height:76px}
