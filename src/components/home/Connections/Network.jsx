@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import api from '@/utils/api';
 
 import UserCard from './UserCard';
+import styles from './Connections.module.css';
 
 
 export default function Network() {
@@ -69,9 +70,7 @@ export default function Network() {
     if (loading) {
 
         return (
-            <div>
-                Loading your network...
-            </div>
+            <div className={styles.loading}>Loading your network...</div>
         );
 
     }
@@ -85,7 +84,7 @@ export default function Network() {
 
         return (
 
-            <div>
+            <div className={styles.empty}>
 
                 <h2>
                     My Network
@@ -110,12 +109,12 @@ export default function Network() {
 
         <section>
 
-            <h2>
+            <h2 className={styles.sectionTitle}>
                 My Network
             </h2>
 
 
-            <p>
+            <p className={styles.sectionMeta}>
                 {network.length} connection
                 {network.length !== 1
                     ? 's'
@@ -123,7 +122,8 @@ export default function Network() {
             </p>
 
 
-            {
+            <div className={styles.grid}>
+                {
                 network.map(user => (
 
                     <UserCard
@@ -137,7 +137,8 @@ export default function Network() {
                     />
 
                 ))
-            }
+                }
+            </div>
 
         </section>
 
