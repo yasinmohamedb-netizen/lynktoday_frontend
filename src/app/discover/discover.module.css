@@ -633,3 +633,21 @@
     display: none;
   }
 }
+
+.moreIndustriesButton {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: #3B5B7A;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.moreIndustriesButton:hover {
+  color: #2F4A63;
+  text-decoration: underline;
+}
