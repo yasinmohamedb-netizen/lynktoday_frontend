@@ -321,8 +321,7 @@ export default function CreatePost({
                             styles.subheading
                         }
                     >
-                        Share knowledge with the
-                        freight forwarding community.
+                        Share knowledge or publish an import/export requirement.
                     </p>
 
                 </div>
