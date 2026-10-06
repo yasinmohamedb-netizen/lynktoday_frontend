@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import api from '@/utils/api';
 
 import UserCard from './UserCard';
+import styles from './Connections.module.css';
 
 
 export default function ConnectionRequests({
@@ -217,7 +218,7 @@ export default function ConnectionRequests({
                                 <div>
 
                                     <button
-                                        type="button"
+                                        className={styles.accept}\n                                        type="button"
                                         disabled={
                                             processingId ===
                                             request._id
