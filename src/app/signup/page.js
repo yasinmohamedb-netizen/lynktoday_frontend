@@ -1217,7 +1217,15 @@ export default function Signup() {
     // ============================================================
 
     return (
-        <div className={styles.container}>
+        <>
+            <style>{`
+                .stepHeader{margin-bottom:18px}.stepLabel{display:block;margin-bottom:5px;color:#3B5B7A;font-size:10px;font-weight:800;letter-spacing:.1em}.stepHeader strong{display:block;color:#172033;font-size:18px;line-height:1.3}.stepHeader p{margin:5px 0 0;color:#667085;font-size:12px;line-height:1.5}
+                .accountChoices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.choice,.choiceActive{display:flex;align-items:flex-start;gap:11px;min-height:88px;padding:14px;text-align:left;border-radius:10px;font-family:inherit;cursor:pointer;transition:.18s ease}.choice{border:1px solid #d5dce5;background:#fff;color:#172033}.choice:hover:not(:disabled){border-color:#9fb0c1;background:#f8fafc}.choiceActive{border:1px solid #3B5B7A;background:#f2f6fa;color:#172033;box-shadow:0 0 0 2px rgba(59,91,122,.08)}.choiceIcon{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:8px;background:#3B5B7A;color:#fff;font-size:11px;font-weight:800}.choice span:last-child{display:flex;flex-direction:column;gap:4px}.choice strong,.choiceActive strong{font-size:12px}.choice small,.choiceActive small{color:#667085;font-size:10px;line-height:1.4}
+                .intentGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.intent,.intentActive{min-height:65px;padding:10px;border-radius:8px;text-align:left;font-family:inherit;cursor:pointer}.intent{border:1px solid #d5dce5;background:#fff}.intentActive{border:1px solid #3B5B7A;background:#f2f6fa}.intent strong,.intentActive strong{display:block;color:#172033;font-size:11px}.intent small,.intentActive small{display:block;margin-top:3px;color:#667085;font-size:9px;line-height:1.3}
+                .nextBtn{width:100%;min-height:45px;border:0;border-radius:8px;background:#3B5B7A;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}.nextBtn:hover:not(:disabled){background:#2F4A63}.nextBtn span{margin-left:5px}.stepActions{display:flex;align-items:center;gap:10px;margin-top:2px}.stepActions .nextBtn,.stepActions .submitBtn{flex:1}.backStepBtn{min-height:45px;padding:0 16px;border:1px solid #d5dce5;border-radius:8px;background:#fff;color:#475467;font-family:inherit;font-size:13px;font-weight:650;cursor:pointer}.backStepBtn:hover:not(:disabled){background:#f8fafc}.backStepBtn:disabled,.nextBtn:disabled{opacity:.65;cursor:not-allowed}
+                @media(max-width:700px){.accountChoices{grid-template-columns:1fr}.intentGrid{grid-template-columns:1fr}.choice,.choiceActive{min-height:auto}.stepActions{align-items:stretch}.backStepBtn{flex:0 0 auto}}
+            `}</style>
+            <div className={styles.container}>
 
             {/* ==================================================
                 LEFT PANEL
@@ -1365,20 +1373,20 @@ export default function Signup() {
 
                         {signupStep === 1 && (
                             <>
-                                <div className={styles.stepHeader}>
-                                    <span className={styles.stepLabel}>STEP 1 OF 2</span>
+                                <div className={'stepHeader'}>
+                                    <span className={'stepLabel'}>STEP 1 OF 2</span>
                                     <strong>Tell us how you’ll use LynkToday</strong>
                                     <p>Choose the path that matches you best. We’ll personalize the rest of your setup.</p>
                                 </div>
 
-                                <div className={styles.accountChoices}>
+                                <div className={'accountChoices'}>
                                     <button
                                         type="button"
-                                        className={formData.accountType === 'individual' ? styles.choiceActive : styles.choice}
+                                        className={formData.accountType === 'individual' ? 'choiceActive' : 'choice'}
                                         onClick={() => handleAccountTypeChange('individual')}
                                         disabled={loading}
                                     >
-                                        <span className={styles.choiceIcon}>P</span>
+                                        <span className={'choice'Icon}>P</span>
                                         <span>
                                             <strong>I’m a Professional</strong>
                                             <small>Build your network, career and trade connections.</small>
@@ -1387,11 +1395,11 @@ export default function Signup() {
 
                                     <button
                                         type="button"
-                                        className={formData.accountType === 'company' ? styles.choiceActive : styles.choice}
+                                        className={formData.accountType === 'company' ? 'choiceActive' : 'choice'}
                                         onClick={() => handleAccountTypeChange('company')}
                                         disabled={loading}
                                     >
-                                        <span className={styles.choiceIcon}>B</span>
+                                        <span className={'choice'Icon}>B</span>
                                         <span>
                                             <strong>I’m a Business</strong>
                                             <small>Find customers, partners and logistics opportunities.</small>
@@ -1426,7 +1434,7 @@ export default function Signup() {
 
                                 <div className={styles.fieldGroup}>
                                     <label>What are you looking to do?</label>
-                                    <div className={styles.intentGrid}>
+                                    <div className={'intentGrid'}>
                                         {[
                                             ['Import', 'Find import opportunities'],
                                             ['Export', 'Find export opportunities'],
@@ -1435,7 +1443,7 @@ export default function Signup() {
                                             <button
                                                 key={value}
                                                 type="button"
-                                                className={formData.tradeIntent === value ? styles.intentActive : styles.intent}
+                                                className={formData.tradeIntent === value ? 'intentActive' : 'intent'}
                                                 onClick={() => setFormData((previous) => ({ ...previous, tradeIntent: value }))}
                                                 disabled={loading}
                                             >
@@ -1448,7 +1456,7 @@ export default function Signup() {
 
                                 <button
                                     type="button"
-                                    className={styles.nextBtn}
+                                    className={'nextBtn'}
                                     onClick={() => setSignupStep(2)}
                                     disabled={loading}
                                 >
@@ -1461,8 +1469,8 @@ export default function Signup() {
 
                         {signupStep === 2 && (
                             <>
-                                <div className={styles.stepHeader}>
-                                    <span className={styles.stepLabel}>STEP 2 OF 2</span>
+                                <div className={'stepHeader'}>
+                                    <span className={'stepLabel'}>STEP 2 OF 2</span>
                                     <strong>{formData.accountType === 'company' ? 'Tell us about your business' : 'Tell us about yourself'}</strong>
                                     <p>Just the essentials for your first LynkToday profile. You can complete more later.</p>
                                 </div>
@@ -1506,9 +1514,9 @@ export default function Signup() {
                                     <textarea className={styles.textarea} name="bio" value={formData.bio} onChange={handleChange} placeholder={formData.accountType === 'company' ? 'What does your business offer or trade?' : 'Tell the trade community briefly about yourself.'} rows={4} disabled={loading} />
                                 </div>
 
-                                <div className={styles.stepActions}>
-                                    <button type="button" className={styles.backStepBtn} onClick={() => setSignupStep(1)} disabled={loading}>← Back</button>
-                                    <button type="button" className={styles.nextBtn} onClick={() => setSignupStep(3)} disabled={loading}>Continue <span>→</span></button>
+                                <div className={'stepActions'}>
+                                    <button type="button" className={'backStepBtn'} onClick={() => setSignupStep(1)} disabled={loading}>← Back</button>
+                                    <button type="button" className={'nextBtn'} onClick={() => setSignupStep(3)} disabled={loading}>Continue <span>→</span></button>
                                 </div>
                             </>
                         )}
@@ -1517,8 +1525,8 @@ export default function Signup() {
 
                         {signupStep === 3 && (
                             <>
-                                <div className={styles.stepHeader}>
-                                    <span className={styles.stepLabel}>FINAL STEP</span>
+                                <div className={'stepHeader'}>
+                                    <span className={'stepLabel'}>FINAL STEP</span>
                                     <strong>Secure your account</strong>
                                     <p>Use your email to verify your LynkToday account.</p>
                                 </div>
@@ -1548,8 +1556,8 @@ export default function Signup() {
                                     <span>I agree to the Terms & Privacy Policy.</span>
                                 </label>
 
-                                <div className={styles.stepActions}>
-                                    <button type="button" className={styles.backStepBtn} onClick={() => setSignupStep(2)} disabled={loading}>← Back</button>
+                                <div className={'stepActions'}>
+                                    <button type="button" className={'backStepBtn'} onClick={() => setSignupStep(2)} disabled={loading}>← Back</button>
                                     <button type="submit" className={styles.submitBtn} disabled={loading} style={{ background: PRIMARY_COLOR }}>
                                         {loading ? 'Creating account...' : 'Create Account'}
                                     </button>
@@ -1638,6 +1646,7 @@ export default function Signup() {
 
             </div>
 
-        </div>
+            </div>
+        </>
     );
 }
