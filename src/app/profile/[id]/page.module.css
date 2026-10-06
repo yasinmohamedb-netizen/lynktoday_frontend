@@ -1,58 +1,125 @@
-.container{width:100%;max-width:1480px;margin:0 auto;padding:24px 20px 50px;display:grid;grid-template-columns:280px minmax(0,1fr) 320px;gap:24px;align-items:start;background:#f5f7fa}
+.container{
+    width:100%;
+    max-width:1380px;
+    min-height:calc(100vh - 70px);
+    margin:0 auto;
+    padding:26px 22px 48px;
+    box-sizing:border-box;
+    display:grid;
+    grid-template-columns:220px minmax(0,760px) 250px;
+    justify-content:center;
+    gap:22px;
+    align-items:start;
+    background:#f8fafc
+}
 
 .left,.right{min-width:0;position:sticky;top:90px;align-self:start}
 .center{min-width:0;display:flex;flex-direction:column;gap:16px}
 
-.card{width:100%;padding:24px;background:#fff;border:1px solid #e1e7ee;border-radius:16px;box-shadow:0 4px 16px rgba(15,23,42,.04)}
+.card{
+    width:100%;
+    padding:24px;
+    box-sizing:border-box;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(15,23,42,.035)
+}
 
 .cardHeader{margin-bottom:20px}
-.cardHeader h2{margin:0 0 5px;color:#172033;font-size:19px;font-weight:750}
-.cardHeader p{margin:0;color:#7a8596;font-size:13px}
+.cardHeader h2{margin:0 0 5px;color:#172033;font-size:19px;font-weight:700}
+.cardHeader p{margin:0;color:#64748b;font-size:13px;line-height:1.5}
 
 .infoGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.infoItem{min-width:0;padding:15px;background:#f8fafc;border:1px solid #e6ebf0;border-radius:10px}
-.infoItem>span{display:block;margin-bottom:7px;color:#8994a3;font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.4px}
-.infoItem strong,.website{display:block;overflow:hidden;color:#172033;font-size:14px;font-weight:650;line-height:1.5;text-overflow:ellipsis}
-.website{color:#3B5B7A;text-decoration:none;white-space:nowrap}
-.website:hover{color:#2F4A63;text-decoration:underline}
+.infoItem{min-width:0;padding:14px;background:#f8fafc;border:1px solid #e6ebf0;border-radius:10px}
+.infoItem>span{display:block;margin-bottom:6px;color:#64748b;font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.35px}
+.infoItem strong,.website{display:block;overflow:hidden;color:#334155;font-size:14px;font-weight:650;line-height:1.5;text-overflow:ellipsis}
+.website{color:#3b5b7a;text-decoration:none;white-space:nowrap}
+.website:hover{color:#2f4a63;text-decoration:underline}
 
-.stateCard{width:100%;min-height:420px;padding:40px 30px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;text-align:center;background:#fff;border:1px solid #e1e7ee;border-radius:16px;box-shadow:0 4px 16px rgba(15,23,42,.04)}
-.stateCard h2{margin:0 0 8px;color:#172033;font-size:19px;font-weight:750}
-.stateCard p{max-width:430px;margin:0 0 22px;color:#7a8596;font-size:13px;line-height:1.6}
+.stateCard{
+    width:100%;
+    min-height:420px;
+    padding:40px 30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    text-align:center;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(15,23,42,.04)
+}
 
-.stateIcon,.loadingIndicator{width:56px;height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:17px;border-radius:50%;background:#edf3f7;border:1px solid #d8e2eb;color:#3B5B7A;font-size:20px;font-weight:800}
+.stateCard h2{margin:0 0 8px;color:#172033;font-size:19px;font-weight:700}
+.stateCard p{max-width:430px;margin:0 0 22px;color:#64748b;font-size:13px;line-height:1.6}
+
+.stateIcon,.loadingIndicator{
+    width:54px;height:54px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+    border-radius:50%;
+    background:#eef3f7;
+    border:1px solid #d8e2eb;
+    color:#3b5b7a;
+    font-size:19px;
+    font-weight:800
+}
+
 .errorIcon{background:#fff6f6;border-color:#f2d5d5;color:#c53d3d}
 .notFoundIcon{background:#f6f8fa;border-color:#dce2e8;color:#687586}
 
-.loadingIndicator span{width:20px;height:20px;border:2px solid #d7e5ee;border-top-color:#3B5B7A;border-radius:50%;animation:profileSpinner .7s linear infinite}
-@keyframes profileSpinner{to{transform:rotate(360deg)}}
-
-.primaryButton{min-height:40px;padding:0 18px;border:1px solid #3B5B7A;border-radius:8px;background:#3B5B7A;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:.18s}
-.primaryButton:hover{background:#2F4A63;border-color:#2F4A63;transform:translateY(-1px);box-shadow:0 5px 12px rgba(59,91,122,.18)}
-
-@media(max-width:1350px){
-.container{grid-template-columns:250px minmax(0,1fr) 290px;gap:20px}
+.loadingIndicator span{
+    width:20px;height:20px;
+    border:2px solid #d7e5ee;
+    border-top-color:#3b5b7a;
+    border-radius:50%;
+    animation:profileSpinner .7s linear infinite
 }
 
-@media(max-width:1150px){
-.container{grid-template-columns:230px minmax(0,1fr);gap:20px}
-.right{display:none}
+@keyframes profileSpinner{to{transform:rotate(360deg)}}
+
+.primaryButton{
+    min-height:40px;
+    padding:0 17px;
+    border:1px solid #3b5b7a;
+    border-radius:8px;
+    background:#3b5b7a;
+    color:#fff;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.18s
+}
+
+.primaryButton:hover{background:#2f4a63;border-color:#2f4a63;transform:translateY(-1px)}
+
+@media(max-width:1180px){
+    .container{grid-template-columns:210px minmax(0,760px);gap:20px}
+    .right{display:none}
 }
 
 @media(max-width:850px){
-.container{display:block;max-width:760px;padding:18px 14px 40px}
-.left,.right{display:none}
-.card{padding:20px}
+    .container{display:block;max-width:760px;padding:16px 14px 40px}
+    .left,.right{display:none}
+    .center{gap:14px}
 }
 
 @media(max-width:600px){
-.container{padding:12px 10px 30px}
-.center{gap:12px}
-.card{padding:17px;border-radius:13px}
-.cardHeader h2{font-size:17px}
-.infoGrid{grid-template-columns:1fr;gap:9px}
-.infoItem{padding:13px}
-.stateCard{min-height:360px;padding:30px 20px;border-radius:13px}
-.stateCard h2{font-size:17px}
-.stateCard p{font-size:12px}
+    .container{padding:12px 10px 30px}
+    .center{gap:12px}
+    .card{padding:18px;border-radius:12px}
+    .cardHeader h2{font-size:17px}
+    .infoGrid{grid-template-columns:1fr;gap:9px}
+    .infoItem{padding:13px}
+    .stateCard{min-height:360px;padding:30px 20px;border-radius:12px}
+    .stateCard h2{font-size:17px}
+    .stateCard p{font-size:12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+    .primaryButton,.loadingIndicator span{transition:none;animation:none}
 }
