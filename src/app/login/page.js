@@ -1028,6 +1028,25 @@ export default function Login() {
 
                         </ul>
 
+                        <div className={styles.operationsSupportCard}>
+                            <span className={styles.operationsSupportEyebrow}>
+                                FOR LOGISTICS COMPANIES
+                            </span>
+                            <h3 className={styles.operationsSupportTitle}>
+                                Logistics Operations Support
+                            </h3>
+                            <p className={styles.operationsSupportText}>
+                                Get reliable back-office support for freight forwarding,
+                                customs clearance, documentation and day-to-day logistics operations.
+                            </p>
+                            <Link
+                                href="/logistics-operations-support"
+                                className={styles.operationsSupportLink}
+                            >
+                                Explore Operations Support →
+                            </Link>
+                        </div>
+
                     </div>
 
                 </div>
@@ -1319,6 +1338,25 @@ export default function Login() {
 
                     </ul>
 
+                    <div className={styles.operationsSupportCard}>
+                        <span className={styles.operationsSupportEyebrow}>
+                            FOR LOGISTICS COMPANIES
+                        </span>
+                        <h3 className={styles.operationsSupportTitle}>
+                            Logistics Operations Support
+                        </h3>
+                        <p className={styles.operationsSupportText}>
+                            Get reliable back-office support for freight forwarding,
+                            customs clearance, documentation and day-to-day logistics operations.
+                        </p>
+                        <Link
+                            href="/logistics-operations-support"
+                            className={styles.operationsSupportLink}
+                        >
+                            Explore Operations Support →
+                        </Link>
+                    </div>
+
                 </div>
 
             </div>
@@ -1515,25 +1553,6 @@ export default function Login() {
                             Create Account
                         </Link>
 
-                    </div>
-
-                    <div className={styles.operationsSupportCard}>
-                        <span className={styles.operationsSupportEyebrow}>
-                            LYNKTODAY BUSINESS SERVICE
-                        </span>
-                        <h3 className={styles.operationsSupportTitle}>
-                            Logistics Operations Support
-                        </h3>
-                        <p className={styles.operationsSupportText}>
-                            Back-office support for freight forwarders,
-                            customs brokers, 3PLs and logistics companies.
-                        </p>
-                        <Link
-                            href="/logistics-operations-support"
-                            className={styles.operationsSupportLink}
-                        >
-                            Explore Operations Support →
-                        </Link>
                     </div>
 
                 </div>
