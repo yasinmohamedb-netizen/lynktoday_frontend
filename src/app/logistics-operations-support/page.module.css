@@ -1,0 +1,501 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #0f172a;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e2e8f0;
+  backdrop-filter: blur(8px);
+}
+
+.headerInner {
+  width: min(1180px, calc(100% - 40px));
+  min-height: 68px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  color: #172033;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.loginLink {
+  color: #3B5B7A;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.loginLink:hover {
+  text-decoration: underline;
+}
+
+.hero {
+  background: linear-gradient(135deg, #2F4A63 0%, #3B5B7A 100%);
+  color: #fff;
+}
+
+.heroInner {
+  width: min(1180px, calc(100% - 40px));
+  min-height: 540px;
+  margin: 0 auto;
+  padding: 78px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
+  align-items: center;
+  gap: 70px;
+}
+
+.heroCopy {
+  max-width: 760px;
+}
+
+.eyebrow,
+.sectionEyebrow,
+.sectionEyebrowLight {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.eyebrow {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.hero h1 {
+  margin: 14px 0 18px;
+  max-width: 780px;
+  font-size: clamp(42px, 6vw, 68px);
+  line-height: 1.03;
+  letter-spacing: -1.8px;
+}
+
+.heroText {
+  max-width: 700px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 20px;
+  line-height: 1.55;
+}
+
+.heroSubtext {
+  max-width: 650px;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.primaryButton,
+.secondaryButton,
+.contactButton {
+  min-height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 19px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.primaryButton {
+  background: #fff;
+  color: #2F4A63;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  background: transparent;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.contactButton:hover {
+  transform: translateY(-1px);
+}
+
+.heroPanel {
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.17);
+}
+
+.panelLabel {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.heroPanel h2 {
+  margin: 12px 0;
+  font-size: 25px;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+}
+
+.heroPanel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.section,
+.processSection {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 88px 0;
+}
+
+.sectionHeading {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.sectionEyebrow {
+  color: #3B5B7A;
+}
+
+.sectionHeading h2,
+.contactCard h2,
+.darkInner h2 {
+  margin: 10px 0 12px;
+  color: #172033;
+  font-size: clamp(29px, 4vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -1px;
+}
+
+.sectionHeading p,
+.contactCard p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.serviceCard {
+  min-height: 190px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.serviceNumber {
+  color: #3B5B7A;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.serviceCard h3 {
+  margin: 18px 0 8px;
+  color: #172033;
+  font-size: 17px;
+}
+
+.serviceCard p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.darkSection {
+  background: #172033;
+  color: #fff;
+}
+
+.darkInner {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 82px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+  gap: 70px;
+  align-items: start;
+}
+
+.sectionEyebrowLight {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.darkInner h2 {
+  color: #fff;
+  max-width: 650px;
+}
+
+.darkInner > div:first-child > p {
+  max-width: 590px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.points > div {
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.points strong,
+.points span {
+  display: block;
+}
+
+.points strong {
+  color: #fff;
+  font-size: 14px;
+}
+
+.points span {
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.audienceGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.audienceCard {
+  min-height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.processSection {
+  padding-top: 0;
+}
+
+.processGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.processCard {
+  padding: 22px;
+  border-top: 2px solid #3B5B7A;
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+.processCard > span {
+  color: #3B5B7A;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.processCard h3 {
+  margin: 17px 0 8px;
+  color: #172033;
+  font-size: 16px;
+}
+
+.processCard p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.contactSection {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto 88px;
+}
+
+.contactCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  padding: 38px;
+  border: 1px solid #dbe4ec;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.contactCard h2 {
+  margin-bottom: 8px;
+  font-size: 30px;
+}
+
+.contactButton {
+  flex-shrink: 0;
+  background: #3B5B7A;
+  color: #fff;
+}
+
+.footer {
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.footerInner {
+  width: min(1180px, calc(100% - 40px));
+  min-height: 100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footerInner strong,
+.footerInner span {
+  display: block;
+}
+
+.footerInner strong {
+  color: #172033;
+  font-size: 16px;
+}
+
+.footerInner span {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 18px;
+}
+
+.footerLinks a {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.footerLinks a:hover {
+  color: #3B5B7A;
+}
+
+@media (max-width: 900px) {
+  .heroInner,
+  .darkInner {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .serviceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .audienceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .processGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contactCard {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .headerInner,
+  .heroInner,
+  .section,
+  .darkInner,
+  .contactSection,
+  .footerInner {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .heroInner {
+    min-height: auto;
+    padding: 60px 0;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    letter-spacing: -1.2px;
+  }
+
+  .heroText {
+    font-size: 17px;
+  }
+
+  .section,
+  .processSection {
+    padding: 65px 0;
+  }
+
+  .serviceGrid,
+  .audienceGrid,
+  .processGrid,
+  .points {
+    grid-template-columns: 1fr;
+  }
+
+  .contactSection {
+    margin-bottom: 65px;
+  }
+
+  .contactCard {
+    padding: 26px;
+  }
+
+  .footerInner {
+    min-height: 120px;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

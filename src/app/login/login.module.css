@@ -900,3 +900,56 @@
         transition: none;
     }
 }
+/* ============================================================
+   LOGISTICS OPERATIONS SUPPORT
+   ============================================================ */
+
+.operationsSupportCard {
+    margin-top: 24px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.operationsSupportEyebrow {
+    display: block;
+    margin-bottom: 6px;
+    color: #3b5b7a;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+}
+
+.operationsSupportTitle {
+    margin: 0 0 6px;
+    color: #172033;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.operationsSupportText {
+    margin: 0;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.operationsSupportLink {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 12px;
+    color: #3b5b7a;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.operationsSupportLink:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+    .operationsSupportCard {
+        margin-top: 22px;
+    }
+}
