@@ -190,7 +190,7 @@ export default function LogisticsOperationsSupportPage() {
           </div>
 
           <a
-            href="mailto:operations@lynktoday.com?subject=Logistics%20Operations%20Support"
+            href="mailto:lynktodayinfo@gmail.com?subject=Logistics%20Operations%20Support"
             className={styles.contactButton}
           >
             Contact LynkToday
