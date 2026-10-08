@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import LeftSidebar from '@/components/home/LeftSidebar/LeftSidebar';
 import CreatePost from '@/components/home/CreatePost/CreatePost';
@@ -10,6 +11,8 @@ import RightSidebar from '@/components/home/RightSidebar/RightSidebar';
 import styles from './page.module.css';
 
 export default function HomePage() {
+
+    const router = useRouter();
 
     const [user, setUser] = useState(null);
 
@@ -82,6 +85,17 @@ export default function HomePage() {
         }
 
     }, []);
+
+
+    // ==================================================
+    // REDIRECT NEW / LOGGED-OUT VISITORS TO LOGIN
+    // ==================================================
+
+    useEffect(() => {
+        if (authChecked && !user) {
+            router.replace('/login');
+        }
+    }, [authChecked, user, router]);
 
 
     // ==================================================

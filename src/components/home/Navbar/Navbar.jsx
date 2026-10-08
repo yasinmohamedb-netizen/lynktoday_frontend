@@ -32,6 +32,8 @@ export default function Navbar() {
     const router = useRouter();
     const pathname = usePathname();
 
+    const isOperationsSupport = pathname === '/logistics-operations-support';
+
     const { requireAuth } = useAuthModal();
 
 
@@ -630,6 +632,24 @@ export default function Navbar() {
     // ==================================================
     // RENDER
     // ==================================================
+
+    if (isOperationsSupport) {
+        return (
+            <header className={styles.navbar}>
+                <div className={styles.navbarInner + ' ' + styles.serviceNavbarInner}>
+                    <Link href="/logistics-operations-support#top" className={styles.logo} aria-label="LynkToday Logistics Operations Support">
+                        Lynk<span>Today</span>
+                    </Link>
+                    <nav className={styles.serviceNavigation}>
+                        <a href="#top" className={styles.navItem}>Home</a>
+                        <a href="#services" className={styles.navItem}>Services</a>
+                        <a href="#how-it-works" className={styles.navItem}>How It Works</a>
+                        <a href="#contact" className={styles.navItem}>Contact</a>
+                    </nav>
+                </div>
+            </header>
+        );
+    }
 
     return (
 

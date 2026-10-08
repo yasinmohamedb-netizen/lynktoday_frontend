@@ -908,3 +908,5 @@
       transition: none;
   }
 }
+
+.serviceNavbarInner{gap:20px}.serviceNavigation{margin-left:auto;height:100%;display:flex;align-items:center;gap:4px}@media(max-width:700px){.serviceNavbarInner{padding:0 16px}.serviceNavigation{gap:0}.serviceNavigation .navItem{padding:0 8px;font-size:12px}.serviceNavigation .navItem:nth-child(3){display:none}}

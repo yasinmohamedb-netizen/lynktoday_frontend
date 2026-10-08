@@ -997,13 +997,7 @@ export default function Login() {
                         </h2>
 
                         <p>
-                            Connect with freight
-                            forwarders, customs
-                            brokers, importers,
-                            exporters, shipping
-                            lines, logistics
-                            companies and trade
-                            professionals worldwide.
+                            Connect with importers, exporters, freight forwarders, customs brokers and logistics professionals worldwide. Build relationships, discover opportunities and grow your trade network.
                         </p>
 
                         <ul className={styles.features}>
@@ -1302,9 +1296,7 @@ export default function Login() {
                     </h1>
 
                     <h2>
-                        Connect. Trade.
-                        <br />
-                        Grow.
+                        Build Your Trade Network
                     </h2>
 
                     <p>
@@ -1319,29 +1311,11 @@ export default function Login() {
 
                     <ul className={styles.features}>
 
-                        <li>
-                            Sea Freight
-                        </li>
-
-                        <li>
-                            Air Freight
-                        </li>
-
-                        <li>
-                            Customs Clearance
-                        </li>
-
-                        <li>
-                            Import & Export
-                        </li>
-
-                        <li>
-                            Global Trade Network
-                        </li>
-
-                        <li>
-                            Verified Professionals
-                        </li>
+                        <li>Importers &amp; Exporters</li>
+                        <li>Freight &amp; Logistics Partners</li>
+                        <li>Customs &amp; Trade Professionals</li>
+                        <li>Trade Opportunities</li>
+                        <li>Professional Network</li>
 
                     </ul>
 
