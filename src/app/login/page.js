@@ -1338,7 +1338,10 @@ export default function Login() {
 
                     </ul>
 
-                    <div className={styles.operationsSupportCard}>
+                    <Link
+                        href="/logistics-operations-support"
+                        className={styles.operationsSupportCard}
+                    >
                         <span className={styles.operationsSupportEyebrow}>
                             FOR LOGISTICS COMPANIES
                         </span>
@@ -1349,13 +1352,10 @@ export default function Login() {
                             Get reliable back-office support for freight forwarding,
                             customs clearance, documentation and day-to-day logistics operations.
                         </p>
-                        <Link
-                            href="/logistics-operations-support"
-                            className={styles.operationsSupportLink}
-                        >
+                        <span className={styles.operationsSupportLink}>
                             Explore Operations Support →
-                        </Link>
-                    </div>
+                        </span>
+                    </Link>
 
                 </div>
 
