@@ -70,6 +70,9 @@ export default function Signup() {
     const [loading, setLoading] =
         useState(false);
 
+    const [signupStep, setSignupStep] =
+        useState(1);
+
     const [error, setError] =
         useState('');
 
@@ -169,8 +172,8 @@ export default function Signup() {
             return 'Please enter a valid email address.';
         }
 
-        if (formData.password.length < 6) {
-            return 'Password must contain at least 6 characters.';
+        if (formData.password.length < 8) {
+            return 'Password must contain at least 8 characters.';
         }
 
         if (
@@ -1214,7 +1217,15 @@ export default function Signup() {
     // ============================================================
 
     return (
-        <div className={styles.container}>
+        <>
+            <style>{`
+                .stepHeader{margin-bottom:18px}.stepLabel{display:block;margin-bottom:5px;color:#3B5B7A;font-size:10px;font-weight:800;letter-spacing:.1em}.stepHeader strong{display:block;color:#172033;font-size:18px;line-height:1.3}.stepHeader p{margin:5px 0 0;color:#667085;font-size:12px;line-height:1.5}
+                .accountChoices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.choice,.choiceActive{display:flex;align-items:flex-start;gap:11px;min-height:88px;padding:14px;text-align:left;border-radius:10px;font-family:inherit;cursor:pointer;transition:.18s ease}.choice{border:1px solid #d5dce5;background:#fff;color:#172033}.choice:hover:not(:disabled){border-color:#9fb0c1;background:#f8fafc}.choiceActive{border:1px solid #3B5B7A;background:#f2f6fa;color:#172033;box-shadow:0 0 0 2px rgba(59,91,122,.08)}.choiceIcon{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:8px;background:#3B5B7A;color:#fff;font-size:11px;font-weight:800}.choice span:last-child{display:flex;flex-direction:column;gap:4px}.choice strong,.choiceActive strong{font-size:12px}.choice small,.choiceActive small{color:#667085;font-size:10px;line-height:1.4}
+                .intentGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.intent,.intentActive{min-height:65px;padding:10px;border-radius:8px;text-align:left;font-family:inherit;cursor:pointer}.intent{border:1px solid #d5dce5;background:#fff}.intentActive{border:1px solid #3B5B7A;background:#f2f6fa}.intent strong,.intentActive strong{display:block;color:#172033;font-size:11px}.intent small,.intentActive small{display:block;margin-top:3px;color:#667085;font-size:9px;line-height:1.3}
+                .nextBtn{width:100%;min-height:45px;border:0;border-radius:8px;background:#3B5B7A;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}.nextBtn:hover:not(:disabled){background:#2F4A63}.nextBtn span{margin-left:5px}.stepActions{display:flex;align-items:center;gap:10px;margin-top:2px}.stepActions .nextBtn,.stepActions .submitBtn{flex:1}.backStepBtn{min-height:45px;padding:0 16px;border:1px solid #d5dce5;border-radius:8px;background:#fff;color:#475467;font-family:inherit;font-size:13px;font-weight:650;cursor:pointer}.backStepBtn:hover:not(:disabled){background:#f8fafc}.backStepBtn:disabled,.nextBtn:disabled{opacity:.65;cursor:not-allowed}
+                @media(max-width:700px){.accountChoices{grid-template-columns:1fr}.intentGrid{grid-template-columns:1fr}.choice,.choiceActive{min-height:auto}.stepActions{align-items:stretch}.backStepBtn{flex:0 0 auto}}
+            `}</style>
+            <div className={styles.container}>
 
             {/* ==================================================
                 LEFT PANEL
@@ -1358,533 +1369,201 @@ export default function Signup() {
                         }
                     >
 
-                        {/* ACCOUNT TYPE */}
+                        {/* STEP 1 — IDENTITY */}
 
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
+                        {signupStep === 1 && (
+                            <>
+                                <div className={'stepHeader'}>
+                                    <span className={'stepLabel'}>STEP 1 OF 2</span>
+                                    <strong>Tell us how you’ll use LynkToday</strong>
+                                    <p>Choose the path that matches you best. We’ll personalize the rest of your setup.</p>
+                                </div>
 
-                            <label>
-                                Create Account As
-                            </label>
+                                <div className={'accountChoices'}>
+                                    <button
+                                        type="button"
+                                        className={formData.accountType === 'individual' ? 'choiceActive' : 'choice'}
+                                        onClick={() => handleAccountTypeChange('individual')}
+                                        disabled={loading}
+                                    >
+                                        <span className="choiceIcon">P</span>
+                                        <span>
+                                            <strong>I’m a Professional</strong>
+                                            <small>Build your network, career and trade connections.</small>
+                                        </span>
+                                    </button>
 
-                            <div
-                                className={
-                                    styles.accountTypeSelector
-                                }
-                            >
+                                    <button
+                                        type="button"
+                                        className={formData.accountType === 'company' ? 'choiceActive' : 'choice'}
+                                        onClick={() => handleAccountTypeChange('company')}
+                                        disabled={loading}
+                                    >
+                                        <span className="choiceIcon">B</span>
+                                        <span>
+                                            <strong>I’m a Business</strong>
+                                            <small>Find customers, partners and logistics opportunities.</small>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div className={styles.fieldGroup}>
+                                    <label>{formData.accountType === 'company' ? 'What does your business do?' : 'What is your profession?'}</label>
+                                    <select className={styles.input} name="profession" value={formData.profession} onChange={handleChange} disabled={loading}>
+                                        <option value="Freight Forwarder">Freight Forwarder</option>
+                                        <option value="Customs Broker">Customs Broker</option>
+                                        <option value="Shipping Line">Shipping Line</option>
+                                        <option value="Air Cargo">Air Cargo</option>
+                                        <option value="Importer">Importer</option>
+                                        <option value="Exporter">Exporter</option>
+                                        <option value="NVOCC">NVOCC</option>
+                                        <option value="Warehouse">Warehouse</option>
+                                        <option value="Transporter">Transporter</option>
+                                        <option value="Trade Consultant">Trade Consultant</option>
+                                        <option value="Operations Executive">Operations Executive</option>
+                                        <option value="Sales Executive">Sales Executive</option>
+                                        <option value="Documentation Executive">Documentation Executive</option>
+                                        <option value="Logistics Executive">Logistics Executive</option>
+                                        <option value="Supply Chain Executive">Supply Chain Executive</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Business Owner">Business Owner</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className={styles.fieldGroup}>
+                                    <label>What are you looking to do?</label>
+                                    <div className={'intentGrid'}>
+                                        {[
+                                            ['Import', 'Find import opportunities'],
+                                            ['Export', 'Find export opportunities'],
+                                            ['Both', 'Import & export']
+                                        ].map(([value, label]) => (
+                                            <button
+                                                key={value}
+                                                type="button"
+                                                className={formData.tradeIntent === value ? 'intentActive' : 'intent'}
+                                                onClick={() => setFormData((previous) => ({ ...previous, tradeIntent: value }))}
+                                                disabled={loading}
+                                            >
+                                                <strong>{value === 'Both' ? 'Import + Export' : value}</strong>
+                                                <small>{label}</small>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
 
                                 <button
                                     type="button"
-                                    className={
-                                        formData.accountType ===
-                                        'individual'
-                                            ? styles.activeType
-                                            : styles.accountTypeBtn
-                                    }
-                                    onClick={() =>
-                                        handleAccountTypeChange(
-                                            'individual'
-                                        )
-                                    }
-                                    disabled={
-                                        loading
-                                    }
+                                    className={'nextBtn'}
+                                    onClick={() => setSignupStep(2)}
+                                    disabled={loading}
                                 >
-                                    Individual
+                                    Continue <span>→</span>
                                 </button>
-
-                                <button
-                                    type="button"
-                                    className={
-                                        formData.accountType ===
-                                        'company'
-                                            ? styles.activeType
-                                            : styles.accountTypeBtn
-                                    }
-                                    onClick={() =>
-                                        handleAccountTypeChange(
-                                            'company'
-                                        )
-                                    }
-                                    disabled={
-                                        loading
-                                    }
-                                >
-                                    Company
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        {/* NAME */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                {
-                                    formData.accountType ===
-                                    'company'
-                                        ? 'Company Name'
-                                        : 'Full Name'
-                                }
-                            </label>
-
-                            {formData.accountType ===
-                            'company' ? (
-
-                                <input
-                                    type="text"
-                                    className={
-                                        styles.input
-                                    }
-                                    name="companyName"
-                                    value={
-                                        formData.companyName
-                                    }
-                                    onChange={
-                                        handleChange
-                                    }
-                                    placeholder="Maersk India"
-                                    disabled={
-                                        loading
-                                    }
-                                    required
-                                />
-
-                            ) : (
-
-                                <input
-                                    type="text"
-                                    className={
-                                        styles.input
-                                    }
-                                    name="fullName"
-                                    value={
-                                        formData.fullName
-                                    }
-                                    onChange={
-                                        handleChange
-                                    }
-                                    placeholder="Mohamed Yasin"
-                                    disabled={
-                                        loading
-                                    }
-                                    required
-                                />
-
-                            )}
-
-                        </div>
-
-                        {/* PROFESSION */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Profession
-                            </label>
-
-                            <select
-                                className={
-                                    styles.input
-                                }
-                                name="profession"
-                                value={
-                                    formData.profession
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                disabled={
-                                    loading
-                                }
-                            >
-
-                                <option value="Freight Forwarder">
-                                    Freight Forwarder
-                                </option>
-
-                                <option value="Customs Broker">
-                                    Customs Broker
-                                </option>
-
-                                <option value="Shipping Line">
-                                    Shipping Line
-                                </option>
-
-                                <option value="Air Cargo">
-                                    Air Cargo
-                                </option>
-
-                                <option value="Importer">
-                                    Importer
-                                </option>
-
-                                <option value="Exporter">
-                                    Exporter
-                                </option>
-
-                                <option value="NVOCC">
-                                    NVOCC
-                                </option>
-
-                                <option value="Warehouse">
-                                    Warehouse
-                                </option>
-
-                                <option value="Transporter">
-                                    Transporter
-                                </option>
-
-                                <option value="Trade Consultant">
-                                    Trade Consultant
-                                </option>
-
-                                <option value="Operations Executive">
-                                    Operations Executive
-                                </option>
-
-                                <option value="Sales Executive">
-                                    Sales Executive
-                                </option>
-
-                                <option value="Documentation Executive">
-                                    Documentation Executive
-                                </option>
-
-                                <option value="Logistics Executive">
-                                    Logistics Executive
-                                </option>
-
-                                <option value="Supply Chain Executive">
-                                    Supply Chain Executive
-                                </option>
-
-                                <option value="Manager">
-                                    Manager
-                                </option>
-
-                                <option value="Business Owner">
-                                    Business Owner
-                                </option>
-
-                                <option value="Student">
-                                    Student
-                                </option>
-
-                                <option value="Other">
-                                    Other
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        {/* DESIGNATION */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Designation
-                            </label>
-
-                            <input
-                                type="text"
-                                className={
-                                    styles.input
-                                }
-                                name="designation"
-                                value={
-                                    formData.designation
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="Operations Manager"
-                                disabled={
-                                    loading
-                                }
-                            />
-
-                        </div>
-
-                        {/* EMAIL */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Email
-                            </label>
-
-                            <input
-                                type="email"
-                                className={
-                                    styles.input
-                                }
-                                name="email"
-                                value={
-                                    formData.email
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="you@example.com"
-                                autoComplete="email"
-                                disabled={
-                                    loading
-                                }
-                                required
-                            />
-
-                        </div>
-
-                        {/* PASSWORD */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Password
-                            </label>
-
-                            <input
-                                type="password"
-                                className={
-                                    styles.input
-                                }
-                                name="password"
-                                value={
-                                    formData.password
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="Minimum 8 characters"
-                                autoComplete="new-password"
-                                disabled={
-                                    loading
-                                }
-                                required
-                            />
-
-                        </div>
-
-                        {/* CONFIRM PASSWORD */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Confirm Password
-                            </label>
-
-                            <input
-                                type="password"
-                                className={
-                                    styles.input
-                                }
-                                name="confirmPassword"
-                                value={
-                                    formData.confirmPassword
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="Re-enter your password"
-                                autoComplete="new-password"
-                                disabled={
-                                    loading
-                                }
-                                required
-                            />
-
-                        </div>
-
-                        {/* LOCATION */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Location
-                            </label>
-
-                            <input
-                                type="text"
-                                className={
-                                    styles.input
-                                }
-                                name="location"
-                                value={
-                                    formData.location
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="Chennai, India"
-                                disabled={
-                                    loading
-                                }
-                                required
-                            />
-
-                        </div>
-
-                        {/* TRADE INTENT */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Trade Interest
-                            </label>
-
-                            <select
-                                className={
-                                    styles.input
-                                }
-                                name="tradeIntent"
-                                value={
-                                    formData.tradeIntent
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                disabled={
-                                    loading
-                                }
-                            >
-
-                                <option value="Both">
-                                    Import & Export
-                                </option>
-
-                                <option value="Import">
-                                    Import
-                                </option>
-
-                                <option value="Export">
-                                    Export
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        {/* BIO */}
-
-                        <div
-                            className={
-                                styles.fieldGroup
-                            }
-                        >
-
-                            <label>
-                                Bio
-                            </label>
-
-                            <textarea
-                                className={
-                                    styles.textarea
-                                }
-                                name="bio"
-                                value={
-                                    formData.bio
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="Tell us briefly about yourself or your business."
-                                rows={4}
-                                disabled={
-                                    loading
-                                }
-                            />
-
-                        </div>
-
-                        {/* TERMS */}
-
-                        <label
-                            className={
-                                styles.terms
-                            }
-                        >
-
-                            <input
-                                type="checkbox"
-                                name="agreeToTerms"
-                                checked={
-                                    formData.agreeToTerms
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                disabled={
-                                    loading
-                                }
-                            />
-
-                            <span>
-                                I agree to the Terms &
-                                Privacy Policy.
-                            </span>
-
-                        </label>
-
-                        {/* SUBMIT */}
-
-                        <button
-                            type="submit"
-                            className={
-                                styles.submitBtn
-                            }
-                            disabled={
-                                loading
-                            }
-                            style={{
-                                background:
-                                    PRIMARY_COLOR
-                            }}
-                        >
-
-                            {loading
-                                ? 'Creating account...'
-                                : 'Create Account'}
-
-                        </button>
+                            </>
+                        )}
+
+                        {/* STEP 2 — PROFILE */}
+
+                        {signupStep === 2 && (
+                            <>
+                                <div className={'stepHeader'}>
+                                    <span className={'stepLabel'}>STEP 2 OF 2</span>
+                                    <strong>{formData.accountType === 'company' ? 'Tell us about your business' : 'Tell us about yourself'}</strong>
+                                    <p>Just the essentials for your first LynkToday profile. You can complete more later.</p>
+                                </div>
+
+                                <div className={styles.fieldGroup}>
+                                    <label>{formData.accountType === 'company' ? 'Company Name' : 'Full Name'}</label>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        name={formData.accountType === 'company' ? 'companyName' : 'fullName'}
+                                        value={formData.accountType === 'company' ? formData.companyName : formData.fullName}
+                                        onChange={handleChange}
+                                        placeholder={formData.accountType === 'company' ? 'Your company name' : 'Your full name'}
+                                        disabled={loading}
+                                        required
+                                    />
+                                </div>
+
+                                {formData.accountType === 'individual' && (
+                                    <>
+                                        <div className={styles.twoColumn}>
+                                            <div className={styles.fieldGroup}>
+                                                <label>Designation</label>
+                                                <input type="text" className={styles.input} name="designation" value={formData.designation} onChange={handleChange} placeholder="Operations Manager" disabled={loading} />
+                                            </div>
+                                            <div className={styles.fieldGroup}>
+                                                <label>Company / Organization</label>
+                                                <input type="text" className={styles.input} name="companyName" value={formData.companyName} onChange={handleChange} placeholder="Company name" disabled={loading} />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                <div className={styles.fieldGroup}>
+                                    <label>Location</label>
+                                    <input type="text" className={styles.input} name="location" value={formData.location} onChange={handleChange} placeholder="Chennai, India" disabled={loading} required />
+                                </div>
+
+                                <div className={styles.fieldGroup}>
+                                    <label>{formData.accountType === 'company' ? 'About your business' : 'About you'}</label>
+                                    <textarea className={styles.textarea} name="bio" value={formData.bio} onChange={handleChange} placeholder={formData.accountType === 'company' ? 'What does your business offer or trade?' : 'Tell the trade community briefly about yourself.'} rows={4} disabled={loading} />
+                                </div>
+
+                                <div className={'stepActions'}>
+                                    <button type="button" className={'backStepBtn'} onClick={() => setSignupStep(1)} disabled={loading}>← Back</button>
+                                    <button type="button" className={'nextBtn'} onClick={() => setSignupStep(3)} disabled={loading}>Continue <span>→</span></button>
+                                </div>
+                            </>
+                        )}
+
+                        {/* STEP 3 — ACCOUNT */}
+
+                        {signupStep === 3 && (
+                            <>
+                                <div className={'stepHeader'}>
+                                    <span className={'stepLabel'}>FINAL STEP</span>
+                                    <strong>Secure your account</strong>
+                                    <p>Use your email to verify your LynkToday account.</p>
+                                </div>
+
+                                <div className={styles.fieldGroup}>
+                                    <label>Email</label>
+                                    <input type="email" className={styles.input} name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" autoComplete="email" disabled={loading} required />
+                                </div>
+
+                                <div className={styles.twoColumn}>
+                                    <div className={styles.fieldGroup}>
+                                        <label>Password</label>
+                                        <input type="password" className={styles.input} name="password" value={formData.password} onChange={handleChange} placeholder="Minimum 8 characters" autoComplete="new-password" disabled={loading} required />
+                                    </div>
+                                    <div className={styles.fieldGroup}>
+                                        <label>Confirm Password</label>
+                                        <input type="password" className={styles.input} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Repeat password" autoComplete="new-password" disabled={loading} required />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {signupStep === 3 && (
+                            <>
+                                <label className={styles.terms}>
+                                    <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} disabled={loading} />
+                                    <span>I agree to the Terms & Privacy Policy.</span>
+                                </label>
+
+                                <div className={'stepActions'}>
+                                    <button type="button" className={'backStepBtn'} onClick={() => setSignupStep(2)} disabled={loading}>← Back</button>
+                                    <button type="submit" className={styles.submitBtn} disabled={loading} style={{ background: PRIMARY_COLOR }}>
+                                        {loading ? 'Creating account...' : 'Create Account'}
+                                    </button>
+                                </div>
+                            </>
+                        )}
 
                     </form>
 
@@ -1916,6 +1595,7 @@ export default function Signup() {
 
             </div>
 
-        </div>
+            </div>
+        </>
     );
 }
