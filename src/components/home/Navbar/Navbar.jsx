@@ -637,7 +637,7 @@ export default function Navbar() {
         return (
             <header className={styles.navbar}>
                 <div className={styles.navbarInner + ' ' + styles.serviceNavbarInner}>
-                    <Link href="/logistics-operations-support#top" className={styles.logo} aria-label="LynkToday Logistics Operations Support">
+                    <Link href="/login" className={styles.logo} aria-label="LynkToday">
                         Lynk<span>Today</span>
                     </Link>
                     <nav className={styles.serviceNavigation}>
