@@ -192,8 +192,9 @@ export default function LogisticsOperationsSupportPage() {
           <a
             href="mailto:lynktodayinfo@gmail.com?subject=Logistics%20Operations%20Support"
             className={styles.contactButton}
+            aria-label="Email LynkToday at lynktodayinfo@gmail.com"
           >
-            Contact LynkToday
+            lynktodayinfo@gmail.com
           </a>
         </div>
       </section>
