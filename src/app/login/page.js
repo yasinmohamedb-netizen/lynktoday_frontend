@@ -1543,6 +1543,25 @@ export default function Login() {
 
                     </div>
 
+                    <div className={styles.operationsSupportCard}>
+                        <span className={styles.operationsSupportEyebrow}>
+                            LYNKTODAY BUSINESS SERVICE
+                        </span>
+                        <h3 className={styles.operationsSupportTitle}>
+                            Logistics Operations Support
+                        </h3>
+                        <p className={styles.operationsSupportText}>
+                            Back-office support for freight forwarders,
+                            customs brokers, 3PLs and logistics companies.
+                        </p>
+                        <Link
+                            href="/logistics-operations-support"
+                            className={styles.operationsSupportLink}
+                        >
+                            Explore Operations Support →
+                        </Link>
+                    </div>
+
                 </div>
 
             </div>
