@@ -38,17 +38,8 @@ const audiences = [
 
 export default function LogisticsOperationsSupportPage() {
   return (
-    <main className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <Link href="/" className={styles.brand} aria-label="LynkToday home">
-            LynkToday
-          </Link>
-          <Link href="/login" className={styles.loginLink}>
-            Login / Sign Up
-          </Link>
-        </div>
-      </header>
+    <main id="top" className={styles.page}>
+
 
       <section className={styles.hero}>
         <div className={styles.heroInner}>
@@ -207,18 +198,7 @@ export default function LogisticsOperationsSupportPage() {
         </div>
       </section>
 
-      <footer className={styles.footer}>
-        <div className={styles.footerInner}>
-          <div>
-            <strong>LynkToday</strong>
-            <span>Logistics &amp; International Trade</span>
-          </div>
-          <div className={styles.footerLinks}>
-            <Link href="/">LynkToday</Link>
-            <Link href="/login">Login</Link>
-          </div>
-        </div>
-      </footer>
+
     </main>
   );
 }
