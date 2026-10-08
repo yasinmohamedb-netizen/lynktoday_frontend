@@ -2,87 +2,71 @@ import Link from 'next/link';
 import styles from './page.module.css';
 
 const services = [
-  {
-    title: 'Shipment Tracking',
-    text: 'Monitor shipment milestones, ETAs, delays and exceptions.'
-  },
-  {
-    title: 'Documentation Support',
-    text: 'Prepare, organize and verify shipment-related documents.'
-  },
-  {
-    title: 'Data & System Updates',
-    text: 'Handle TMS/ERP data entry, shipment updates and records.'
-  },
-  {
-    title: 'Customer Communication',
-    text: 'Support routine shipment updates and operational emails.'
-  },
-  {
-    title: 'Carrier & Vendor Follow-up',
-    text: 'Handle routine operational coordination and follow-ups.'
-  },
-  {
-    title: 'Reports & Administration',
-    text: 'Prepare shipment reports, pending-task lists and admin support.'
-  }
+  ['01', 'Shipment Tracking', 'Track milestones, ETAs, delays and exceptions so your team does not have to chase every update.'],
+  ['02', 'Documentation Support', 'Prepare, organize and verify shipment-related documents and operational files.'],
+  ['03', 'Data & System Updates', 'Handle TMS/ERP data entry, shipment updates and operational records.'],
+  ['04', 'Customer Communication', 'Support routine shipment updates, email coordination and status follow-ups.'],
+  ['05', 'Carrier & Vendor Follow-up', 'Handle routine operational communication with carriers, vendors and partners.'],
+  ['06', 'Reports & Administration', 'Prepare shipment reports, pending-task lists, billing support and other admin work.']
 ];
 
-const audiences = [
-  'Freight Forwarders',
-  'Customs Brokers',
-  '3PL Companies',
-  'NVOCCs',
-  'Logistics Companies'
-];
+const audiences = ['Freight Forwarders', 'Customs Brokers', '3PL Companies', 'NVOCCs', 'Logistics Companies'];
 
 export default function LogisticsOperationsSupportPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <Link href="/" className={styles.brand} aria-label="LynkToday home">
-            LynkToday
-          </Link>
-          <Link href="/login" className={styles.loginLink}>
-            Login / Sign Up
-          </Link>
+          <Link href="/" className={styles.brand}>LynkToday</Link>
+          <nav className={styles.nav}>
+            <Link href="/">Home</Link>
+            <a href="#services">Services</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <Link href="/login" className={styles.loginButton}>Login / Sign Up</Link>
         </div>
       </header>
 
       <section className={styles.hero}>
+        <div className={styles.heroPattern} aria-hidden="true" />
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}>
-              LYNKTODAY LOGISTICS OPERATIONS SUPPORT
-            </span>
-            <h1>Your logistics operations team in India.</h1>
+            <span className={styles.eyebrow}>LYNKTODAY BUSINESS SERVICE</span>
+            <h1>Logistics Operations Support <span>from India.</span></h1>
+            <p className={styles.heroLead}>
+              Your extended operations team for the work that keeps shipments moving,
+              but keeps your people busy.
+            </p>
             <p className={styles.heroText}>
-              Reliable back-office support for freight forwarders,
-              customs brokers, 3PLs and logistics companies.
+              Support for freight forwarders, customs brokers, 3PLs and logistics
+              companies — starting with a defined workflow and scaling when it works.
             </p>
-            <p className={styles.heroSubtext}>
-              Reduce repetitive operational work and let your team focus
-              on customers, sales and growth.
-            </p>
-
             <div className={styles.heroActions}>
-              <a href="#contact" className={styles.primaryButton}>
-                Talk to Us
-              </a>
-              <a href="#services" className={styles.secondaryButton}>
-                Explore Services
-              </a>
+              <a href="#contact" className={styles.primaryButton}>Talk to Us</a>
+              <a href="#how-it-works" className={styles.secondaryButton}>See How It Works</a>
+            </div>
+            <div className={styles.trustRow}>
+              <span>Logistics-focused</span>
+              <i />
+              <span>India-based support</span>
+              <i />
+              <span>Start with a pilot</span>
             </div>
           </div>
 
-          <div className={styles.heroPanel}>
-            <span className={styles.panelLabel}>BUILT FOR LOGISTICS</span>
-            <h2>Extend your operations without adding another full-time team.</h2>
-            <p>
-              Start with a defined workflow or a small pilot, evaluate the
-              process and scale when you are ready.
-            </p>
+          <div className={styles.heroCard}>
+            <div className={styles.heroCardTop}>
+              <span className={styles.liveDot} />
+              <span>OPERATIONS SUPPORT</span>
+            </div>
+            <h2>Give your team more time for customers and growth.</h2>
+            <p>We can take on repetitive operational workflows while your core team stays focused on higher-value work.</p>
+            <div className={styles.heroChecklist}>
+              {['Shipment tracking & updates', 'Documentation support', 'Data entry & system updates', 'Customer communication', 'Carrier & vendor follow-up', 'Reports & administration'].map(item => (
+                <div key={item}><span>✓</span>{item}</div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -90,133 +74,91 @@ export default function LogisticsOperationsSupportPage() {
       <section id="services" className={styles.section}>
         <div className={styles.sectionHeading}>
           <span className={styles.sectionEyebrow}>WHAT WE CAN HANDLE</span>
-          <h2>Logistics work that can be handled remotely.</h2>
-          <p>
-            We support day-to-day operational tasks that take time away
-            from your core logistics team.
-          </p>
+          <h2>Take repetitive work off your operations team.</h2>
+          <p>Start with the workflow that consumes the most time. We can support the process remotely from India.</p>
         </div>
-
         <div className={styles.serviceGrid}>
-          {services.map((service, index) => (
-            <article key={service.title} className={styles.serviceCard}>
-              <div className={styles.serviceNumber}>
-                {String(index + 1).padStart(2, '0')}
+          {services.map(([number, title, text]) => (
+            <article key={title} className={styles.serviceCard}>
+              <span className={styles.serviceNumber}>{number}</span>
+              <div className={styles.serviceIcon} aria-hidden="true">
+                {number === '01' ? '↗' : number === '02' ? '□' : number === '03' ? '▤' : number === '04' ? '✉' : number === '05' ? '↔' : '▥'}
               </div>
-              <h3>{service.title}</h3>
-              <p>{service.text}</p>
+              <h3>{title}</h3>
+              <p>{text}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className={styles.darkSection}>
-        <div className={styles.darkInner}>
-          <div>
-            <span className={styles.sectionEyebrowLight}>WHY LYNKTODAY</span>
-            <h2>Logistics understanding, not generic virtual assistance.</h2>
-            <p>
-              The service is designed around freight forwarding and
-              international logistics workflows.
-            </p>
-          </div>
-
-          <div className={styles.points}>
-            <div>
-              <strong>Logistics Knowledge</strong>
-              <span>Support built around real logistics processes.</span>
-            </div>
-            <div>
-              <strong>Cost Efficient</strong>
-              <span>Extend operational capacity without immediate U.S. hiring.</span>
-            </div>
-            <div>
-              <strong>Flexible Support</strong>
-              <span>Start with one workflow and expand as requirements grow.</span>
-            </div>
-            <div>
-              <strong>India-Based Operations</strong>
-              <span>Access dedicated operational support from India.</span>
-            </div>
-          </div>
+      <section className={styles.statement}>
+        <div className={styles.statementInner}>
+          <span className={styles.sectionEyebrowLight}>THE IDEA IS SIMPLE</span>
+          <h2>Your U.S. team handles the relationship. <span>We help handle the workload.</span></h2>
+          <p>Not generic virtual assistance. A logistics-focused support model built around the repetitive work inside freight and trade operations.</p>
         </div>
       </section>
 
       <section className={styles.section}>
         <div className={styles.sectionHeading}>
           <span className={styles.sectionEyebrow}>WHO WE SUPPORT</span>
-          <h2>Designed for logistics businesses.</h2>
+          <h2>Built for companies moving international freight.</h2>
         </div>
-
         <div className={styles.audienceGrid}>
-          {audiences.map((audience) => (
+          {audiences.map((audience, index) => (
             <div key={audience} className={styles.audienceCard}>
-              {audience}
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{audience}</strong>
             </div>
           ))}
         </div>
       </section>
 
-      <section className={styles.processSection}>
+      <section className={styles.sectionCompact}>
+        <div className={styles.sectionHeading}>
+          <span className={styles.sectionEyebrow}>WHY LYNKTODAY</span>
+          <h2>Flexible enough to start small.</h2>
+        </div>
+        <div className={styles.benefitGrid}>
+          <div><strong>Logistics Knowledge</strong><p>Support designed around freight forwarding and international trade workflows.</p></div>
+          <div><strong>Cost Efficient</strong><p>Extend operational capacity without immediately adding another full-time U.S. employee.</p></div>
+          <div><strong>Flexible Support</strong><p>Start with one workflow and expand the scope as your requirements grow.</p></div>
+          <div><strong>India-Based Operations</strong><p>Reliable remote operational support from India with a defined process.</p></div>
+        </div>
+      </section>
+
+      <section id="how-it-works" className={styles.sectionCompact}>
         <div className={styles.sectionHeading}>
           <span className={styles.sectionEyebrow}>HOW IT WORKS</span>
-          <h2>Start small. Prove the workflow. Scale when ready.</h2>
+          <h2>Start with one workflow. Prove it. Then scale.</h2>
         </div>
-
         <div className={styles.processGrid}>
-          <div className={styles.processCard}>
-            <span>01</span>
-            <h3>Tell us what takes time</h3>
-            <p>Share the repetitive operational tasks your team currently handles.</p>
-          </div>
-          <div className={styles.processCard}>
-            <span>02</span>
-            <h3>Define the workflow</h3>
-            <p>Agree on responsibilities, process, turnaround time and communication.</p>
-          </div>
-          <div className={styles.processCard}>
-            <span>03</span>
-            <h3>Start with a pilot</h3>
-            <p>Give us a limited workflow or shipment volume to evaluate.</p>
-          </div>
-          <div className={styles.processCard}>
-            <span>04</span>
-            <h3>Scale when ready</h3>
-            <p>Expand the scope or dedicated support when the process works for you.</p>
-          </div>
+          <div><span>01</span><strong>Tell us what takes time</strong><p>Show us the repetitive operational tasks your team handles today.</p></div>
+          <div><span>02</span><strong>Define the workflow</strong><p>Agree on responsibilities, process, turnaround time and communication.</p></div>
+          <div><span>03</span><strong>Start with a pilot</strong><p>Give us a limited workflow or shipment volume to evaluate.</p></div>
+          <div><span>04</span><strong>Scale when ready</strong><p>Expand the scope when the process works for your team.</p></div>
         </div>
       </section>
 
       <section id="contact" className={styles.contactSection}>
-        <div className={styles.contactCard}>
+        <div className={styles.contactInner}>
           <div>
-            <span className={styles.sectionEyebrow}>START A CONVERSATION</span>
-            <h2>Have operational work piling up?</h2>
-            <p>
-              Tell us what your team is spending time on. We can discuss
-              whether it is a good fit for remote operational support.
-            </p>
+            <span className={styles.sectionEyebrowLight}>LET'S TALK OPERATIONS</span>
+            <h2>What could your team stop doing manually?</h2>
+            <p>Tell us about the workflow you want to outsource. We can discuss a practical pilot.</p>
           </div>
-
-          <a
-            href="mailto:operations@lynktoday.com?subject=Logistics%20Operations%20Support"
-            className={styles.contactButton}
-          >
-            Contact LynkToday
-          </a>
+          <div className={styles.contactActions}>
+            <a href="mailto:operations@lynktoday.com?subject=Logistics%20Operations%20Support" className={styles.primaryButton}>Start a Conversation</a>
+            <span>operations@lynktoday.com</span>
+          </div>
         </div>
       </section>
 
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
-          <div>
-            <strong>LynkToday</strong>
-            <span>Logistics &amp; International Trade</span>
-          </div>
-          <div className={styles.footerLinks}>
-            <Link href="/">LynkToday</Link>
-            <Link href="/login">Login</Link>
-          </div>
+          <strong>LynkToday</strong>
+          <span>Logistics &amp; International Trade</span>
+          <Link href="/">Back to LynkToday</Link>
         </div>
       </footer>
     </main>
