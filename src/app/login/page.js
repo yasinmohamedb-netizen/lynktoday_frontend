@@ -1345,6 +1345,26 @@ export default function Login() {
 
                     </ul>
 
+                    <Link
+                        href="/logistics-operations-support"
+                        className={styles.operationsSupportCard}
+                    >
+                        <span className={styles.operationsSupportEyebrow}>
+                            FOR LOGISTICS COMPANIES
+                        </span>
+                        <span className={styles.operationsSupportTitle}>
+                            Logistics Operations Support
+                        </span>
+                        <span className={styles.operationsSupportText}>
+                            Extend your operations team from India.
+                            Shipment tracking, documentation, data support
+                            and routine follow-ups.
+                        </span>
+                        <span className={styles.operationsSupportLink}>
+                            Explore the service <span aria-hidden="true">→</span>
+                        </span>
+                    </Link>
+
                 </div>
 
             </div>
@@ -1541,25 +1561,6 @@ export default function Login() {
                             Create Account
                         </Link>
 
-                    </div>
-
-                    <div className={styles.operationsSupportCard}>
-                        <span className={styles.operationsSupportEyebrow}>
-                            LYNKTODAY BUSINESS SERVICE
-                        </span>
-                        <h3 className={styles.operationsSupportTitle}>
-                            Logistics Operations Support
-                        </h3>
-                        <p className={styles.operationsSupportText}>
-                            Back-office support for freight forwarders,
-                            customs brokers, 3PLs and logistics companies.
-                        </p>
-                        <Link
-                            href="/logistics-operations-support"
-                            className={styles.operationsSupportLink}
-                        >
-                            Explore Operations Support →
-                        </Link>
                     </div>
 
                 </div>
