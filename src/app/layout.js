@@ -15,8 +15,7 @@ export const metadata = createMetadata({
     description:
         'LynkToday is a professional network for global trade, logistics, freight forwarding, customs, shipping, supply chain and international business professionals.',
 
-    path: '/',
-    noIndex: true
+    path: '/'
 });
 
 
