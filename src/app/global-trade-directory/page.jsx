@@ -5,11 +5,17 @@ import Link from 'next/link';
 import resources from '@/data/globalTradeDirectory.json';
 import styles from './global-trade-directory.module.css';
 
+const countries = [
+    { code: 'IN', label: '🇮🇳 India' },
+    { code: 'US', label: '🇺🇸 United States' },
+    { code: 'CN', label: '🇨🇳 China' },
+];
 const categories = ['All categories', ...new Set(resources.map((item) => item.category))];
 
 export default function GlobalTradeDirectoryPage() {
     const [query, setQuery] = useState('');
     const [category, setCategory] = useState('All categories');
+    const [country, setCountry] = useState('IN');
 
     const filteredResources = useMemo(() => {
         const normalizedQuery = query.trim().toLowerCase();
@@ -26,9 +32,9 @@ export default function GlobalTradeDirectoryPage() {
                 resource.audience,
             ].join(' ').toLowerCase();
 
-            return matchesCategory && (!normalizedQuery || searchableText.includes(normalizedQuery));
+            return resource.country === country && matchesCategory && (!normalizedQuery || searchableText.includes(normalizedQuery));
         });
-    }, [query, category]);
+    }, [query, category, country]);
 
     const groupedCategories = useMemo(() => {
         return categories.slice(1).map((item) => ({
@@ -43,16 +49,12 @@ export default function GlobalTradeDirectoryPage() {
                 <div className={styles.heroGlow} aria-hidden="true" />
                 <div className={styles.heroContent}>
                     <Link href="/" className={styles.backLink}>← Back to LynkToday</Link>
-                    <span className={styles.eyebrow}>LYNKTODAY · GLOBAL TRADE</span>
+                    <div className={styles.eyebrow}>LYNKTODAY · GLOBAL TRADE</div>
                     <h1>Global Trade Directory</h1>
                     <p className={styles.heroDescription}>
                         Find official customs, import-export, shipping and government resources
                         for your logistics work — all in one place.
                     </p>
-                    <div className={styles.publicNote}>
-                        <span aria-hidden="true">🌐</span>
-                        <span><strong>Free and open to everyone.</strong> No login required.</span>
-                    </div>
                     <div className={styles.searchPanel}>
                         <label className={styles.searchLabel} htmlFor="directory-search">
                             Search official resources
@@ -74,8 +76,13 @@ export default function GlobalTradeDirectoryPage() {
                         </div>
                         <div className={styles.filters}>
                             <label className={styles.selectLabel} htmlFor="directory-country">Country</label>
-                            <select id="directory-country" value="IN" disabled aria-label="Selected country">
-                                <option value="IN">🇮🇳 India</option>
+                            <select
+                                id="directory-country"
+                                value={country}
+                                onChange={(event) => { setCountry(event.target.value); setCategory('All categories'); }}
+                                aria-label="Select country"
+                            >
+                                {countries.map((item) => <option key={item.code} value={item.code}>{item.label}</option>)}
                             </select>
                             <label className={styles.selectLabel} htmlFor="directory-category">Category</label>
                             <select
@@ -88,9 +95,9 @@ export default function GlobalTradeDirectoryPage() {
                         </div>
                     </div>
                     <div className={styles.heroStats}>
-                        <div><strong>{resources.length}</strong><span>curated resources</span></div>
+                        <div><strong>{resources.filter((item) => item.country === country).length}</strong><span>curated resources</span></div>
                         <div><strong>{categories.length - 1}</strong><span>categories</span></div>
-                        <div><strong>India</strong><span>first country</span></div>
+                        <div><strong>{countries.find((item) => item.code === country)?.label.split(' ').slice(1).join(' ')}</strong><span>selected directory</span></div>
                     </div>
                 </div>
                 <div className={styles.heroArt} aria-hidden="true">
@@ -99,7 +106,6 @@ export default function GlobalTradeDirectoryPage() {
                     <div className={styles.globe}>◎</div>
                     <div className={`${styles.route} ${styles.routeOne}`} />
                     <div className={`${styles.route} ${styles.routeTwo}`} />
-                    <span className={styles.floatCard + ' ' + styles.floatCardTop}>✈ Air cargo</span>
                     <span className={styles.floatCard + ' ' + styles.floatCardBottom}>▤ Customs · Trade · Ports</span>
                 </div>
             </section>
@@ -131,7 +137,7 @@ export default function GlobalTradeDirectoryPage() {
 
                 <div className={styles.resourcesHeader}>
                     <div>
-                        <h2>{category === 'All categories' ? 'Official India resources' : category}</h2>
+                        <h2>{category === 'All categories' ? 'Official {countries.find((item) => item.code === country)?.label.split(' ').slice(1).join(' ')} resources' : category}</h2>
                         <p>Open the source website for the latest rules, forms and notices.</p>
                     </div>
                     {category !== 'All categories' && (
