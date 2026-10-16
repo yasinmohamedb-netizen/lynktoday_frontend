@@ -16,7 +16,6 @@ export default function robots() {
                 '/saved',
                 '/settings',
                 '/documentation/create',
-                '/search',
                 '/admin',
                 '/api/'
             ]
