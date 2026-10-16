@@ -1,0 +1,182 @@
+[
+  {
+    "id": "icegate",
+    "name": "ICEGATE",
+    "fullName": "Indian Customs Electronic Gateway",
+    "category": "Customs & Clearance",
+    "description": "Electronic customs services, filing facilities and shipment-related customs resources.",
+    "url": "https://www.icegate.gov.in/",
+    "audience": "Importers, exporters, customs brokers",
+    "official": true
+  },
+  {
+    "id": "cbic",
+    "name": "CBIC",
+    "fullName": "Central Board of Indirect Taxes and Customs",
+    "category": "Customs & Clearance",
+    "description": "Customs notifications, circulars, tariff information and customs administration resources.",
+    "url": "https://www.cbic.gov.in/",
+    "audience": "Importers, exporters, customs professionals",
+    "official": true
+  },
+  {
+    "id": "icegate-cip",
+    "name": "ICEGATE Compliance Information Portal",
+    "fullName": "Commodity-wise compliance information",
+    "category": "Product Compliance",
+    "description": "Explore commodity-related import/export requirements and links to partner government agencies.",
+    "url": "https://cip.icegate.gov.in/",
+    "audience": "Importers, exporters, compliance teams",
+    "official": true
+  },
+  {
+    "id": "dgft",
+    "name": "DGFT",
+    "fullName": "Directorate General of Foreign Trade",
+    "category": "Import & Export",
+    "description": "Foreign Trade Policy, IEC services, authorisations and import-export policy resources.",
+    "url": "https://www.dgft.gov.in/",
+    "audience": "Importers, exporters, trade consultants",
+    "official": true
+  },
+  {
+    "id": "trade-connect",
+    "name": "Trade Connect ePlatform",
+    "fullName": "Government of India's trade information platform",
+    "category": "Import & Export",
+    "description": "Trade information and export-support resources for Indian businesses.",
+    "url": "https://www.trade.gov.in/",
+    "audience": "Exporters, MSMEs, trade researchers",
+    "official": true
+  },
+  {
+    "id": "fieo",
+    "name": "FIEO",
+    "fullName": "Federation of Indian Export Organisations",
+    "category": "Trade Organizations",
+    "description": "Exporter support, trade events, training and export-related information.",
+    "url": "https://www.fieo.org/",
+    "audience": "Exporters, manufacturers, trade professionals",
+    "official": true
+  },
+  {
+    "id": "apeda",
+    "name": "APEDA",
+    "fullName": "Agricultural and Processed Food Products Export Development Authority",
+    "category": "Product Compliance",
+    "description": "Registration, export promotion and resources for scheduled agricultural and processed food products.",
+    "url": "https://apeda.gov.in/",
+    "audience": "Agricultural and food exporters",
+    "official": true
+  },
+  {
+    "id": "mpeda",
+    "name": "MPEDA",
+    "fullName": "Marine Products Export Development Authority",
+    "category": "Product Compliance",
+    "description": "Marine product export promotion, registration and sector-specific resources.",
+    "url": "https://mpeda.gov.in/",
+    "audience": "Seafood exporters and processors",
+    "official": true
+  },
+  {
+    "id": "fssai",
+    "name": "FSSAI",
+    "fullName": "Food Safety and Standards Authority of India",
+    "category": "Product Compliance",
+    "description": "Food safety standards, licensing information and regulatory resources for food businesses.",
+    "url": "https://www.fssai.gov.in/",
+    "audience": "Food importers, exporters and businesses",
+    "official": true
+  },
+  {
+    "id": "dppqs",
+    "name": "Plant Quarantine",
+    "fullName": "Directorate of Plant Protection, Quarantine & Storage",
+    "category": "Product Compliance",
+    "description": "Plant quarantine, phytosanitary and plant-health related import/export resources.",
+    "url": "https://ppqs.gov.in/",
+    "audience": "Agricultural traders and plant product importers/exporters",
+    "official": true
+  },
+  {
+    "id": "bis",
+    "name": "Bureau of Indian Standards",
+    "fullName": "BIS",
+    "category": "Product Compliance",
+    "description": "Indian standards, product certification and applicable conformity assessment resources.",
+    "url": "https://www.bis.gov.in/",
+    "audience": "Manufacturers, importers and product compliance teams",
+    "official": true
+  },
+  {
+    "id": "eic",
+    "name": "Export Inspection Council",
+    "fullName": "EIC India",
+    "category": "Product Compliance",
+    "description": "Export inspection, certification and quality-control resources for notified products.",
+    "url": "https://eicindia.gov.in/",
+    "audience": "Exporters of regulated products",
+    "official": true
+  },
+  {
+    "id": "dgs",
+    "name": "Directorate General of Shipping",
+    "fullName": "Government of India's maritime administration",
+    "category": "Ports & Shipping",
+    "description": "Merchant shipping administration, maritime notices and shipping-sector regulations.",
+    "url": "https://www.dgshipping.gov.in/",
+    "audience": "Shipping companies, seafarers and maritime professionals",
+    "official": true
+  },
+  {
+    "id": "mopws",
+    "name": "Ministry of Ports, Shipping and Waterways",
+    "fullName": "Government of India",
+    "category": "Ports & Shipping",
+    "description": "Government policies, programmes and official information for ports, shipping and waterways.",
+    "url": "https://shipmin.gov.in/",
+    "audience": "Port operators, shipping professionals and logistics teams",
+    "official": true
+  },
+  {
+    "id": "indian-ports",
+    "name": "Indian Ports Association",
+    "fullName": "IPA",
+    "category": "Ports & Shipping",
+    "description": "Resources and information related to major port authorities and port-sector initiatives.",
+    "url": "https://www.ipa.nic.in/",
+    "audience": "Shipping lines, port users and logistics professionals",
+    "official": true
+  },
+  {
+    "id": "aai",
+    "name": "Airports Authority of India",
+    "fullName": "AAI",
+    "category": "Air Cargo & Aviation",
+    "description": "Airport operations, aviation infrastructure and official airport-related information.",
+    "url": "https://www.aai.aero/",
+    "audience": "Air cargo operators, freight forwarders and aviation businesses",
+    "official": true
+  },
+  {
+    "id": "gst",
+    "name": "GST Portal",
+    "fullName": "Goods and Services Tax Network",
+    "category": "Tax & Business",
+    "description": "GST registration, returns and tax compliance services for registered businesses.",
+    "url": "https://www.gst.gov.in/",
+    "audience": "Businesses, exporters and tax professionals",
+    "official": true
+  },
+  {
+    "id": "rbi",
+    "name": "Reserve Bank of India",
+    "fullName": "RBI",
+    "category": "Tax & Business",
+    "description": "Foreign exchange regulations, trade payment guidance and official RBI circulars.",
+    "url": "https://www.rbi.org.in/",
+    "audience": "Exporters, importers, banks and finance teams",
+    "official": true
+  }
+]
