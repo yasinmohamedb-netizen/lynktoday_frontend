@@ -939,6 +939,19 @@ export default function Navbar() {
 
 
                     <Link
+                        href="/global-trade-directory"
+                        className={`
+                            ${styles.navItem}
+                            ${isActive('/global-trade-directory')
+                                ? styles.activeNav
+                                : ''}
+                        `}
+                    >
+                        <span>Trade Directory</span>
+                    </Link>
+
+
+                    <Link
                         href="/messages"
                         className={`
                             ${styles.navItem}
