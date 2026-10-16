@@ -925,12 +925,6 @@ export default function Navbar() {
                                 ? styles.activeNav
                                 : ''}
                         `}
-                        onClick={(event) =>
-                            handleProtectedNavigation(
-                                event,
-                                '/documentation'
-                            )
-                        }
                     >
 
                         <span>Documentation</span>
