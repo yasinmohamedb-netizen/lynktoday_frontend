@@ -9,7 +9,6 @@ export default function robots() {
             allow: '/',
             disallow: [
                 '/connections',
-                '/discover',
                 '/messages',
                 '/notifications',
                 '/my-posts',
