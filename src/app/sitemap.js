@@ -48,6 +48,24 @@ export default async function sitemap() {
             lastModified: now,
             changeFrequency: 'monthly',
             priority: 0.6
+        },
+        {
+            url: `${siteUrl}/settings/privacy-policy`,
+            lastModified: now,
+            changeFrequency: 'yearly',
+            priority: 0.3
+        },
+        {
+            url: `${siteUrl}/settings/privacy`,
+            lastModified: now,
+            changeFrequency: 'yearly',
+            priority: 0.3
+        },
+        {
+            url: `${siteUrl}/settings/terms`,
+            lastModified: now,
+            changeFrequency: 'yearly',
+            priority: 0.3
         }
     ];
 
