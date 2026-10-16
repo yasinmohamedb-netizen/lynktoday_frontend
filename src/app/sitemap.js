@@ -32,12 +32,6 @@ export default async function sitemap() {
 
     const staticPages = [
         {
-            url: siteUrl,
-            lastModified: now,
-            changeFrequency: 'daily',
-            priority: 1
-        },
-        {
             url: `${siteUrl}/documentation`,
             lastModified: now,
             changeFrequency: 'weekly',
