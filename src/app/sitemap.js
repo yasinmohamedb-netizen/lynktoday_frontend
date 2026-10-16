@@ -214,7 +214,7 @@ export default async function sitemap() {
 
             return sitemapEntry(
                 `${siteUrl}/profile/${encodeURIComponent(String(identifier))}`,
-                user.updatedAt || user.updatedAt,
+                user.updatedAt || user.createdAt,
                 'monthly',
                 0.5,
                 now
