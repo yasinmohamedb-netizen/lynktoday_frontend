@@ -13,7 +13,6 @@ export default function robots() {
                 '/notifications',
                 '/my-posts',
                 '/saved',
-                '/settings',
                 '/documentation/create',
                 '/admin',
                 '/api/'
