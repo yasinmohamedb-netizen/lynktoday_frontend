@@ -7,7 +7,8 @@
     "description": "Electronic customs services, filing facilities and shipment-related customs resources.",
     "url": "https://www.icegate.gov.in/",
     "audience": "Importers, exporters, customs brokers",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "cbic",
@@ -17,7 +18,8 @@
     "description": "Customs notifications, circulars, tariff information and customs administration resources.",
     "url": "https://www.cbic.gov.in/",
     "audience": "Importers, exporters, customs professionals",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "icegate-cip",
@@ -27,7 +29,8 @@
     "description": "Explore commodity-related import/export requirements and links to partner government agencies.",
     "url": "https://cip.icegate.gov.in/",
     "audience": "Importers, exporters, compliance teams",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "dgft",
@@ -37,7 +40,8 @@
     "description": "Foreign Trade Policy, IEC services, authorisations and import-export policy resources.",
     "url": "https://www.dgft.gov.in/",
     "audience": "Importers, exporters, trade consultants",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "trade-connect",
@@ -47,7 +51,8 @@
     "description": "Trade information and export-support resources for Indian businesses.",
     "url": "https://www.trade.gov.in/",
     "audience": "Exporters, MSMEs, trade researchers",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "fieo",
@@ -57,7 +62,8 @@
     "description": "Exporter support, trade events, training and export-related information.",
     "url": "https://www.fieo.org/",
     "audience": "Exporters, manufacturers, trade professionals",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "apeda",
@@ -67,7 +73,8 @@
     "description": "Registration, export promotion and resources for scheduled agricultural and processed food products.",
     "url": "https://apeda.gov.in/",
     "audience": "Agricultural and food exporters",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "mpeda",
@@ -77,7 +84,8 @@
     "description": "Marine product export promotion, registration and sector-specific resources.",
     "url": "https://mpeda.gov.in/",
     "audience": "Seafood exporters and processors",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "fssai",
@@ -87,7 +95,8 @@
     "description": "Food safety standards, licensing information and regulatory resources for food businesses.",
     "url": "https://www.fssai.gov.in/",
     "audience": "Food importers, exporters and businesses",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "dppqs",
@@ -97,7 +106,8 @@
     "description": "Plant quarantine, phytosanitary and plant-health related import/export resources.",
     "url": "https://ppqs.gov.in/",
     "audience": "Agricultural traders and plant product importers/exporters",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "bis",
@@ -107,7 +117,8 @@
     "description": "Indian standards, product certification and applicable conformity assessment resources.",
     "url": "https://www.bis.gov.in/",
     "audience": "Manufacturers, importers and product compliance teams",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "eic",
@@ -117,7 +128,8 @@
     "description": "Export inspection, certification and quality-control resources for notified products.",
     "url": "https://eicindia.gov.in/",
     "audience": "Exporters of regulated products",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "dgs",
@@ -127,7 +139,8 @@
     "description": "Merchant shipping administration, maritime notices and shipping-sector regulations.",
     "url": "https://www.dgshipping.gov.in/",
     "audience": "Shipping companies, seafarers and maritime professionals",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "mopws",
@@ -137,7 +150,8 @@
     "description": "Government policies, programmes and official information for ports, shipping and waterways.",
     "url": "https://shipmin.gov.in/",
     "audience": "Port operators, shipping professionals and logistics teams",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "indian-ports",
@@ -147,7 +161,8 @@
     "description": "Resources and information related to major port authorities and port-sector initiatives.",
     "url": "https://www.ipa.nic.in/",
     "audience": "Shipping lines, port users and logistics professionals",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "aai",
@@ -157,7 +172,8 @@
     "description": "Airport operations, aviation infrastructure and official airport-related information.",
     "url": "https://www.aai.aero/",
     "audience": "Air cargo operators, freight forwarders and aviation businesses",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "gst",
@@ -167,7 +183,8 @@
     "description": "GST registration, returns and tax compliance services for registered businesses.",
     "url": "https://www.gst.gov.in/",
     "audience": "Businesses, exporters and tax professionals",
-    "official": true
+    "official": true,
+    "country": "IN"
   },
   {
     "id": "rbi",
@@ -177,6 +194,172 @@
     "description": "Foreign exchange regulations, trade payment guidance and official RBI circulars.",
     "url": "https://www.rbi.org.in/",
     "audience": "Exporters, importers, banks and finance teams",
+    "official": true,
+    "country": "IN"
+  },
+  {
+    "id": "us-cbp",
+    "country": "US",
+    "name": "U.S. Customs and Border Protection",
+    "fullName": "CBP — Trade",
+    "category": "Customs & Clearance",
+    "description": "Official U.S. customs guidance for importing, exporting, cargo release, entry procedures and trade compliance.",
+    "url": "https://www.cbp.gov/trade",
+    "audience": "Importers, exporters, customs brokers and freight forwarders",
+    "official": true
+  },
+  {
+    "id": "us-ace",
+    "country": "US",
+    "name": "Automated Commercial Environment (ACE)",
+    "fullName": "U.S. electronic trade processing system",
+    "category": "Customs & Clearance",
+    "description": "Information and access guidance for the U.S. electronic single-window system used for customs and partner-agency trade filings.",
+    "url": "https://www.cbp.gov/trade/automated/how-to-use-ace",
+    "audience": "Customs brokers, importers, exporters and software filers",
+    "official": true
+  },
+  {
+    "id": "us-usitc-hts",
+    "country": "US",
+    "name": "Harmonized Tariff Schedule (HTS)",
+    "fullName": "United States International Trade Commission",
+    "category": "Tariffs & Trade Data",
+    "description": "Official U.S. tariff classification schedule and tariff-rate reference for imported goods.",
+    "url": "https://hts.usitc.gov/",
+    "audience": "Importers, customs brokers and product classification teams",
+    "official": true
+  },
+  {
+    "id": "us-dataweb",
+    "country": "US",
+    "name": "USITC DataWeb",
+    "fullName": "U.S. Trade & Tariff Data",
+    "category": "Tariffs & Trade Data",
+    "description": "Search official U.S. import/export statistics and tariff data by product, partner, and period.",
+    "url": "https://dataweb.usitc.gov/",
+    "audience": "Trade analysts, exporters, importers and researchers",
+    "official": true
+  },
+  {
+    "id": "us-trade-gov",
+    "country": "US",
+    "name": "Trade.gov",
+    "fullName": "International Trade Administration, U.S. Department of Commerce",
+    "category": "Import & Export",
+    "description": "Export guidance, market research, trade events and government export assistance resources.",
+    "url": "https://www.trade.gov/",
+    "audience": "U.S. exporters and international businesses",
+    "official": true
+  },
+  {
+    "id": "us-census-aes",
+    "country": "US",
+    "name": "Automated Export System (AES)",
+    "fullName": "U.S. Census Bureau — Foreign Trade",
+    "category": "Import & Export",
+    "description": "Official information for electronic export filing and Electronic Export Information requirements.",
+    "url": "https://www.census.gov/foreign-trade/aes/",
+    "audience": "Exporters, freight forwarders and AES filers",
+    "official": true
+  },
+  {
+    "id": "us-fda-import",
+    "country": "US",
+    "name": "FDA Import Program",
+    "fullName": "U.S. Food and Drug Administration",
+    "category": "Product Compliance",
+    "description": "Import-related regulatory guidance for FDA-regulated food, drugs, medical devices and other products.",
+    "url": "https://www.fda.gov/industry/import-program-food-and-drug-administration-fda",
+    "audience": "Food, pharma, medical-device and regulated-product importers",
+    "official": true
+  },
+  {
+    "id": "us-aphis",
+    "country": "US",
+    "name": "USDA APHIS Trade Resources",
+    "fullName": "Animal and Plant Health Inspection Service",
+    "category": "Product Compliance",
+    "description": "Plant and animal product import/export requirements, permits, and electronic filing guidance.",
+    "url": "https://www.aphis.usda.gov/ace",
+    "audience": "Agricultural traders and plant/animal product importers and exporters",
+    "official": true
+  },
+  {
+    "id": "cn-gacc",
+    "country": "CN",
+    "name": "General Administration of Customs of China (GACC)",
+    "fullName": "China Customs — English Service Center",
+    "category": "Customs & Clearance",
+    "description": "Official customs service information covering clearance, cargo control, quarantine and imported/exported product controls.",
+    "url": "https://english.customs.gov.cn/service",
+    "audience": "Importers, exporters, customs brokers and trade compliance teams",
+    "official": true
+  },
+  {
+    "id": "cn-single-window",
+    "country": "CN",
+    "name": "China International Trade Single Window",
+    "fullName": "National electronic port and trade services platform",
+    "category": "Customs & Clearance",
+    "description": "National single-window portal for port declarations, enforcement declarations, finance services and air-logistics services.",
+    "url": "https://www.singlewindow.cn/",
+    "audience": "Importers, exporters, customs brokers and logistics operators",
+    "official": true
+  },
+  {
+    "id": "cn-mofcom",
+    "country": "CN",
+    "name": "Ministry of Commerce (MOFCOM)",
+    "fullName": "People's Republic of China — Public Services",
+    "category": "Import & Export",
+    "description": "Trade policy, foreign trade services, country trade guides, trade taxes and export-control information.",
+    "url": "https://www.mofcom.gov.cn/ggfw/",
+    "audience": "Exporters, importers, market researchers and trade professionals",
+    "official": true
+  },
+  {
+    "id": "cn-customs-origin",
+    "country": "CN",
+    "name": "China Customs Origin Services",
+    "fullName": "Origin and preferential trade information via the Single Window",
+    "category": "Tariffs & Trade Data",
+    "description": "Origin-related services and information on preferential tariff rates and rules of origin available through China's trade single-window portal.",
+    "url": "https://www.singlewindow.cn/",
+    "audience": "Importers, exporters and origin/compliance specialists",
+    "official": true
+  },
+  {
+    "id": "cn-ccpit",
+    "country": "CN",
+    "name": "China Council for the Promotion of International Trade",
+    "fullName": "CCPIT",
+    "category": "Trade Organizations",
+    "description": "Trade promotion, business matching, commercial services and international trade cooperation resources.",
+    "url": "https://www.ccpit.org/",
+    "audience": "Chinese and overseas companies seeking trade partnerships",
+    "official": true
+  },
+  {
+    "id": "cn-samr",
+    "country": "CN",
+    "name": "State Administration for Market Regulation",
+    "fullName": "SAMR",
+    "category": "Product Compliance",
+    "description": "Official market regulation and product quality/safety information; verify product-specific import requirements with the responsible authority.",
+    "url": "https://www.samr.gov.cn/",
+    "audience": "Manufacturers, importers and product compliance teams",
+    "official": true
+  },
+  {
+    "id": "cn-msa",
+    "country": "CN",
+    "name": "China Maritime Safety Administration",
+    "fullName": "Maritime safety administration",
+    "category": "Ports & Shipping",
+    "description": "Official maritime safety administration information, notices and shipping-related services.",
+    "url": "https://www.msa.gov.cn/",
+    "audience": "Shipping lines, vessel operators and maritime professionals",
     "official": true
   }
 ]
