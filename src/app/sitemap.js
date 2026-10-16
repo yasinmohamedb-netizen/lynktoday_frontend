@@ -38,16 +38,16 @@ export default async function sitemap() {
             priority: 1
         },
         {
-            url: `${siteUrl}/discover`,
-            lastModified: now,
-            changeFrequency: 'daily',
-            priority: 0.9
-        },
-        {
             url: `${siteUrl}/documentation`,
             lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.8
+        },
+        {
+            url: `${siteUrl}/global-trade-directory`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.9
         },
         {
             url: `${siteUrl}/help`,
