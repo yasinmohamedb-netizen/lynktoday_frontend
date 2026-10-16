@@ -94,11 +94,11 @@ export default function GlobalTradeDirectoryPage() {
                     </div>
                 </div>
                 <div className={styles.heroArt} aria-hidden="true">
-                    <div className={styles.orbit orbitOne} />
-                    <div className={styles.orbit orbitTwo} />
+                    <div className={`${styles.orbit} ${styles.orbitOne}`} />
+                    <div className={`${styles.orbit} ${styles.orbitTwo}`} />
                     <div className={styles.globe}>◎</div>
-                    <div className={styles.route routeOne} />
-                    <div className={styles.route routeTwo} />
+                    <div className={`${styles.route} ${styles.routeOne}`} />
+                    <div className={`${styles.route} ${styles.routeTwo}`} />
                     <span className={styles.floatCard + ' ' + styles.floatCardTop}>✈ Air cargo</span>
                     <span className={styles.floatCard + ' ' + styles.floatCardBottom}>▤ Customs · Trade · Ports</span>
                 </div>
