@@ -39,9 +39,9 @@ export default function GlobalTradeDirectoryPage() {
     const groupedCategories = useMemo(() => {
         return categories.slice(1).map((item) => ({
             name: item,
-            count: resources.filter((resource) => resource.category === item).length,
-        }));
-    }, []);
+            count: resources.filter((resource) => resource.country === country && resource.category === item).length,
+        })).filter((item) => item.count > 0);
+    }, [country]);
 
     return (
         <main className={styles.page}>
