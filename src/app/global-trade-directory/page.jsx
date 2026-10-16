@@ -137,7 +137,7 @@ export default function GlobalTradeDirectoryPage() {
 
                 <div className={styles.resourcesHeader}>
                     <div>
-                        <h2>{category === 'All categories' ? 'Official {countries.find((item) => item.code === country)?.label.split(' ').slice(1).join(' ')} resources' : category}</h2>
+                        <h2>{category === 'All categories' ? `Official ${countries.find((item) => item.code === country)?.label.split(' ').slice(1).join(' ')} resources` : category}</h2>
                         <p>Open the source website for the latest rules, forms and notices.</p>
                     </div>
                     {category !== 'All categories' && (
