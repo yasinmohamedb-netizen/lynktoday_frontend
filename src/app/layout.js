@@ -10,12 +10,13 @@ import { createMetadata } from '@/seo/metadata';
 // ======================================================
 
 export const metadata = createMetadata({
-    title: 'LynkToday | Global Trade & Logistics Network',
+    title: 'Global Trade & Logistics Network',
 
     description:
         'LynkToday is a professional network for global trade, logistics, freight forwarding, customs, shipping, supply chain and international business professionals.',
 
-    path: '/'
+    path: '/',
+    noIndex: true
 });
 
 
