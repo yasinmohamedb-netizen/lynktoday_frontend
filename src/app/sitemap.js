@@ -60,6 +60,7 @@ function getPagination(data) {
 async function fetchAllPages(endpoint, collectionKeys, pageSize = PAGE_SIZE) {
     const records = [];
     const seen = new Set();
+    let previousPageSignature = null;
 
     for (let page = 1; page <= MAX_PAGES; page += 1) {
         const separator = endpoint.includes('?') ? '&' : '?';
@@ -71,6 +72,14 @@ async function fetchAllPages(endpoint, collectionKeys, pageSize = PAGE_SIZE) {
 
         const pageRecords = getCollection(data, collectionKeys);
         if (pageRecords.length === 0) break;
+
+        // Some endpoints may ignore page parameters. Stop rather than loop over
+        // the same result indefinitely when the API reports a total count.
+        const pageSignature = pageRecords
+            .map((record) => String(record?._id ?? record?.id ?? record?.slug ?? ''))
+            .join('|');
+        if (page > 1 && pageSignature && pageSignature === previousPageSignature) break;
+        previousPageSignature = pageSignature;
 
         for (const record of pageRecords) {
             const key = String(record?._id ?? record?.id ?? record?.slug ?? '');
