@@ -5,11 +5,14 @@ import Link from 'next/link';
 import FollowButton from '@/components/home/Profile/FollowButton';
 import api from '@/utils/api';
 import styles from './discover.module.css';
+import { useAuthModal } from '@/components/auth/AuthModalProvider/AuthModalProvider';
 
 const professions = ['Freight Forwarder','Customs Broker','Shipping Line','Air Cargo','Importer','Exporter','Warehouse','Transporter','Trade Consultant'];
 const countries = ['India','UAE','Saudi Arabia','Singapore','China'];
 
 export default function Discover() {
+    const { requireAuth } = useAuthModal();
+    const [authStatus, setAuthStatus] = useState('checking');
     const [users, setUsers] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -22,15 +25,38 @@ export default function Discover() {
     const [trendingTopics, setTrendingTopics] = useState([]);
 
     useEffect(() => {
+        const token = localStorage.getItem('lynktoday_token');
+        const storedUser = localStorage.getItem('lynktoday_user');
+
+        if (!token || !storedUser) {
+            setCurrentUser(null);
+            setAuthStatus('required');
+            requireAuth();
+            return;
+        }
+
         try {
-            const storedUser = localStorage.getItem('lynktoday_user');
-            if (storedUser) setCurrentUser(JSON.parse(storedUser));
+            const parsedUser = JSON.parse(storedUser);
+            if (!parsedUser?._id) {
+                setCurrentUser(null);
+                setAuthStatus('required');
+                requireAuth();
+                return;
+            }
+
+            setCurrentUser(parsedUser);
+            setAuthStatus('authenticated');
         } catch (err) {
             console.error('Failed to load current user:', err);
+            setCurrentUser(null);
+            setAuthStatus('required');
+            requireAuth();
         }
-    }, []);
+    }, [requireAuth]);
 
     useEffect(() => {
+        if (authStatus !== 'authenticated') return undefined;
+
         let cancelled = false;
         const loadTrendingTopics = async () => {
             try {
@@ -45,7 +71,7 @@ export default function Discover() {
         };
         loadTrendingTopics();
         return () => { cancelled = true; };
-    }, []);
+    }, [authStatus]);
 
     const fetchUsers = async () => {
         try {
@@ -86,10 +112,10 @@ export default function Discover() {
     };
 
     useEffect(() => {
-        if (!currentUser) return;
+        if (authStatus !== 'authenticated' || !currentUser) return;
         const timeout = setTimeout(fetchUsers, 300);
         return () => clearTimeout(timeout);
-    }, [currentUser, search, accountType, profession, location]);
+    }, [authStatus, currentUser, search, accountType, profession, location]);
 
     const handleFollowChange = (userId, data) => {
         if (!userId || !data) return;
@@ -123,6 +149,10 @@ export default function Discover() {
 
     const suggestedUsers = users.slice(0, 5);
     const activeFilters = Boolean(search || accountType || profession || location);
+
+    if (authStatus !== 'authenticated') {
+        return null;
+    }
 
     return (
         <main className={styles.container}>

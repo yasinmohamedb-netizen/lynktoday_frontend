@@ -8,16 +8,6 @@ export default function robots() {
             userAgent: '*',
             allow: '/',
             disallow: [
-                '/login',
-                '/signup',
-                '/connections',
-                '/messages',
-                '/notifications',
-                '/my-posts',
-                '/saved',
-                '/settings',
-                '/documentation/create',
-                '/search',
                 '/admin',
                 '/api/'
             ]
