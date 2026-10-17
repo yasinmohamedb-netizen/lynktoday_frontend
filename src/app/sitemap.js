@@ -1,89 +1,105 @@
 import staticRoutes from '@/data/generatedStaticRoutes.json';
 
-const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    'https://www.lynktoday.com';
+const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.lynktoday.com'
+).replace(/\/$/, '');
 
-const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    'http://localhost:5001/api/v1';
+const apiUrl = (
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api/v1'
+).replace(/\/$/, '');
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 100;
 const REVALIDATE_SECONDS = 3600;
+const MAX_PAGES = 1000;
 
 async function fetchJson(endpoint) {
     try {
-        const response = await fetch(
-            `${apiUrl}${endpoint}`,
-            {
-                next: {
-                    revalidate: REVALIDATE_SECONDS
-                }
-            }
-        );
-
-        if (!response.ok) {
-            return null;
-        }
-
+        const response = await fetch(`${apiUrl}${endpoint}`, {
+            next: { revalidate: REVALIDATE_SECONDS }
+        });
+        if (!response.ok) return null;
         return await response.json();
     } catch {
         return null;
     }
 }
 
+function getCollection(data, keys) {
+    if (Array.isArray(data)) return data;
+    for (const key of keys) {
+        if (Array.isArray(data?.[key])) return data[key];
+        if (Array.isArray(data?.data?.[key])) return data.data[key];
+    }
+    if (Array.isArray(data?.data)) return data.data;
+    if (Array.isArray(data?.results)) return data.results;
+    return [];
+}
+
+function getPagination(data) {
+    const pagination = data?.pagination || data?.data?.pagination || {};
+    const totalPages = Number(
+        pagination.totalPages ??
+        pagination.pages ??
+        data?.totalPages ??
+        data?.pages ??
+        data?.data?.totalPages
+    );
+    const total = Number(
+        pagination.total ??
+        pagination.totalItems ??
+        data?.total ??
+        data?.totalItems
+    );
+    return { totalPages, total };
+}
+
 /**
- * Collect every page of a public list endpoint.
- *
- * The page-size fallback also supports APIs that do not return pagination
- * metadata: fetching continues until the endpoint returns a short page.
+ * Fetch all records from a paginated public endpoint.
+ * Supports common response envelopes and stops safely on short/empty pages.
  */
-async function fetchAllPages(endpoint, collectionKey, pageSize = PAGE_SIZE) {
+async function fetchAllPages(endpoint, collectionKeys, pageSize = PAGE_SIZE) {
     const records = [];
-    const maxPages = 10000;
+    const seen = new Set();
 
-    for (let page = 1; page <= maxPages; page += 1) {
+    for (let page = 1; page <= MAX_PAGES; page += 1) {
+        const separator = endpoint.includes('?') ? '&' : '?';
         const data = await fetchJson(
-            `${endpoint}?page=${page}&limit=${pageSize}`
+            `${endpoint}${separator}page=${page}&limit=${pageSize}&perPage=${pageSize}`
         );
 
-        const pageRecords = data?.[collectionKey];
+        if (!data) break;
 
-        if (!Array.isArray(pageRecords) || pageRecords.length === 0) {
-            break;
-        }
+        const pageRecords = getCollection(data, collectionKeys);
+        if (pageRecords.length === 0) break;
 
-        records.push(...pageRecords);
-
-        const totalPages = Number(
-            data?.pagination?.totalPages ??
-            data?.pagination?.pages ??
-            data?.totalPages ??
-            data?.pages
-        );
-
-        if (Number.isFinite(totalPages) && totalPages > 0) {
-            if (page >= totalPages) {
-                break;
+        for (const record of pageRecords) {
+            const key = String(record?._id ?? record?.id ?? record?.slug ?? '');
+            if (!key || !seen.has(key)) {
+                records.push(record);
+                if (key) seen.add(key);
             }
-        } else if (pageRecords.length < pageSize) {
-            break;
         }
+
+        const { totalPages, total } = getPagination(data);
+        if (Number.isFinite(totalPages) && totalPages > 0) {
+            if (page >= totalPages) break;
+            continue;
+        }
+        if (Number.isFinite(total) && total >= 0) {
+            if (records.length >= total) break;
+            // If API says there are more records, continue even if a page is short.
+            continue;
+        }
+        if (pageRecords.length < pageSize) break;
     }
 
     return records;
 }
 
 function asDate(value, fallback) {
-    if (!value) {
-        return fallback;
-    }
-
+    if (!value) return fallback;
     const date = new Date(value);
-
-    return Number.isNaN(date.getTime())
-        ? fallback
-        : date;
+    return Number.isNaN(date.getTime()) ? fallback : date;
 }
 
 function sitemapEntry(url, lastModified, changeFrequency, priority, now) {
@@ -95,52 +111,66 @@ function sitemapEntry(url, lastModified, changeFrequency, priority, now) {
     };
 }
 
+function isPublished(record) {
+    if (!record || record.isActive === false || record.isDeleted === true) return false;
+    if (record.deletedAt) return false;
+    if (record.isPublished === false || record.published === false) return false;
+    const status = String(record.status || '').toLowerCase();
+    if (['draft', 'private', 'deleted', 'archived', 'inactive', 'pending'].includes(status)) return false;
+    return true;
+}
+
+function identifier(record) {
+    return record?._id ?? record?.id ?? null;
+}
+
+function encodePathPart(value) {
+    return encodeURIComponent(String(value));
+}
+
+function uniqueByUrl(entries) {
+    const unique = new Map();
+    for (const entry of entries) {
+        if (entry?.url && entry.url.startsWith(siteUrl)) unique.set(entry.url, entry);
+    }
+    return [...unique.values()];
+}
+
 export default async function sitemap() {
     const now = new Date();
 
-    // Static public pages are discovered automatically from src/app/page.*
-    // during the prebuild step. Private/authenticated routes are excluded.
     const staticPages = staticRoutes.map((route) =>
         sitemapEntry(
-            `${siteUrl}${route}`,
-            now,
-            route === '/documentation' || route === '/hs-codes'
-                ? 'weekly'
-                : 'monthly',
+            `${siteUrl}${route === '/' ? '' : route}`,
+            null,
+            route === '/documentation' || route === '/hs-codes' ? 'weekly' : 'monthly',
             route === '/global-trade-directory' ? 0.9 : 0.7,
             now
         )
     );
 
-    const [
-        documentation,
-        hsCodes,
-        posts,
-        topics,
-        users
-    ] = await Promise.all([
-        fetchAllPages('/documentation', 'documentation'),
-        fetchAllPages('/hs-codes', 'hsCodes'),
-        fetchAllPages('/posts', 'posts'),
+    // Use existing public APIs only. No backend code or schema changes required.
+    const [documentation, hsCodes, posts, allTopics, trendingTopics, users] = await Promise.all([
+        fetchAllPages('/documentation', ['documentation', 'documents', 'items']),
+        fetchAllPages('/hs-codes', ['hsCodes', 'hsCode', 'items']),
+        fetchAllPages('/posts', ['posts', 'items']),
+        fetchAllPages('/topics', ['topics', 'items']),
         fetchJson('/topics/trending'),
-        fetchAllPages('/users/search', 'users')
+        fetchAllPages('/users/search', ['users', 'items'])
     ]);
 
-    const documentationPages = documentation
-        .filter((document) =>
-            document &&
-            document.isActive !== false &&
-            (document.slug || document._id || document.id)
-        )
-        .map((document) => {
-            const identifier =
-                document.slug ||
-                document._id ||
-                document.id;
+    const topicRecords = [
+        ...allTopics,
+        ...getCollection(trendingTopics, ['topics', 'trendingTopics', 'items'])
+    ];
 
+    const documentationPages = documentation
+        .filter((item) => isPublished(item) && (item.slug || identifier(item)))
+        .map((item) => {
+            const idOrSlug = item.slug || identifier(item);
             return sitemapEntry(
-                `${siteUrl}/documentation/${encodeURIComponent(String(identifier))}`,
-                document.updatedAt || document.createdAt,
+                `${siteUrl}/documentation/${encodePathPart(idOrSlug)}`,
+                item.updatedAt || item.modifiedAt || item.createdAt || item.publishedAt,
                 'weekly',
                 0.8,
                 now
@@ -148,91 +178,54 @@ export default async function sitemap() {
         });
 
     const hsCodePages = hsCodes
-        .filter((hsCode) =>
-            hsCode &&
-            hsCode.isActive !== false &&
-            (hsCode._id || hsCode.id)
-        )
-        .map((hsCode) => {
-            const identifier = hsCode._id || hsCode.id;
-
-            return sitemapEntry(
-                `${siteUrl}/hs-codes/${encodeURIComponent(String(identifier))}`,
-                hsCode.updatedAt || hsCode.createdAt,
-                'monthly',
-                0.7,
-                now
-            );
-        });
+        .filter((item) => isPublished(item) && identifier(item))
+        .map((item) => sitemapEntry(
+            `${siteUrl}/hs-codes/${encodePathPart(identifier(item))}`,
+            item.updatedAt || item.modifiedAt || item.createdAt,
+            'monthly',
+            0.7,
+            now
+        ));
 
     const postPages = posts
-        .filter((post) =>
-            post &&
-            post.isDeleted !== true &&
-            post.isActive !== false &&
-            String(post.visibility || 'public').toLowerCase() !== 'private' &&
-            (post._id || post.id)
-        )
-        .map((post) => {
-            const identifier = post._id || post.id;
+        .filter((item) => isPublished(item) &&
+            String(item.visibility || item.privacy || 'public').toLowerCase() === 'public' &&
+            identifier(item))
+        .map((item) => sitemapEntry(
+            `${siteUrl}/posts/${encodePathPart(identifier(item))}`,
+            item.updatedAt || item.modifiedAt || item.createdAt || item.publishedAt,
+            'weekly',
+            0.7,
+            now
+        ));
 
-            return sitemapEntry(
-                `${siteUrl}/posts/${encodeURIComponent(String(identifier))}`,
-                post.updatedAt || post.createdAt,
-                'weekly',
-                0.7,
-                now
-            );
-        });
+    const topicPages = topicRecords
+        .filter((item) => isPublished(item) && item.slug)
+        .map((item) => sitemapEntry(
+            `${siteUrl}/topics/${encodePathPart(item.slug)}`,
+            item.updatedAt || item.modifiedAt || item.createdAt,
+            'daily',
+            0.7,
+            now
+        ));
 
-    const trendingTopics = Array.isArray(topics?.topics)
-        ? topics.topics
-        : [];
-
-    const topicPages = trendingTopics
-        .filter((topic) => topic?.slug)
-        .map((topic) =>
-            sitemapEntry(
-                `${siteUrl}/topics/${encodeURIComponent(String(topic.slug))}`,
-                topic.updatedAt || topic.createdAt,
-                'daily',
-                0.7,
-                now
-            )
-        );
-
-    // The public search endpoint returns active users in pages. Their public
-    // profile route has its own dynamic title, description and canonical URL.
     const profilePages = users
-        .filter((user) =>
-            user &&
-            user.isActive !== false &&
-            (user._id || user.id)
-        )
-        .map((user) => {
-            const identifier = user._id || user.id;
+        .filter((item) => isPublished(item) && identifier(item) &&
+            item.isPrivate !== true && item.profilePublic !== false)
+        .map((item) => sitemapEntry(
+            `${siteUrl}/profile/${encodePathPart(identifier(item))}`,
+            item.updatedAt || item.modifiedAt || item.createdAt,
+            'monthly',
+            0.5,
+            now
+        ));
 
-            return sitemapEntry(
-                `${siteUrl}/profile/${encodeURIComponent(String(identifier))}`,
-                user.updatedAt || user.createdAt,
-                'monthly',
-                0.5,
-                now
-            );
-        });
-
-    const uniqueEntries = new Map();
-
-    for (const entry of [
+    return uniqueByUrl([
         ...staticPages,
         ...documentationPages,
         ...hsCodePages,
         ...postPages,
         ...topicPages,
         ...profilePages
-    ]) {
-        uniqueEntries.set(entry.url, entry);
-    }
-
-    return [...uniqueEntries.values()];
+    ]);
 }
